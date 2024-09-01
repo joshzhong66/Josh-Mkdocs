@@ -141,7 +141,7 @@ Run `npm audit` for details.
 个人头像-设置-Developer settings-Persomal access tokens->Tokens-->生成如下：
 
 ```bash
-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
+xxx
 ```
 
 ![image-20220317174949176](https://raw.githubusercontent.com/zyx3721/Picbed/main/blog-images/2024/04/25/89a89a420259a1427056092ed05412b8-5f7db59cc548eecfde4348e48b3d927c-0929b9.png)
@@ -167,7 +167,7 @@ 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
     "githubPlus": {
       "repo": "zyx3721/Picbed",
       "branch": "main",
-      "token": "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",
+      "token": "xxx",
       "path": "blog-images",
       "customUrl": "",
       "origin": "github"
