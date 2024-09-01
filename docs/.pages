@@ -1,0 +1,7 @@
+title: "Hello"
+
+nav:
+    - 首页: index.md
+    - 博客: tech
+    - 随笔: essay
+

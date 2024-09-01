@@ -1,0 +1,2284 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../">
+      
+      
+        <link rel="next" href="../2024-03-21-Python-%E9%87%8C%E9%9D%A2%E6%B2%A1-if-%E4%B9%9F%E8%83%BD%E7%94%A8-else-dis61/">
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS 订阅" href="../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="已更新内容的 RSS 订阅" href="../../../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.33">
+    
+    
+      
+        <title>使用 Python 的 argparse 构建命令行界面 - Josh's Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.3cba04c6.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="pink">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../.." title="Josh&#39;s Blog" class="md-header__button md-logo" aria-label="Josh's Blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Josh's Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              使用 Python 的 argparse 构建命令行界面
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="pink"  aria-label="切换到暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-label="切换到亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+    
+  
+  主页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../" class="md-tabs__link">
+          
+  
+  技术
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="Josh&#39;s Blog" class="md-nav__button md-logo" aria-label="Josh's Blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z"/></svg>
+
+    </a>
+    Josh's Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    主页
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    技术
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            技术
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    技术文档
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    生物信息
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            生物信息
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%94%9F%E7%89%A9%E4%BF%A1%E6%81%AF/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    生物信息
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    编程技术
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            编程技术
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    编程技术
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_2" id="__nav_2_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Python
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Python
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    使用 Python 的 argparse 构建命令行界面
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    使用 Python 的 argparse 构建命令行界面
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      了解命令行界面
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      命令行界面 （CLI）
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      命令、参数、选项、参数和子命令
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python 中的 CLI 入门
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Python 中的 CLI 入门">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sysargv-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用 sys.argv 构建最小的 CLI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#argparse-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用 argparse 创建 CLI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-argparse-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用 Python 的 argparse 创建 CLI
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="使用 Python 的 argparse 创建 CLI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      创建命令行参数解析器
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      添加参数和选项
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      解析命令行参数和选项
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cli_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      设置 CLI 应用程序的布局和构建系统
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      自定义你的命令行参数解析器
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="自定义你的命令行参数解析器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#help-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      调整程序的 Help 和 Usage 内容
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      为参数和选项提供全局设置
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      微调你的命令行参数和选项
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="微调你的命令行参数和选项">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      设置 Option 背后的 Action
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2024-03-21-Python-%E9%87%8C%E9%9D%A2%E6%B2%A1-if-%E4%B9%9F%E8%83%BD%E7%94%A8-else-dis61/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python 里面没 if 也能用 else
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2024-01-03-%E4%B8%8D%E8%A6%81%E4%BD%BF%E7%94%A8-requirements-txt-dis44/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    不要使用 requirements.txt
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2023-12-26-Pandas-%E5%A4%84%E7%90%86-Excel-%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E6%8A%80%E5%B7%A7-dis40/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pandas 处理 Excel 常用方法技巧
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2023-12-01-%E5%8D%95%E8%A1%8C-Python-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5-dis30/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    单行 Python 代码片段
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    开发运维
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            开发运维
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../../%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4/%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99/2023-10-23-WebStack-Hugo-%E4%B8%80%E4%B8%AA%E9%9D%99%E6%80%81%E5%93%8D%E5%BA%94%E5%BC%8F%E5%AF%BC%E8%88%AA%E4%B8%BB%E9%A2%98-dis10/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    静态网站
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../../%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/2024-04-28-mamba-%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%88%86%E6%94%AF-miniforge-%E5%92%8C-mambaforge-dis71/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    虚拟环境
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../../%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8/2024-03-08-RockyLinux-9-%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE%E4%B8%8E%E4%BD%BF%E7%94%A8-dis60/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    服务器配置使用
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    开发运维
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../../%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4/Windows/2024-01-09-%E8%8B%B9%E6%9E%9C%E5%AD%97%E4%BD%93-PingFang-SC-%E7%9A%84%E4%B8%80%E4%BA%9B%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95-dis49/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Windows
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../../%E5%BC%80%E5%8F%91%E8%BF%90%E7%BB%B4/Python/2023-12-01-Python3-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85-with-openssl-%E6%97%A0%E6%95%88%E7%9A%84%E9%97%AE%E9%A2%98-dis27/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Python
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    数据库
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            数据库
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%95%B0%E6%8D%AE%E5%BA%93/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    数据库
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    可视化
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            可视化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%8F%AF%E8%A7%86%E5%8C%96/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    可视化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      了解命令行界面
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      命令行界面 （CLI）
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      命令、参数、选项、参数和子命令
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python 中的 CLI 入门
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Python 中的 CLI 入门">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sysargv-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用 sys.argv 构建最小的 CLI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#argparse-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用 argparse 创建 CLI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-argparse-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用 Python 的 argparse 创建 CLI
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="使用 Python 的 argparse 创建 CLI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      创建命令行参数解析器
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      添加参数和选项
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      解析命令行参数和选项
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cli_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      设置 CLI 应用程序的布局和构建系统
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      自定义你的命令行参数解析器
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="自定义你的命令行参数解析器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#help-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      调整程序的 Help 和 Usage 内容
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      为参数和选项提供全局设置
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      微调你的命令行参数和选项
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="微调你的命令行参数和选项">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      设置 Option 背后的 Action
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>使用 Python 的 argparse 构建命令行界面</h1>
+
+<blockquote>
+<p>原文：<a href="https://realpython.com/command-line-interfaces-python-argparse/">Build Command-Line Interfaces With Python's argparse</a>     </p>
+</blockquote>
+<p>命令行应用在普通用户空间中可能并不常见，但它们存在于开发、数据科学、系统管理和许多其他操作中。每个命令行应用都需要一个用户友好的命令行界面 （CLI），以便你可以与应用本身进行交互。在 Python 中，您可以使用标准库中的 <code>argparse</code> 模块创建功能齐全的 CLI。</p>
+<!-- more -->
+
+<p>在本文中，你将了解如何：    </p>
+<ul>
+<li>命令行界面入门；</li>
+<li>在 Python 中组织和布局命令行应用项目；</li>
+<li>使用 Python <code>argparse</code> 创建命令行界面（command-line interfaces）；</li>
+<li>使用 <code>argparse</code> 一些强大的功能深度自定义您的 CLI；</li>
+</ul>
+<p>若要充分利用本教程，应熟悉 Python 编程，包括面向对象编程、脚本开发和执行以及 Python 包和模块等概念。如果您熟悉与使用命令行或终端相关的一般概念和主题，这也将很有帮助。</p>
+<h2 id="_1">了解命令行界面<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>自从计算机发明以来，人类一直需要并找到与这些机器交互和共享信息的方法。信息交换在人、计算机软件和硬件组件之间流动。其中任意两个元素之间的共享边界通常称为接口(<a href="https://en.wikipedia.org/wiki/Interface_(computing)">interface</a>)。</p>
+<p>在软件开发中，接口是给定软件的特殊部分，它允许计算机系统组件之间的交互。当涉及到人机交互和软件交互时，这个重要的组件被称为用户界面（<a href="https://en.wikipedia.org/wiki/User_interface">user interface</a>）。</p>
+<p>您会在编程中找到不同类型的用户界面。图形用户界面 （GUI） 可能是当今最常见的。但是，您还可以找到为其用户提供命令行界面 （CLI） 的应用和程序。在本教程中，你将了解 CLI 以及如何在 Python 中创建它们。</p>
+<h2 id="cli">命令行界面 （CLI）<a class="headerlink" href="#cli" title="Permanent link">&para;</a></h2>
+<p>命令行界面允许您通过操作系统命令行、终端或控制台与应用程序或程序进行交互。</p>
+<p>要了解命令行界面及其工作原理，请考虑此实际示例。假设您有一个名为 sample 包含三个示例文件的目录。如果您使用的是类 Unix 操作系统，例如 Linux 或 macOS，请继续在父目录中打开命令行窗口或终端，然后执行以下命令：  <br />
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a>$<span class="w"> </span>ls<span class="w"> </span>sample/
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos="2 "></span></a>hello.txt<span class="w">     </span>lorem.md<span class="w">      </span>realpython.md
+</code></pre></div></p>
+<p>Unix 的 <code>ls</code> 命令列出目标目录中包含的文件和子目录，该目录默认为当前工作目录。上面的命令调用没有显示有关 的内容 sample 的太多信息。它只在屏幕上显示文件名。</p>
+<p>假设你想要获取有关目录及其内容的更丰富信息，那么你不需要寻找其他程序，因为 ls 命令有一个功能齐全的命令行界面，并且提供了一组有用的选项，可以用来定制命令的行为。</p>
+<p>例如，继续执行带有 <code>-l</code> 选项的 <code>ls</code> 命令：  <br />
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><a href="#__codelineno-1-1"><span class="linenos" data-linenos="1 "></span></a>$<span class="w"> </span>ls<span class="w"> </span>-l<span class="w"> </span>sample/
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><a href="#__codelineno-1-2"><span class="linenos" data-linenos="2 "></span></a>total<span class="w"> </span><span class="m">24</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a><a href="#__codelineno-1-3"><span class="linenos" data-linenos="3 "></span></a>-rw-r--r--@<span class="w"> </span><span class="m">1</span><span class="w"> </span>user<span class="w">  </span>staff<span class="w">    </span><span class="m">83</span><span class="w"> </span>Aug<span class="w"> </span><span class="m">17</span><span class="w"> </span><span class="m">22</span>:15<span class="w"> </span>hello.txt
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a><a href="#__codelineno-1-4"><span class="linenos" data-linenos="4 "></span></a>-rw-r--r--@<span class="w"> </span><span class="m">1</span><span class="w"> </span>user<span class="w">  </span>staff<span class="w">  </span><span class="m">2609</span><span class="w"> </span>Aug<span class="w"> </span><span class="m">17</span><span class="w"> </span><span class="m">22</span>:15<span class="w"> </span>lorem.md
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a><a href="#__codelineno-1-5"><span class="linenos" data-linenos="5 "></span></a>-rw-r--r--@<span class="w"> </span><span class="m">1</span><span class="w"> </span>user<span class="w">  </span>staff<span class="w">   </span><span class="m">428</span><span class="w"> </span>Aug<span class="w"> </span><span class="m">17</span><span class="w"> </span><span class="m">22</span>:15<span class="w"> </span>realpython.md
+</code></pre></div></p>
+<p>现在，<code>ls</code> 命令的输出完全不同了。该命令显示了有关 sample 目录中文件的更多信息，包括权限、所有者、组、日期和大小。它还显示了这些文件在你计算机磁盘上使用的总空间。</p>
+<p>这种更丰富的输出结果是由于使用了 <code>-l</code> 选项，这是 Unix <code>ls</code> 命令行界面的一部分，它启用了详细的输出格式。</p>
+<h2 id="_2">命令、参数、选项、参数和子命令<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>在本教程中，您将深入了解<strong>命令</strong>(commands)及其<strong>子命令</strong>(subcommands)，同时还会学习到<strong>命令行参数</strong>(command-line arguments)、<strong>选项</strong>(options)和<strong>参数</strong>(parameters)的相关知识。因此，建议您将这些术语纳入您的技术词汇库中。</p>
+<ul>
+<li><strong>命令(Command)</strong>：在命令行或终端窗口中运行的程序或例程。通常，您可以通过其背后的程序(underlying program)或例程(routine)的名称来识别一个命令。     </li>
+<li><strong>参数(Argument)</strong>：命令在执行其预期操作时所需或可选的信息片段。命令通常接受一个或多个参数，您可以在命令行中以空格分隔或逗号分隔的列表形式提供这些参数。     </li>
+<li><strong>选项(Option)</strong>，也称为 <strong>flag</strong> 或 <strong>switch</strong>：一种可选的参数，用于修改命令的行为。选项通过特定的名称（如前一个示例中的 <code>-l</code>）传递给命令。     </li>
+<li><strong>参数(Parameter)</strong>：一个选项用于执行其预期操作或动作时所使用的参数。     </li>
+<li>子命令(Subcommand)**：一个预定义的名称，可以传递给应用程序来执行特定的操作。</li>
+</ul>
+<p>参考上一节中的示例命令结构：
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><a href="#__codelineno-2-1"><span class="linenos" data-linenos="1 "></span></a>$<span class="w"> </span>ls<span class="w"> </span>-l<span class="w"> </span>sample/
+</code></pre></div></p>
+<p>在这个例子中，您组合了命令行界面（CLI）的以下组件：    </p>
+<ul>
+<li><strong>ls</strong>：命令的名称或应用的名称；</li>
+<li><strong>-l</strong>：启用详细输出的选项(option)、开关(switch)或标志(flag)；    </li>
+<li><strong>sample</strong>：为命令执行提供附加信息的参数(argument)；    </li>
+</ul>
+<p>现在，让我们来看下面的命令结构，它展示了 Python 包管理器 <code>pip</code> 的命令行界面（CLI）：  <br />
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><a href="#__codelineno-3-1"><span class="linenos" data-linenos="1 "></span></a>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</code></pre></div></p>
+<p>这是一个常见的 <code>pip</code> 命令结构，您可能之前已经见过。它允许您使用 <code>requirements.txt</code> 文件来给指定的 Python 项目安装依赖项。在这个例子中，您使用了以下命令行界面（CLI）组件：   </p>
+<ul>
+<li><strong>pip</strong>：命令的名称；</li>
+<li><strong>install</strong>：<code>pip</code> 的子命令(subcommand)名称；</li>
+<li><strong>-r</strong>：<code>install</code> 子命令的选项(option)；</li>
+<li><strong>requirements.txt</strong>：一个参数，特别是 <code>-r</code> 选项的参数。</li>
+</ul>
+<p>现在您已经了解了命令行界面（CLI）是什么以及其主要部分或组件有哪些。接下来，是时候学习如何在 Python 中创建自己的 CLI 了。</p>
+<h2 id="python-cli">Python 中的 CLI 入门<a class="headerlink" href="#python-cli" title="Permanent link">&para;</a></h2>
+<p>Python 附带了一些工具，这些工具可帮助您为程序和应用程序编写命令行界面（CLI）。若您需要快速为小型程序构建一个简洁的 CLI，那么可以利用 <a href="https://docs.python.org/3/library/sys.html#module-sys"><code>sys</code></a> 模块中的 <a href="https://docs.python.org/3/library/sys.html#sys.argv"><code>argv</code></a> 属性。这个属性会自动存储您在命令行中传递给特定程序的参数。</p>
+<h3 id="sysargv-cli">使用 <code>sys.argv</code> 构建最小的 CLI<a class="headerlink" href="#sysargv-cli" title="Permanent link">&para;</a></h3>
+<p>以使用 <code>argv</code> 创建最小命令行界面（CLI）为例，假设您需要编写一个小程序，该程序类似于 <code>ls</code> 命令，能够列出给定目录下的所有文件。在这种情况下，您可以编写如下代码：  <br />
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><a href="#__codelineno-4-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1"># ls_argv.py</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a><a href="#__codelineno-4-2"><span class="linenos" data-linenos=" 2 "></span></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a><a href="#__codelineno-4-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="kn">import</span> <span class="nn">sys</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a><a href="#__codelineno-4-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a><a href="#__codelineno-4-5"><span class="linenos" data-linenos=" 5 "></span></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a><a href="#__codelineno-4-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="k">if</span> <span class="p">(</span><span class="n">args_count</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7"></a><a href="#__codelineno-4-7"><span class="linenos" data-linenos=" 7 "></span></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;One argument expected, got </span><span class="si">{</span><span class="n">args_count</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8"></a><a href="#__codelineno-4-8"><span class="linenos" data-linenos=" 8 "></span></a>    <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9"></a><a href="#__codelineno-4-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="k">elif</span> <span class="n">args_count</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10"></a><a href="#__codelineno-4-10"><span class="linenos" data-linenos="10 "></span></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You must specify the target directory&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11"></a><a href="#__codelineno-4-11"><span class="linenos" data-linenos="11 "></span></a>    <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12"></a><a href="#__codelineno-4-12"><span class="linenos" data-linenos="12 "></span></a>
+<a id="__codelineno-4-13" name="__codelineno-4-13"></a><a href="#__codelineno-4-13"><span class="linenos" data-linenos="13 "></span></a><span class="n">target_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14"></a><a href="#__codelineno-4-14"><span class="linenos" data-linenos="14 "></span></a>
+<a id="__codelineno-4-15" name="__codelineno-4-15"></a><a href="#__codelineno-4-15"><span class="linenos" data-linenos="15 "></span></a><span class="k">if</span> <span class="ow">not</span> <span class="n">target_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16"></a><a href="#__codelineno-4-16"><span class="linenos" data-linenos="16 "></span></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The target directory doesn&#39;t exist&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17"></a><a href="#__codelineno-4-17"><span class="linenos" data-linenos="17 "></span></a>    <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18"></a><a href="#__codelineno-4-18"><span class="linenos" data-linenos="18 "></span></a>
+<a id="__codelineno-4-19" name="__codelineno-4-19"></a><a href="#__codelineno-4-19"><span class="linenos" data-linenos="19 "></span></a><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">target_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20"></a><a href="#__codelineno-4-20"><span class="linenos" data-linenos="20 "></span></a>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div></p>
+<p>该程序通过手动处理命令行提供的参数来实现了一个简单的命令行界面（CLI），这些参数会自动存储在 <code>sys.argv</code> 中。<code>sys.argv</code> 的第一个元素始终是程序名称，第二个元素则是目标目录。由于应用程序不应接受超过一个目标目录，因此 <code>args_count</code> 不得超过 2。</p>
+<p>在检查 <code>sys.argv</code> 的内容后，您创建一个<code>pathlib.Path</code>对象来存储目标目录的路径。如果该目录不存在，您将通知用户并退出程序。接下来的<code>for</code>循环将列出目录内容，每行一个条目。</p>
+<p>如果从命令行运行该脚本，您将得到以下结果：  <br />
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><a href="#__codelineno-5-1"><span class="linenos" data-linenos=" 1 "></span></a>$<span class="w"> </span>python<span class="w"> </span>ls_argv.py<span class="w"> </span>sample/
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a><a href="#__codelineno-5-2"><span class="linenos" data-linenos=" 2 "></span></a>hello.txt
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a><a href="#__codelineno-5-3"><span class="linenos" data-linenos=" 3 "></span></a>lorem.md
+<a id="__codelineno-5-4" name="__codelineno-5-4"></a><a href="#__codelineno-5-4"><span class="linenos" data-linenos=" 4 "></span></a>realpython.md
+<a id="__codelineno-5-5" name="__codelineno-5-5"></a><a href="#__codelineno-5-5"><span class="linenos" data-linenos=" 5 "></span></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6"></a><a href="#__codelineno-5-6"><span class="linenos" data-linenos=" 6 "></span></a>$<span class="w"> </span>python<span class="w"> </span>ls_argv.py
+<a id="__codelineno-5-7" name="__codelineno-5-7"></a><a href="#__codelineno-5-7"><span class="linenos" data-linenos=" 7 "></span></a>You<span class="w"> </span>must<span class="w"> </span>specify<span class="w"> </span>the<span class="w"> </span>target<span class="w"> </span>directory
+<a id="__codelineno-5-8" name="__codelineno-5-8"></a><a href="#__codelineno-5-8"><span class="linenos" data-linenos=" 8 "></span></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9"></a><a href="#__codelineno-5-9"><span class="linenos" data-linenos=" 9 "></span></a>$<span class="w"> </span>python<span class="w"> </span>ls_argv.py<span class="w"> </span>sample/<span class="w"> </span>other_dir/
+<a id="__codelineno-5-10" name="__codelineno-5-10"></a><a href="#__codelineno-5-10"><span class="linenos" data-linenos="10 "></span></a>One<span class="w"> </span>argument<span class="w"> </span>expected,<span class="w"> </span>got<span class="w"> </span><span class="m">2</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11"></a><a href="#__codelineno-5-11"><span class="linenos" data-linenos="11 "></span></a>
+<a id="__codelineno-5-12" name="__codelineno-5-12"></a><a href="#__codelineno-5-12"><span class="linenos" data-linenos="12 "></span></a>$<span class="w"> </span>python<span class="w"> </span>ls_argv.py<span class="w"> </span>non_existing/
+<a id="__codelineno-5-13" name="__codelineno-5-13"></a><a href="#__codelineno-5-13"><span class="linenos" data-linenos="13 "></span></a>The<span class="w"> </span>target<span class="w"> </span>directory<span class="w"> </span>doesn<span class="err">&#39;</span>t<span class="w"> </span>exist
+</code></pre></div></p>
+<p>您的程序接受一个目录作为参数，并列出其内容。如果您运行命令时没有提供参数，您将收到一个错误消息。如果您运行命令时指定了超过一个目标目录，您同样会收到一个错误消息。如果尝试运行命令并指定一个不存在的目录，程序将输出另一个错误消息。</p>
+<p>虽然您的程序运行正常，但对于更复杂的 CLI 应用程序来说，使用<code>sys.argv</code>属性手动解析命令行参数并不是一个可扩展的解决方案。如果您的应用需要接受更多的参数和选项，那么解析<code>sys.argv</code>将变得复杂且容易出错。您需要一个更好的解决方案，这就是 Python 中的<code>argparse</code>模块所提供的。</p>
+<h3 id="argparse-cli">使用 <code>argparse</code> 创建 CLI<a class="headerlink" href="#argparse-cli" title="Permanent link">&para;</a></h3>
+<p>在 Python 中创建 CLI 应用程序的更便捷方法是使用标准库中的 <a href="https://docs.python.org/3/library/argparse.html?highlight=argparse#module-argparse"><code>argparse</code></a> 模块。该模块首次在 Python 3.2 中随 <a href="https://www.python.org/dev/peps/pep-0389/">PEP-389</a> 一同发布，是快速创建 Python CLI 应用程序的利器，无需安装如 Typer 或 Click 这样的第三方库。</p>
+<p><code>argparse</code> 模块是作为较旧的 <a href="https://docs.python.org/3/library/getopt.html"><code>getopt</code></a> 和 <a href="https://docs.python.org/3/library/optparse.html"><code>optparse</code></a> 模块的替代品而发布的，因为它们缺乏一些重要的功能。</p>
+<p>Python 的 <code>argparse</code> 模块允许您：     </p>
+<ul>
+<li>解析命令行<strong>参数</strong>(arguments)和<strong>选项</strong>(options)；</li>
+<li>在一个单一选项中接受<strong>可变数量的参数</strong>(variable number of parameters)；</li>
+<li>在 CLI 中提供子命令(subcommands)。</li>
+</ul>
+<p>这些特性使 <code>argparse</code> 成为了一个强大的 CLI 框架，您在创建 CLI 应用程序时可以放心地依赖它。要使用 Python 的 <code>argparse</code>，您需要遵循以下四个简单的步骤：</p>
+<ol>
+<li>导入 <code>argparse</code>；</li>
+<li>通过实例化 <a href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser"><code>ArgumentParser</code></a> 创建<strong>参数解析器</strong>(argument parser)；</li>
+<li>使用 <a href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_argument"><code>.add_argument()</code></a> 方法向解析器添加<strong>参数</strong>(arguments)和<strong>选项</strong>(options)；</li>
+<li>在解析器上调用 <a href="https://docs.python.org/3/library/argparse.html?highlight=argparse#argparse.ArgumentParser.parse_args"><code>.parse_args()</code></a> 以获取参数 <a href="https://docs.python.org/3/library/argparse.html#namespace"><code>Namespace</code></a>。</li>
+</ol>
+<p>例如，您可以使用 <code>argparse</code> 来改进您的 <code>ls_argv.py</code> 脚本。现在，您可以创建一个名为 <code>ls.py</code> 的脚本，并编写以下代码：
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><a href="#__codelineno-6-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1"># ls.py v1</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a><a href="#__codelineno-6-2"><span class="linenos" data-linenos=" 2 "></span></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a><a href="#__codelineno-6-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="kn">import</span> <span class="nn">argparse</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a><a href="#__codelineno-6-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5"></a><a href="#__codelineno-6-5"><span class="linenos" data-linenos=" 5 "></span></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6"></a><a href="#__codelineno-6-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7"></a><a href="#__codelineno-6-7"><span class="linenos" data-linenos=" 7 "></span></a>
+<a id="__codelineno-6-8" name="__codelineno-6-8"></a><a href="#__codelineno-6-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9"></a><a href="#__codelineno-6-9"><span class="linenos" data-linenos=" 9 "></span></a>
+<a id="__codelineno-6-10" name="__codelineno-6-10"></a><a href="#__codelineno-6-10"><span class="linenos" data-linenos="10 "></span></a><span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11"></a><a href="#__codelineno-6-11"><span class="linenos" data-linenos="11 "></span></a>
+<a id="__codelineno-6-12" name="__codelineno-6-12"></a><a href="#__codelineno-6-12"><span class="linenos" data-linenos="12 "></span></a><span class="n">target_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13"></a><a href="#__codelineno-6-13"><span class="linenos" data-linenos="13 "></span></a>
+<a id="__codelineno-6-14" name="__codelineno-6-14"></a><a href="#__codelineno-6-14"><span class="linenos" data-linenos="14 "></span></a><span class="k">if</span> <span class="ow">not</span> <span class="n">target_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15"></a><a href="#__codelineno-6-15"><span class="linenos" data-linenos="15 "></span></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The target directory doesn&#39;t exist&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16"></a><a href="#__codelineno-6-16"><span class="linenos" data-linenos="16 "></span></a>    <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17"></a><a href="#__codelineno-6-17"><span class="linenos" data-linenos="17 "></span></a>
+<a id="__codelineno-6-18" name="__codelineno-6-18"></a><a href="#__codelineno-6-18"><span class="linenos" data-linenos="18 "></span></a><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">target_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19"></a><a href="#__codelineno-6-19"><span class="linenos" data-linenos="19 "></span></a>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div></p>
+<p>随着 <code>argparse</code> 的引入，您的代码发生了显著的变化。与之前的版本相比，最明显的不同是，用于检查用户提供的参数的条件语句已经消失了。这是因为 <code>argparse</code> 会自动为您检查参数的存在性。</p>
+<p>在这个新的实现中，您首先导入 <code>argparse</code> 并创建一个参数解析器。要创建解析器，您可以使用 <code>ArgumentParser</code> 类。接下来，您定义一个名为 <code>path</code> 的参数，用于获取用户的目标目录。</p>
+<p>接下来，您需要调用 <code>.parse_args()</code> 方法来解析输入参数，并获取一个包含所有用户参数的 <code>Namespace</code> 对象。请注意，现在 <code>args</code> 变量保存了一个 <code>Namespace</code> 对象，该对象具有从命令行收集的每个参数所对应的属性。</p>
+<p>在这个例子中，您只有一个参数，名为 <code>path</code>。<code>Namespace</code> 对象允许您使用点表示法通过 <code>args</code> 来访问 <code>path</code>。其余的代码与第一个实现相同。</p>
+<p>现在继续从命令行运行这个新脚本：
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><a href="#__codelineno-7-1"><span class="linenos" data-linenos=" 1 "></span></a>$<span class="w"> </span>python<span class="w"> </span>ls.py<span class="w"> </span>sample/
+<a id="__codelineno-7-2" name="__codelineno-7-2"></a><a href="#__codelineno-7-2"><span class="linenos" data-linenos=" 2 "></span></a>lorem.md
+<a id="__codelineno-7-3" name="__codelineno-7-3"></a><a href="#__codelineno-7-3"><span class="linenos" data-linenos=" 3 "></span></a>realpython.md
+<a id="__codelineno-7-4" name="__codelineno-7-4"></a><a href="#__codelineno-7-4"><span class="linenos" data-linenos=" 4 "></span></a>hello.txt
+<a id="__codelineno-7-5" name="__codelineno-7-5"></a><a href="#__codelineno-7-5"><span class="linenos" data-linenos=" 5 "></span></a>
+<a id="__codelineno-7-6" name="__codelineno-7-6"></a><a href="#__codelineno-7-6"><span class="linenos" data-linenos=" 6 "></span></a>$<span class="w"> </span>python<span class="w"> </span>ls.py
+<a id="__codelineno-7-7" name="__codelineno-7-7"></a><a href="#__codelineno-7-7"><span class="linenos" data-linenos=" 7 "></span></a>usage:<span class="w"> </span>ls.py<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>path
+<a id="__codelineno-7-8" name="__codelineno-7-8"></a><a href="#__codelineno-7-8"><span class="linenos" data-linenos=" 8 "></span></a>ls.py:<span class="w"> </span>error:<span class="w"> </span>the<span class="w"> </span>following<span class="w"> </span>arguments<span class="w"> </span>are<span class="w"> </span>required:<span class="w"> </span>path
+<a id="__codelineno-7-9" name="__codelineno-7-9"></a><a href="#__codelineno-7-9"><span class="linenos" data-linenos=" 9 "></span></a>
+<a id="__codelineno-7-10" name="__codelineno-7-10"></a><a href="#__codelineno-7-10"><span class="linenos" data-linenos="10 "></span></a>$<span class="w"> </span>python<span class="w"> </span>ls.py<span class="w"> </span>sample/<span class="w"> </span>other_dir/
+<a id="__codelineno-7-11" name="__codelineno-7-11"></a><a href="#__codelineno-7-11"><span class="linenos" data-linenos="11 "></span></a>usage:<span class="w"> </span>ls.py<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>path
+<a id="__codelineno-7-12" name="__codelineno-7-12"></a><a href="#__codelineno-7-12"><span class="linenos" data-linenos="12 "></span></a>ls.py:<span class="w"> </span>error:<span class="w"> </span>unrecognized<span class="w"> </span>arguments:<span class="w"> </span>other_dir/
+<a id="__codelineno-7-13" name="__codelineno-7-13"></a><a href="#__codelineno-7-13"><span class="linenos" data-linenos="13 "></span></a>
+<a id="__codelineno-7-14" name="__codelineno-7-14"></a><a href="#__codelineno-7-14"><span class="linenos" data-linenos="14 "></span></a>$<span class="w"> </span>python<span class="w"> </span>ls.py<span class="w"> </span>non_existing/
+<a id="__codelineno-7-15" name="__codelineno-7-15"></a><a href="#__codelineno-7-15"><span class="linenos" data-linenos="15 "></span></a>The<span class="w"> </span>target<span class="w"> </span>directory<span class="w"> </span>doesn<span class="err">&#39;</span>t<span class="w"> </span>exist
+</code></pre></div></p>
+<p>第一个命令的输出与您的原始脚本 <code>ls_argv.py</code> 相同。而第二个命令的输出则与 <code>ls_argv.py</code> 中的输出大不相同。程序现在会显示一个使用说明消息，并发出错误提示，告诉您必须提供 <code>path</code> 参数。</p>
+<p>在第三个命令中，您传递了两个目标目录，但应用程序并未为此做好准备。因此，它再次显示使用说明消息，并抛出一个错误，告知您潜在的问题。</p>
+<p>最后，如果您运行脚本时传递了一个不存在的目录作为参数，那么您会收到一个错误，告知您目标目录不存在，因此程序无法执行其工作。</p>
+<p>现在，您可以使用一个新的隐式特性。现在，您的程序接受一个可选的 <code>-h</code> 标志。不妨尝试一下：
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a><a href="#__codelineno-8-1"><span class="linenos" data-linenos="1 "></span></a>$<span class="w"> </span>python<span class="w"> </span>ls.py<span class="w"> </span>-h
+<a id="__codelineno-8-2" name="__codelineno-8-2"></a><a href="#__codelineno-8-2"><span class="linenos" data-linenos="2 "></span></a>usage:<span class="w"> </span>ls.py<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>path
+<a id="__codelineno-8-3" name="__codelineno-8-3"></a><a href="#__codelineno-8-3"><span class="linenos" data-linenos="3 "></span></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4"></a><a href="#__codelineno-8-4"><span class="linenos" data-linenos="4 "></span></a>positional<span class="w"> </span>arguments:
+<a id="__codelineno-8-5" name="__codelineno-8-5"></a><a href="#__codelineno-8-5"><span class="linenos" data-linenos="5 "></span></a><span class="w">  </span>path
+<a id="__codelineno-8-6" name="__codelineno-8-6"></a><a href="#__codelineno-8-6"><span class="linenos" data-linenos="6 "></span></a>
+<a id="__codelineno-8-7" name="__codelineno-8-7"></a><a href="#__codelineno-8-7"><span class="linenos" data-linenos="7 "></span></a>options:
+<a id="__codelineno-8-8" name="__codelineno-8-8"></a><a href="#__codelineno-8-8"><span class="linenos" data-linenos="8 "></span></a><span class="w">  </span>-h,<span class="w"> </span>--help<span class="w">  </span>show<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+</code></pre></div></p>
+<p>太棒了，现在您的程序会自动响应 <code>-h</code> 或 <code>--help</code> 标志，并为您显示带有使用说明的帮助消息。这真是一个很棒的特性，而且您只需在代码中引入 <code>argparse</code> 就能轻松获得！</p>
+<p>经过这个快速介绍如何在 Python 中创建 CLI 应用后，您现在就可以深入研究 <code>argparse</code> 模块及其所有炫酷特性了。</p>
+<h2 id="python-argparse-cli">使用 Python 的 argparse 创建 CLI<a class="headerlink" href="#python-argparse-cli" title="Permanent link">&para;</a></h2>
+<p>您可以使用 <code>argparse</code> 模块为您的应用程序和项目编写用户友好的命令行界面。该模块允许您定义应用程序所需的参数和选项。然后，<code>argparse</code> 将负责为您解析 <code>sys.argv</code> 的参数和选项。</p>
+<p><code>argparse</code> 的另一个酷炫特性是它可以自动为您的 CLI 应用程序生成使用说明和帮助消息。该模块还会在参数无效时发出错误提示，并具备更多功能。</p>
+<p>在深入研究 <code>argparse</code> 之前，您需要知道该模块的文档可识别两种不同类型的命令行参数：     </p>
+<ul>
+<li><strong>位置参数</strong>(Positional arguments)，您称为参数(arguments)；</li>
+<li><strong>可选参数</strong>(Optional arguments)，即选项(options)、标志(flags)或开关(switches)。</li>
+</ul>
+<p>在 <code>ls.py</code> 的示例中，<code>path</code> 是一个<strong>位置参数</strong>(positional argument)。这样的参数之所以被称为位置参数，是因为它在命令构造中的相对位置定义了其作用。</p>
+<p>与位置参数不同，<strong>可选参数</strong>(Optional arguments)并不是必需的。它们允许你修改命令的行为。以 Unix 命令 <code>ls</code> 为例，<code>-l</code> 标志就是一个可选参数，它使得命令以详细模式显示输出。</p>
+<p>在明确了这些概念之后，你就可以着手使用 Python 和 <code>argparse</code> 库来构建自己的命令行界面（CLI）应用程序了。</p>
+<h3 id="_3">创建命令行参数解析器<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>命令行参数解析器是任何使用 <code>argparse</code> 的命令行界面（CLI）中最为关键的部分。你在命令行上提供的所有参数和选项都会经过这个解析器的处理，它会为你完成繁重的解析工作。</p>
+<p>要使用 <code>argparse</code> 创建命令行参数解析器，您需要实例化 <a href="https://docs.python.org/3/library/argparse.html#argumentparser-objects"><code>ArgumentParser</code></a> 类：  <br />
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><a href="#__codelineno-9-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2"></a><a href="#__codelineno-9-2"><span class="linenos" data-linenos=" 2 "></span></a>
+<a id="__codelineno-9-3" name="__codelineno-9-3"></a><a href="#__codelineno-9-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="o">&gt;&gt;&gt;</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">()</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4"></a><a href="#__codelineno-9-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="o">&gt;&gt;&gt;</span> <span class="n">parser</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5"></a><a href="#__codelineno-9-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">ArgumentParser</span><span class="p">(</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6"></a><a href="#__codelineno-9-6"><span class="linenos" data-linenos=" 6 "></span></a>    <span class="n">prog</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7"></a><a href="#__codelineno-9-7"><span class="linenos" data-linenos=" 7 "></span></a>    <span class="n">usage</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8"></a><a href="#__codelineno-9-8"><span class="linenos" data-linenos=" 8 "></span></a>    <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9"></a><a href="#__codelineno-9-9"><span class="linenos" data-linenos=" 9 "></span></a>    <span class="n">formatter_class</span><span class="o">=&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">argparse</span><span class="o">.</span><span class="n">HelpFormatter</span><span class="s1">&#39;&gt;,</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10"></a><a href="#__codelineno-9-10"><span class="linenos" data-linenos="10 "></span></a>    <span class="n">conflict_handler</span><span class="o">=</span><span class="s1">&#39;error&#39;</span><span class="p">,</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11"></a><a href="#__codelineno-9-11"><span class="linenos" data-linenos="11 "></span></a>    <span class="n">add_help</span><span class="o">=</span><span class="kc">True</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12"></a><a href="#__codelineno-9-12"><span class="linenos" data-linenos="12 "></span></a><span class="p">)</span>
+</code></pre></div></p>
+<p><code>ArgumentParser</code> 的构造函数接受多种不同的参数，你可以利用这些参数来微调你的 CLI 的多个特性。由于所有这些参数都是可选的，因此你可以通过不传入任何参数直接实例化 <code>ArgumentParser</code> 来创建一个最基本的解析器。</p>
+<p>在本教程中，你将会更深入地了解 <code>ArgumentParser</code> 构造函数的参数，特别是在定制你的参数解析器的部分。目前，你可以开始使用 <code>argparse</code> 创建 CLI 的下一步了。这一步就是通过解析器对象来添加参数和选项。</p>
+<h3 id="_4">添加参数和选项<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>要为 <code>argparse</code> 的 CLI 添加参数和选项，你将使用 <code>ArgumentParser</code> 实例的 <a href="https://docs.python.org/3/library/argparse.html#the-add-argument-method"><code>.add_argument()</code></a> 方法。请注意，这个方法对参数和选项都是通用的。在 <code>argparse</code> 的术语中，参数被称为<strong>位置参数</strong>(positional arguments)，而选项被称为<strong>可选参数</strong>(optional arguments)。</p>
+<p><code>.add_argument()</code> 方法的第一个参数决定了参数和选项之间的区别。这个参数被标识为<a href="https://docs.python.org/3/library/argparse.html?highlight=argparse#name-or-flags">名称（name）或标志（flag）</a>。因此，如果你提供一个 name，那么你将定义一个参数(argument)。相反，如果你使用一个 flag，那么你将添加一个选项(option)。</p>
+<p>你已经在使用 <code>argparse</code> 时处理过命令行参数了。现在，考虑以下你自定义的 <code>ls</code> 命令的增强版本，它向 CLI 添加了一个 <code>-l</code> 选项：   <br />
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a><a href="#__codelineno-10-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1"># ls.py v2</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2"></a><a href="#__codelineno-10-2"><span class="linenos" data-linenos=" 2 "></span></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3"></a><a href="#__codelineno-10-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="kn">import</span> <span class="nn">argparse</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4"></a><a href="#__codelineno-10-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="kn">import</span> <span class="nn">datetime</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5"></a><a href="#__codelineno-10-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6"></a><a href="#__codelineno-10-6"><span class="linenos" data-linenos=" 6 "></span></a>
+<a id="__codelineno-10-7" name="__codelineno-10-7"></a><a href="#__codelineno-10-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8"></a><a href="#__codelineno-10-8"><span class="linenos" data-linenos=" 8 "></span></a>
+<a id="__codelineno-10-9" name="__codelineno-10-9"></a><a href="#__codelineno-10-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10"></a><a href="#__codelineno-10-10"><span class="linenos" data-linenos="10 "></span></a>
+<a id="__codelineno-10-11" name="__codelineno-10-11"></a><a href="#__codelineno-10-11"><span class="linenos" data-linenos="11 "></span></a><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-l&quot;</span><span class="p">,</span> <span class="s2">&quot;--long&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12"></a><a href="#__codelineno-10-12"><span class="linenos" data-linenos="12 "></span></a>
+<a id="__codelineno-10-13" name="__codelineno-10-13"></a><a href="#__codelineno-10-13"><span class="linenos" data-linenos="13 "></span></a><span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14"></a><a href="#__codelineno-10-14"><span class="linenos" data-linenos="14 "></span></a>
+<a id="__codelineno-10-15" name="__codelineno-10-15"></a><a href="#__codelineno-10-15"><span class="linenos" data-linenos="15 "></span></a><span class="n">target_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16"></a><a href="#__codelineno-10-16"><span class="linenos" data-linenos="16 "></span></a>
+<a id="__codelineno-10-17" name="__codelineno-10-17"></a><a href="#__codelineno-10-17"><span class="linenos" data-linenos="17 "></span></a><span class="k">if</span> <span class="ow">not</span> <span class="n">target_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18"></a><a href="#__codelineno-10-18"><span class="linenos" data-linenos="18 "></span></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The target directory doesn&#39;t exist&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19"></a><a href="#__codelineno-10-19"><span class="linenos" data-linenos="19 "></span></a>    <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20"></a><a href="#__codelineno-10-20"><span class="linenos" data-linenos="20 "></span></a>
+<a id="__codelineno-10-21" name="__codelineno-10-21"></a><a href="#__codelineno-10-21"><span class="linenos" data-linenos="21 "></span></a><span class="k">def</span> <span class="nf">build_output</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">long</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22"></a><a href="#__codelineno-10-22"><span class="linenos" data-linenos="22 "></span></a>    <span class="k">if</span> <span class="n">long</span><span class="p">:</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23"></a><a href="#__codelineno-10-23"><span class="linenos" data-linenos="23 "></span></a>        <span class="n">size</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_size</span>
+<a id="__codelineno-10-24" name="__codelineno-10-24"></a><a href="#__codelineno-10-24"><span class="linenos" data-linenos="24 "></span></a>        <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span>
+<a id="__codelineno-10-25" name="__codelineno-10-25"></a><a href="#__codelineno-10-25"><span class="linenos" data-linenos="25 "></span></a>            <span class="n">entry</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_mtime</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+<a id="__codelineno-10-26" name="__codelineno-10-26"></a><a href="#__codelineno-10-26"><span class="linenos" data-linenos="26 "></span></a>            <span class="s2">&quot;%b </span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span>
+<a id="__codelineno-10-27" name="__codelineno-10-27"></a><a href="#__codelineno-10-27"><span class="linenos" data-linenos="27 "></span></a>        <span class="p">)</span>
+<a id="__codelineno-10-28" name="__codelineno-10-28"></a><a href="#__codelineno-10-28"><span class="linenos" data-linenos="28 "></span></a>        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">size</span><span class="si">:</span><span class="s2">&gt;6d</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-10-29" name="__codelineno-10-29"></a><a href="#__codelineno-10-29"><span class="linenos" data-linenos="29 "></span></a>    <span class="k">return</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span>
+<a id="__codelineno-10-30" name="__codelineno-10-30"></a><a href="#__codelineno-10-30"><span class="linenos" data-linenos="30 "></span></a>
+<a id="__codelineno-10-31" name="__codelineno-10-31"></a><a href="#__codelineno-10-31"><span class="linenos" data-linenos="31 "></span></a><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">target_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+<a id="__codelineno-10-32" name="__codelineno-10-32"></a><a href="#__codelineno-10-32"><span class="linenos" data-linenos="32 "></span></a>    <span class="nb">print</span><span class="p">(</span><span class="n">build_output</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">long</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">long</span><span class="p">))</span>
+</code></pre></div></p>
+<p>在这个例子中，第 11 行代码创建了一个带有 <code>-l</code> 和 <code>--long</code> 标志的选项。参数(arguments)和选项(options)在语法上的区别在于，选项名称以短横线 <code>-</code> 开头表示简写标志，以双短横线 <code>--</code> 开头表示完整标志。</p>
+<p>请注意，在这个特定例子中，与 <code>-l</code> 或 <code>--long</code> 选项一同设置了一个 <code>action</code> 参数为 <code>"store_true"</code>，这意味着这个选项将存储一个布尔值。如果你在命令行上提供了这个选项，那么它的值将为 <code>True</code>。如果你省略了这个选项，那么它的值将为 <code>False</code>。在 "设置 Option 背后的 Action" 部分内容中，你将了解更多关于 <code>.add_argument()</code> 中的 <code>action</code> 参数的信息。</p>
+<p>在第 21 行的 <code>build_output()</code> 函数中，当 <code>long</code> 为 <code>True</code> 时，它会返回一个详细的输出，否则返回一个简短的输出。详细的输出将包含目标目录中所有条目的大小、修改日期和名称。它使用了诸如 <code>Path.stat()</code> 这样的工具，以及带有自定义字符串格式的 <code>datetime.datetime</code> 对象。</p>
+<p>继续在 <code>sample</code> 上执行您的程序，以检查 <code>-l</code> 选项如何工作：  <br />
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1"></a><a href="#__codelineno-11-1"><span class="linenos" data-linenos="1 "></span></a>$<span class="w"> </span>python<span class="w"> </span>ls.py<span class="w"> </span>-l<span class="w"> </span>sample/
+<a id="__codelineno-11-2" name="__codelineno-11-2"></a><a href="#__codelineno-11-2"><span class="linenos" data-linenos="2 "></span></a><span class="w">  </span><span class="m">2609</span><span class="w"> </span>Oct<span class="w"> </span><span class="m">28</span><span class="w"> </span><span class="m">14</span>:07:04<span class="w"> </span>lorem.md
+<a id="__codelineno-11-3" name="__codelineno-11-3"></a><a href="#__codelineno-11-3"><span class="linenos" data-linenos="3 "></span></a><span class="w">   </span><span class="m">428</span><span class="w"> </span>Oct<span class="w"> </span><span class="m">28</span><span class="w"> </span><span class="m">14</span>:07:04<span class="w"> </span>realpython.md
+<a id="__codelineno-11-4" name="__codelineno-11-4"></a><a href="#__codelineno-11-4"><span class="linenos" data-linenos="4 "></span></a><span class="w">    </span><span class="m">83</span><span class="w"> </span>Oct<span class="w"> </span><span class="m">28</span><span class="w"> </span><span class="m">14</span>:07:04<span class="w"> </span>hello.txt
+</code></pre></div></p>
+<p>新增的 <code>-l</code> 选项允许你生成并显示关于目标目录内容的更详细输出。</p>
+<p>既然你已经知道了如何向 CLI 添加命令行参数和选项，接下来就是深入解析这些参数和选项的时候了。这将是你在接下来部分要探索的内容。</p>
+<h3 id="_5">解析命令行参数和选项<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>解析命令行参数是基于 <code>argparse</code> 的任何 CLI 应用中的另一个重要步骤。一旦你解析了参数，你就可以根据它们的值来执行相应的操作。在你自定义的 <code>ls</code> 命令示例中，参数解析发生在包含 <code>args = parser.parse_args()</code> 语句的行上。</p>
+<p>这个语句调用了 <a href="https://docs.python.org/3/library/argparse.html#the-parse-args-method"><code>.parse_args()</code></a> 方法，并将其返回值赋给 <code>args</code> 变量。<code>.parse_args()</code> 的返回值是一个 <a href="https://docs.python.org/3/library/argparse.html#the-namespace-object"><code>Namespace</code></a> 对象，其中包含了在命令行上提供的所有参数和选项以及它们对应的值。</p>
+<p>考虑以下简单的示例：    <br />
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1"></a><a href="#__codelineno-12-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2"></a><a href="#__codelineno-12-2"><span class="linenos" data-linenos=" 2 "></span></a>
+<a id="__codelineno-12-3" name="__codelineno-12-3"></a><a href="#__codelineno-12-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="o">&gt;&gt;&gt;</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">()</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4"></a><a href="#__codelineno-12-4"><span class="linenos" data-linenos=" 4 "></span></a>
+<a id="__codelineno-12-5" name="__codelineno-12-5"></a><a href="#__codelineno-12-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="o">&gt;&gt;&gt;</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;site&quot;</span><span class="p">)</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6"></a><a href="#__codelineno-12-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="n">_StoreAction</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7"></a><a href="#__codelineno-12-7"><span class="linenos" data-linenos=" 7 "></span></a>
+<a id="__codelineno-12-8" name="__codelineno-12-8"></a><a href="#__codelineno-12-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="o">&gt;&gt;&gt;</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--connect&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">)</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9"></a><a href="#__codelineno-12-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="n">_StoreTrueAction</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10"></a><a href="#__codelineno-12-10"><span class="linenos" data-linenos="10 "></span></a>
+<a id="__codelineno-12-11" name="__codelineno-12-11"></a><a href="#__codelineno-12-11"><span class="linenos" data-linenos="11 "></span></a><span class="o">&gt;&gt;&gt;</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">([</span><span class="s2">&quot;Real Python&quot;</span><span class="p">,</span> <span class="s2">&quot;-c&quot;</span><span class="p">])</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12"></a><a href="#__codelineno-12-12"><span class="linenos" data-linenos="12 "></span></a><span class="o">&gt;&gt;&gt;</span> <span class="n">args</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13"></a><a href="#__codelineno-12-13"><span class="linenos" data-linenos="13 "></span></a><span class="n">Namespace</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="s1">&#39;Real Python&#39;</span><span class="p">,</span> <span class="n">connect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14"></a><a href="#__codelineno-12-14"><span class="linenos" data-linenos="14 "></span></a>
+<a id="__codelineno-12-15" name="__codelineno-12-15"></a><a href="#__codelineno-12-15"><span class="linenos" data-linenos="15 "></span></a><span class="o">&gt;&gt;&gt;</span> <span class="n">args</span><span class="o">.</span><span class="n">site</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16"></a><a href="#__codelineno-12-16"><span class="linenos" data-linenos="16 "></span></a><span class="s1">&#39;Real Python&#39;</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17"></a><a href="#__codelineno-12-17"><span class="linenos" data-linenos="17 "></span></a><span class="o">&gt;&gt;&gt;</span> <span class="n">args</span><span class="o">.</span><span class="n">connect</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18"></a><a href="#__codelineno-12-18"><span class="linenos" data-linenos="18 "></span></a><span class="kc">True</span>
+</code></pre></div></p>
+<p>通过在命令行参数解析器上调用 <code>.parse_args()</code> 方法得到的 <code>Namespace</code> 对象，你可以使用<strong>点表示法</strong>(dot notation)访问所有输入参数、选项以及它们对应的值。这样，你就可以检查输入参数和选项的列表，并根据用户在命令行上的选择来执行相应的操作。</p>
+<p>你将在应用程序的主代码中使用这个 <code>Namespace</code> 对象。这与你在自定义 <code>ls</code> 命令示例中的 <code>for</code> 循环下所做的类似。</p>
+<p>到目前为止，你已经了解了创建基于 <code>argparse</code> 的 CLI 的主要步骤。现在，你可以花些时间学习如何在 Python 中组织和构建 CLI 应用程序的基础知识了。</p>
+<h3 id="cli_1">设置 CLI 应用程序的布局和构建系统<a class="headerlink" href="#cli_1" title="Permanent link">&para;</a></h3>
+<p>在继续你的 <code>argparse</code> 学习之旅之前，你应该暂停一下，思考如何组织你的代码和规划一个 CLI 项目。首先，你应该考虑以下几点：    </p>
+<ul>
+<li>你可以创建模块和包来组织代码。</li>
+<li>你可以将 Python 应用的核心包命名为应用本身的名字。</li>
+<li>你会根据每个 Python 模块的具体内容或功能来命名它们。</li>
+<li>如果你希望某个包可以直接执行，你可以在该 Python 包中添加一个 <code>__main__.py</code> 模块。</li>
+</ul>
+<p>将这些想法铭记于心，并考虑到模型-视图-控制器（MVC）模式是一种有效组织应用程序结构的方法，你在规划 CLI 项目时可以采用以下目录结构：  <br />
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1"></a><a href="#__codelineno-13-1"><span class="linenos" data-linenos=" 1 "></span></a>hello_cli/
+<a id="__codelineno-13-2" name="__codelineno-13-2"></a><a href="#__codelineno-13-2"><span class="linenos" data-linenos=" 2 "></span></a>│
+<a id="__codelineno-13-3" name="__codelineno-13-3"></a><a href="#__codelineno-13-3"><span class="linenos" data-linenos=" 3 "></span></a>├── hello_cli/
+<a id="__codelineno-13-4" name="__codelineno-13-4"></a><a href="#__codelineno-13-4"><span class="linenos" data-linenos=" 4 "></span></a>│   ├── __init__.py
+<a id="__codelineno-13-5" name="__codelineno-13-5"></a><a href="#__codelineno-13-5"><span class="linenos" data-linenos=" 5 "></span></a>│   ├── __main__.py
+<a id="__codelineno-13-6" name="__codelineno-13-6"></a><a href="#__codelineno-13-6"><span class="linenos" data-linenos=" 6 "></span></a>│   ├── cli.py
+<a id="__codelineno-13-7" name="__codelineno-13-7"></a><a href="#__codelineno-13-7"><span class="linenos" data-linenos=" 7 "></span></a>│   └── model.py
+<a id="__codelineno-13-8" name="__codelineno-13-8"></a><a href="#__codelineno-13-8"><span class="linenos" data-linenos=" 8 "></span></a>│
+<a id="__codelineno-13-9" name="__codelineno-13-9"></a><a href="#__codelineno-13-9"><span class="linenos" data-linenos=" 9 "></span></a>├── tests/
+<a id="__codelineno-13-10" name="__codelineno-13-10"></a><a href="#__codelineno-13-10"><span class="linenos" data-linenos="10 "></span></a>│   ├── __init__.py
+<a id="__codelineno-13-11" name="__codelineno-13-11"></a><a href="#__codelineno-13-11"><span class="linenos" data-linenos="11 "></span></a>│   ├── test_cli.py
+<a id="__codelineno-13-12" name="__codelineno-13-12"></a><a href="#__codelineno-13-12"><span class="linenos" data-linenos="12 "></span></a>│   └── test_model.py
+<a id="__codelineno-13-13" name="__codelineno-13-13"></a><a href="#__codelineno-13-13"><span class="linenos" data-linenos="13 "></span></a>│
+<a id="__codelineno-13-14" name="__codelineno-13-14"></a><a href="#__codelineno-13-14"><span class="linenos" data-linenos="14 "></span></a>├── pyproject.toml
+<a id="__codelineno-13-15" name="__codelineno-13-15"></a><a href="#__codelineno-13-15"><span class="linenos" data-linenos="15 "></span></a>├── README.md
+<a id="__codelineno-13-16" name="__codelineno-13-16"></a><a href="#__codelineno-13-16"><span class="linenos" data-linenos="16 "></span></a>└── requirements.txt
+</code></pre></div></p>
+<p><code>hello_cli/</code> 目录是项目的根目录。在那里，您将放置以下文件：    </p>
+<ul>
+<li>pyproject.toml 是一个 TOML 文件，用于指定项目的构建系统(build system)和其他配置(configurations)。</li>
+<li>README.md 文件提供了项目的描述以及安装和运行应用程序的说明。为你的项目添加一个描述性且详细的 README.md 文件是编程中的最佳实践，特别是如果你打算将项目作为开源解决方案发布的话。</li>
+<li>requirements.txt 是一个常规文件，列出了项目的外部依赖项(external dependencies)。你将使用这个文件，结合 <code>pip</code> 的 <code>-r</code> 选项，来自动安装这些依赖项。</li>
+</ul>
+<p>接下来是 <code>hello_cli/</code> 目录，它包含了应用的核心包，该包包含以下模块：    </p>
+<ul>
+<li><code>__init__.py</code> 文件使得 <code>hello_cli/</code> 可以作为一个 Python 包被识别。</li>
+<li><code>__main__.py</code> 文件提供了应用程序的<strong>入口点脚本</strong>(entry-point script)或可执行文件，这是启动程序的主要入口。</li>
+<li><code>cli.py</code> 文件为应用提供了命令行界面。在此文件中的代码将扮演基于 MVC 架构中的视图-控制器角色。</li>
+<li><code>model.py</code> 文件包含了支持应用主要功能的代码。这部分代码将在你的 MVC 布局中扮演模型角色。</li>
+</ul>
+<p>你还需要一个 <code>tests/</code> 包，其中包含针对应用程序组件的单元测试文件。在这个具体的项目布局示例中，你有 <code>test_cli.py</code> 用于检查 CLI 功能的单元测试，以及 <code>test_model.py</code> 用于检查你的模型代码的单元测试。</p>
+<p><code>pyproject.toml</code> 文件允许你定义应用程序的构建系统以及许多其他常规配置。以下是一个如何为你的示例 hello_cli 项目填写此文件的简单示例：  <br />
+<div class="language-toml highlight"><span class="filename">TOML</span><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1"></a><a href="#__codelineno-14-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1"># pyproject.toml</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2"></a><a href="#__codelineno-14-2"><span class="linenos" data-linenos=" 2 "></span></a>
+<a id="__codelineno-14-3" name="__codelineno-14-3"></a><a href="#__codelineno-14-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="k">[build-system]</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4"></a><a href="#__codelineno-14-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;setuptools&gt;=64.0.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;wheel&quot;</span><span class="p">]</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5"></a><a href="#__codelineno-14-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;setuptools.build_meta&quot;</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6"></a><a href="#__codelineno-14-6"><span class="linenos" data-linenos=" 6 "></span></a>
+<a id="__codelineno-14-7" name="__codelineno-14-7"></a><a href="#__codelineno-14-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="k">[project]</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8"></a><a href="#__codelineno-14-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hello_cli&quot;</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9"></a><a href="#__codelineno-14-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.0.1&quot;</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10"></a><a href="#__codelineno-14-10"><span class="linenos" data-linenos="10 "></span></a><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;My awesome Hello CLI application&quot;</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11"></a><a href="#__codelineno-14-11"><span class="linenos" data-linenos="11 "></span></a><span class="n">readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;README.md&quot;</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12"></a><a href="#__codelineno-14-12"><span class="linenos" data-linenos="12 "></span></a><span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;Real Python&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;info@realpython.com&quot;</span><span class="w"> </span><span class="p">}]</span>
+<a id="__codelineno-14-13" name="__codelineno-14-13"></a><a href="#__codelineno-14-13"><span class="linenos" data-linenos="13 "></span></a>
+<a id="__codelineno-14-14" name="__codelineno-14-14"></a><a href="#__codelineno-14-14"><span class="linenos" data-linenos="14 "></span></a><span class="k">[project.scripts]</span>
+<a id="__codelineno-14-15" name="__codelineno-14-15"></a><a href="#__codelineno-14-15"><span class="linenos" data-linenos="15 "></span></a><span class="n">hello_cli</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hello_cli.__main__:main&quot;</span>
+</code></pre></div></p>
+<p><code>[build-system]</code> 表头将 <code>setuptools</code> 设置为应用程序的构建系统，并指定 Python 需要安装哪些依赖项来构建应用程序。<code>[project]</code> 表头为你的应用提供了通用元数据。这些元数据在你想要将应用发布到 Python 包索引（PyPI）时非常有用。最后， <code>[project.scripts]</code> 表头定义了你的应用程序的入口点。</p>
+<p>经过这次对 CLI 项目布局和构建的快速探索，你已经准备好继续学习 <code>argparse</code> 了，特别是如何自定义你的命令行参数解析器。</p>
+<h2 id="_6">自定义你的命令行参数解析器<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>在前面的部分中，你已经学习了如何使用 Python 的 <code>argparse</code> 模块为你的程序或应用实现命令行接口的基础知识。同时，你也了解了如何按照 MVC 模式组织和规划 CLI 应用项目。</p>
+<p>在接下来的部分中，你将更深入地探索 <code>argparse</code> 的许多其他强大功能。特别是，你将学习如何在 <code>ArgumentParser</code> 构造函数中使用一些最有用的参数，这将使你能够自定义 CLI 应用的一般行为。</p>
+<h3 id="help-usage">调整程序的 Help 和 Usage 内容<a class="headerlink" href="#help-usage" title="Permanent link">&para;</a></h3>
+<p>向 CLI 应用程序的用户提供使用说明和帮助是一种最佳实践，可以通过出色的用户体验 (UX) 让用户更加愉快。在本节中，你将了解如何利用 <code>ArgumentParser</code> 的一些参数来微调 CLI 应用程序向用户显示帮助和使用消息的方式。你将学习如何：  <br />
+- 设置程序名称
+- 定义程序的描述和结束消息
+- 对参数和选项进行分组显示帮助</p>
+<p>首先，你将开始设置你的程序名称，并指定该名称在帮助或使用说明消息中的显示方式。</p>
+<h4 id="_7">设置程序名称<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<p>默认情况下，<code>argparse</code> 会使用 <code>sys.argv</code> 中的第一个值来设置程序的名称。这个第一项包含你刚刚执行的 Python 文件的名称。这个文件名在使用说明消息中看起来会有些奇怪。</p>
+<p>例如，继续使用 <code>-h</code> 选项运行自定义 <code>ls</code> 命令：
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1"></a><a href="#__codelineno-15-1"><span class="linenos" data-linenos="1 "></span></a>$<span class="w"> </span>python<span class="w"> </span>ls.py<span class="w"> </span>-h
+<a id="__codelineno-15-2" name="__codelineno-15-2"></a><a href="#__codelineno-15-2"><span class="linenos" data-linenos="2 "></span></a>usage:<span class="w"> </span>ls.py<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-l<span class="o">]</span><span class="w"> </span>path
+<a id="__codelineno-15-3" name="__codelineno-15-3"></a><a href="#__codelineno-15-3"><span class="linenos" data-linenos="3 "></span></a>
+<a id="__codelineno-15-4" name="__codelineno-15-4"></a><a href="#__codelineno-15-4"><span class="linenos" data-linenos="4 "></span></a>positional<span class="w"> </span>arguments:
+<a id="__codelineno-15-5" name="__codelineno-15-5"></a><a href="#__codelineno-15-5"><span class="linenos" data-linenos="5 "></span></a><span class="w">  </span>path
+<a id="__codelineno-15-6" name="__codelineno-15-6"></a><a href="#__codelineno-15-6"><span class="linenos" data-linenos="6 "></span></a>
+<a id="__codelineno-15-7" name="__codelineno-15-7"></a><a href="#__codelineno-15-7"><span class="linenos" data-linenos="7 "></span></a>options:
+<a id="__codelineno-15-8" name="__codelineno-15-8"></a><a href="#__codelineno-15-8"><span class="linenos" data-linenos="8 "></span></a><span class="w">  </span>-h,<span class="w"> </span>--help<span class="w">  </span>show<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9"></a><a href="#__codelineno-15-9"><span class="linenos" data-linenos="9 "></span></a><span class="w">  </span>-l,<span class="w"> </span>--long
+</code></pre></div></p>
+<p>命令输出中的高亮行显示 <code>argparse</code> 正在使用文件名 <code>ls.py</code> 作为程序的名称。这看起来有些奇怪，因为在使用说明消息中，应用名称很少包含文件扩展名。</p>
+<p>幸运的是，你可以使用 <code>prog</code> 参数来指定你的程序名称，就像下面的代码片段所示：   <br />
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1"></a><a href="#__codelineno-16-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1"># ls.py v3</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2"></a><a href="#__codelineno-16-2"><span class="linenos" data-linenos=" 2 "></span></a>
+<a id="__codelineno-16-3" name="__codelineno-16-3"></a><a href="#__codelineno-16-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="kn">import</span> <span class="nn">argparse</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4"></a><a href="#__codelineno-16-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="kn">import</span> <span class="nn">datetime</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5"></a><a href="#__codelineno-16-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6"></a><a href="#__codelineno-16-6"><span class="linenos" data-linenos=" 6 "></span></a>
+<a id="__codelineno-16-7" name="__codelineno-16-7"></a><a href="#__codelineno-16-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">&quot;ls&quot;</span><span class="p">)</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8"></a><a href="#__codelineno-16-8"><span class="linenos" data-linenos=" 8 "></span></a>
+<a id="__codelineno-16-9" name="__codelineno-16-9"></a><a href="#__codelineno-16-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="c1"># ...</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10"></a><a href="#__codelineno-16-10"><span class="linenos" data-linenos="10 "></span></a>
+<a id="__codelineno-16-11" name="__codelineno-16-11"></a><a href="#__codelineno-16-11"><span class="linenos" data-linenos="11 "></span></a><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">target_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12"></a><a href="#__codelineno-16-12"><span class="linenos" data-linenos="12 "></span></a>    <span class="nb">print</span><span class="p">(</span><span class="n">build_output</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">long</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">long</span><span class="p">))</span>
+</code></pre></div></p>
+<p>使用 <code>prog</code> 参数，你可以指定将在使用说明消息中使用的程序名称。在这个例子中，你使用了字符串 "ls"。现在，继续运行你的应用：   <br />
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1"></a><a href="#__codelineno-17-1"><span class="linenos" data-linenos="1 "></span></a>$<span class="w"> </span>python<span class="w"> </span>ls.py<span class="w"> </span>-h
+<a id="__codelineno-17-2" name="__codelineno-17-2"></a><a href="#__codelineno-17-2"><span class="linenos" data-linenos="2 "></span></a>usage:<span class="w"> </span>ls<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-l<span class="o">]</span><span class="w"> </span>path
+<a id="__codelineno-17-3" name="__codelineno-17-3"></a><a href="#__codelineno-17-3"><span class="linenos" data-linenos="3 "></span></a>
+<a id="__codelineno-17-4" name="__codelineno-17-4"></a><a href="#__codelineno-17-4"><span class="linenos" data-linenos="4 "></span></a>positional<span class="w"> </span>arguments:
+<a id="__codelineno-17-5" name="__codelineno-17-5"></a><a href="#__codelineno-17-5"><span class="linenos" data-linenos="5 "></span></a><span class="w">  </span>path
+<a id="__codelineno-17-6" name="__codelineno-17-6"></a><a href="#__codelineno-17-6"><span class="linenos" data-linenos="6 "></span></a>
+<a id="__codelineno-17-7" name="__codelineno-17-7"></a><a href="#__codelineno-17-7"><span class="linenos" data-linenos="7 "></span></a>options:
+<a id="__codelineno-17-8" name="__codelineno-17-8"></a><a href="#__codelineno-17-8"><span class="linenos" data-linenos="8 "></span></a><span class="w">  </span>-h,<span class="w"> </span>--help<span class="w">  </span>show<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9"></a><a href="#__codelineno-17-9"><span class="linenos" data-linenos="9 "></span></a><span class="w">  </span>-l,<span class="w"> </span>--long
+</code></pre></div></p>
+<p>很好！这个输出的第一行中的使用说明消息显示程序名称为 <code>ls</code>，而不是 <code>ls.py</code>。</p>
+<p>除了设置程序名称外，<code>argparse</code> 还允许你定义应用的描述和结尾信息。在接下来的部分中，你将学习如何进行这两方面的操作。</p>
+<h4 id="_8">定义程序的描述和结语消息<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h4>
+<p>你还可以为你的应用定义一个通用的描述和一个结尾或结束语。为此，你将分别使用 <code>description</code> 和 <code>epilog</code> 参数。接下来，请更新 <code>ls.py</code> 文件，在 <code>ArgumentParser</code> 构造函数中添加以下内容：   <br />
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1"></a><a href="#__codelineno-18-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1"># ls.py v4</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2"></a><a href="#__codelineno-18-2"><span class="linenos" data-linenos=" 2 "></span></a>
+<a id="__codelineno-18-3" name="__codelineno-18-3"></a><a href="#__codelineno-18-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="kn">import</span> <span class="nn">argparse</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4"></a><a href="#__codelineno-18-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="kn">import</span> <span class="nn">datetime</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5"></a><a href="#__codelineno-18-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6"></a><a href="#__codelineno-18-6"><span class="linenos" data-linenos=" 6 "></span></a>
+<a id="__codelineno-18-7" name="__codelineno-18-7"></a><a href="#__codelineno-18-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8"></a><a href="#__codelineno-18-8"><span class="linenos" data-linenos=" 8 "></span></a>    <span class="n">prog</span><span class="o">=</span><span class="s2">&quot;ls&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9"></a><a href="#__codelineno-18-9"><span class="linenos" data-linenos=" 9 "></span></a>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List the content of a directory&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10"></a><a href="#__codelineno-18-10"><span class="linenos" data-linenos="10 "></span></a>    <span class="n">epilog</span><span class="o">=</span><span class="s2">&quot;Thanks for using </span><span class="si">%(prog)s</span><span class="s2">! :)&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-11" name="__codelineno-18-11"></a><a href="#__codelineno-18-11"><span class="linenos" data-linenos="11 "></span></a><span class="p">)</span>
+<a id="__codelineno-18-12" name="__codelineno-18-12"></a><a href="#__codelineno-18-12"><span class="linenos" data-linenos="12 "></span></a>
+<a id="__codelineno-18-13" name="__codelineno-18-13"></a><a href="#__codelineno-18-13"><span class="linenos" data-linenos="13 "></span></a><span class="c1"># ...</span>
+<a id="__codelineno-18-14" name="__codelineno-18-14"></a><a href="#__codelineno-18-14"><span class="linenos" data-linenos="14 "></span></a>
+<a id="__codelineno-18-15" name="__codelineno-18-15"></a><a href="#__codelineno-18-15"><span class="linenos" data-linenos="15 "></span></a><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">target_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+<a id="__codelineno-18-16" name="__codelineno-18-16"></a><a href="#__codelineno-18-16"><span class="linenos" data-linenos="16 "></span></a>    <span class="nb">print</span><span class="p">(</span><span class="n">build_output</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">long</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">long</span><span class="p">))</span>
+</code></pre></div></p>
+<p>在这次更新中，<code>description</code> 参数允许你为应用提供一个通用的描述。这个描述将显示在帮助消息的开头。<code>epilog</code> 参数则允许你定义一些文本作为应用的结尾或结束语。请注意，你可以使用旧式的字符串格式化操作符(<code>%</code>)将 <code>prog</code> 参数插入到 <code>epilog</code> 字符串中。    </p>
+<p>如果再次运行该应用程序，你将得到如下输出：   <br />
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1"></a><a href="#__codelineno-19-1"><span class="linenos" data-linenos=" 1 "></span></a>$<span class="w"> </span>python<span class="w"> </span>ls.py<span class="w"> </span>-h
+<a id="__codelineno-19-2" name="__codelineno-19-2"></a><a href="#__codelineno-19-2"><span class="linenos" data-linenos=" 2 "></span></a>usage:<span class="w"> </span>ls<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-l<span class="o">]</span><span class="w"> </span>path
+<a id="__codelineno-19-3" name="__codelineno-19-3"></a><a href="#__codelineno-19-3"><span class="linenos" data-linenos=" 3 "></span></a>
+<a id="__codelineno-19-4" name="__codelineno-19-4"></a><a href="#__codelineno-19-4"><span class="linenos" data-linenos=" 4 "></span></a>List<span class="w"> </span>the<span class="w"> </span>content<span class="w"> </span>of<span class="w"> </span>a<span class="w"> </span>directory
+<a id="__codelineno-19-5" name="__codelineno-19-5"></a><a href="#__codelineno-19-5"><span class="linenos" data-linenos=" 5 "></span></a>
+<a id="__codelineno-19-6" name="__codelineno-19-6"></a><a href="#__codelineno-19-6"><span class="linenos" data-linenos=" 6 "></span></a>positional<span class="w"> </span>arguments:
+<a id="__codelineno-19-7" name="__codelineno-19-7"></a><a href="#__codelineno-19-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">  </span>path
+<a id="__codelineno-19-8" name="__codelineno-19-8"></a><a href="#__codelineno-19-8"><span class="linenos" data-linenos=" 8 "></span></a>
+<a id="__codelineno-19-9" name="__codelineno-19-9"></a><a href="#__codelineno-19-9"><span class="linenos" data-linenos=" 9 "></span></a>options:
+<a id="__codelineno-19-10" name="__codelineno-19-10"></a><a href="#__codelineno-19-10"><span class="linenos" data-linenos="10 "></span></a><span class="w">  </span>-h,<span class="w"> </span>--help<span class="w">  </span>show<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11"></a><a href="#__codelineno-19-11"><span class="linenos" data-linenos="11 "></span></a><span class="w">  </span>-l,<span class="w"> </span>--long
+<a id="__codelineno-19-12" name="__codelineno-19-12"></a><a href="#__codelineno-19-12"><span class="linenos" data-linenos="12 "></span></a>
+<a id="__codelineno-19-13" name="__codelineno-19-13"></a><a href="#__codelineno-19-13"><span class="linenos" data-linenos="13 "></span></a>Thanks<span class="w"> </span><span class="k">for</span><span class="w"> </span>using<span class="w"> </span>ls!<span class="w"> </span>:<span class="o">)</span>
+</code></pre></div></p>
+<p>现在，输出会在使用消息之后显示描述消息，并在帮助文本末尾显示结语消息。</p>
+<h4 id="_9">显示参数和选项的分组帮助<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h4>
+<p><strong>帮助分组</strong>(Help groups)是 <code>argparse</code> 的另一个有趣特性。它们允许你将相关的命令和参数进行分组，从而帮助你组织应用的帮助消息。要创建这些帮助分组，你将使用 <code>ArgumentParser</code> 的 <code>.add_argument_group()</code> 方法。</p>
+<p>作为一个例子，请考虑你自定义的 <code>ls</code> 命令的以下更新版本：   <br />
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1"></a><a href="#__codelineno-20-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1"># ls.py v5</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2"></a><a href="#__codelineno-20-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="c1"># ...</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3"></a><a href="#__codelineno-20-3"><span class="linenos" data-linenos=" 3 "></span></a>
+<a id="__codelineno-20-4" name="__codelineno-20-4"></a><a href="#__codelineno-20-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5"></a><a href="#__codelineno-20-5"><span class="linenos" data-linenos=" 5 "></span></a>    <span class="n">prog</span><span class="o">=</span><span class="s2">&quot;ls&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6"></a><a href="#__codelineno-20-6"><span class="linenos" data-linenos=" 6 "></span></a>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List the content of a directory&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7"></a><a href="#__codelineno-20-7"><span class="linenos" data-linenos=" 7 "></span></a>    <span class="n">epilog</span><span class="o">=</span><span class="s2">&quot;Thanks for using </span><span class="si">%(prog)s</span><span class="s2">! :)&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8"></a><a href="#__codelineno-20-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="p">)</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9"></a><a href="#__codelineno-20-9"><span class="linenos" data-linenos=" 9 "></span></a>
+<a id="__codelineno-20-10" name="__codelineno-20-10"></a><a href="#__codelineno-20-10"><span class="linenos" data-linenos="10 "></span></a><span class="n">general</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s2">&quot;general output&quot;</span><span class="p">)</span>
+<a id="__codelineno-20-11" name="__codelineno-20-11"></a><a href="#__codelineno-20-11"><span class="linenos" data-linenos="11 "></span></a><span class="n">general</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+<a id="__codelineno-20-12" name="__codelineno-20-12"></a><a href="#__codelineno-20-12"><span class="linenos" data-linenos="12 "></span></a>
+<a id="__codelineno-20-13" name="__codelineno-20-13"></a><a href="#__codelineno-20-13"><span class="linenos" data-linenos="13 "></span></a><span class="n">detailed</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s2">&quot;detailed output&quot;</span><span class="p">)</span>
+<a id="__codelineno-20-14" name="__codelineno-20-14"></a><a href="#__codelineno-20-14"><span class="linenos" data-linenos="14 "></span></a><span class="n">detailed</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-l&quot;</span><span class="p">,</span> <span class="s2">&quot;--long&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">)</span>
+<a id="__codelineno-20-15" name="__codelineno-20-15"></a><a href="#__codelineno-20-15"><span class="linenos" data-linenos="15 "></span></a>
+<a id="__codelineno-20-16" name="__codelineno-20-16"></a><a href="#__codelineno-20-16"><span class="linenos" data-linenos="16 "></span></a><span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<a id="__codelineno-20-17" name="__codelineno-20-17"></a><a href="#__codelineno-20-17"><span class="linenos" data-linenos="17 "></span></a>
+<a id="__codelineno-20-18" name="__codelineno-20-18"></a><a href="#__codelineno-20-18"><span class="linenos" data-linenos="18 "></span></a><span class="c1"># ...</span>
+<a id="__codelineno-20-19" name="__codelineno-20-19"></a><a href="#__codelineno-20-19"><span class="linenos" data-linenos="19 "></span></a>
+<a id="__codelineno-20-20" name="__codelineno-20-20"></a><a href="#__codelineno-20-20"><span class="linenos" data-linenos="20 "></span></a><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">target_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+<a id="__codelineno-20-21" name="__codelineno-20-21"></a><a href="#__codelineno-20-21"><span class="linenos" data-linenos="21 "></span></a>    <span class="nb">print</span><span class="p">(</span><span class="n">build_output</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">long</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">long</span><span class="p">))</span>
+</code></pre></div></p>
+<p>在这次更新中，你为显示一般输出的参数和选项创建了一个帮助分组，并为显示详细输出的参数和选项创建了另一个分组。</p>
+<p>如果你在命令行中使用 <code>-h</code> 选项运行应用程序，那么你将获得以下输出： <br />
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1"></a><a href="#__codelineno-21-1"><span class="linenos" data-linenos=" 1 "></span></a>python<span class="w"> </span>ls.py<span class="w"> </span>-h
+<a id="__codelineno-21-2" name="__codelineno-21-2"></a><a href="#__codelineno-21-2"><span class="linenos" data-linenos=" 2 "></span></a>usage:<span class="w"> </span>ls<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-l<span class="o">]</span><span class="w"> </span>path
+<a id="__codelineno-21-3" name="__codelineno-21-3"></a><a href="#__codelineno-21-3"><span class="linenos" data-linenos=" 3 "></span></a>
+<a id="__codelineno-21-4" name="__codelineno-21-4"></a><a href="#__codelineno-21-4"><span class="linenos" data-linenos=" 4 "></span></a>List<span class="w"> </span>the<span class="w"> </span>content<span class="w"> </span>of<span class="w"> </span>a<span class="w"> </span>directory
+<a id="__codelineno-21-5" name="__codelineno-21-5"></a><a href="#__codelineno-21-5"><span class="linenos" data-linenos=" 5 "></span></a>
+<a id="__codelineno-21-6" name="__codelineno-21-6"></a><a href="#__codelineno-21-6"><span class="linenos" data-linenos=" 6 "></span></a>options:
+<a id="__codelineno-21-7" name="__codelineno-21-7"></a><a href="#__codelineno-21-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">  </span>-h,<span class="w"> </span>--help<span class="w">  </span>show<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8"></a><a href="#__codelineno-21-8"><span class="linenos" data-linenos=" 8 "></span></a>
+<a id="__codelineno-21-9" name="__codelineno-21-9"></a><a href="#__codelineno-21-9"><span class="linenos" data-linenos=" 9 "></span></a>general<span class="w"> </span>output:
+<a id="__codelineno-21-10" name="__codelineno-21-10"></a><a href="#__codelineno-21-10"><span class="linenos" data-linenos="10 "></span></a><span class="w">  </span>path
+<a id="__codelineno-21-11" name="__codelineno-21-11"></a><a href="#__codelineno-21-11"><span class="linenos" data-linenos="11 "></span></a>
+<a id="__codelineno-21-12" name="__codelineno-21-12"></a><a href="#__codelineno-21-12"><span class="linenos" data-linenos="12 "></span></a>detailed<span class="w"> </span>output:
+<a id="__codelineno-21-13" name="__codelineno-21-13"></a><a href="#__codelineno-21-13"><span class="linenos" data-linenos="13 "></span></a><span class="w">  </span>-l,<span class="w"> </span>--long
+<a id="__codelineno-21-14" name="__codelineno-21-14"></a><a href="#__codelineno-21-14"><span class="linenos" data-linenos="14 "></span></a>
+<a id="__codelineno-21-15" name="__codelineno-21-15"></a><a href="#__codelineno-21-15"><span class="linenos" data-linenos="15 "></span></a>Thanks<span class="w"> </span><span class="k">for</span><span class="w"> </span>using<span class="w"> </span>ls!<span class="w"> </span>:<span class="o">)</span>
+</code></pre></div></p>
+<p>现在，你的应用的参数和选项在帮助消息中以描述性的标题进行了方便的分组。这个整洁的特性将帮助你为用户提供更多的上下文，并帮助他们更好地理解应用的工作原理。</p>
+<h3 id="_10">为参数和选项提供全局设置<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>除了自定义使用说明和帮助消息外，<code>ArgumentParser</code> 还允许你对命令行界面（CLI）应用进行其他一些有趣的调整。这些调整包括：</p>
+<ul>
+<li>为参数和选项定义全局默认值</li>
+<li>从外部文件中加载参数和选项</li>
+<li>允许或禁止选项缩写</li>
+</ul>
+<p>有时，你可能需要为你的应用的参数和选项指定一个全局默认值。你可以通过在调用 <code>ArgumentParser</code> 构造函数时，将默认值传递给 <code>argument_default</code> 参数来实现这一点（注意：实际上 <code>ArgumentParser</code> 没有 <code>argument_default</code> 这个参数，但这里是为了说明可以全局设置默认值的概念。在实际应用中，你可能需要为每个参数单独设置默认值）。</p>
+<p>这个特性可能并不常用，因为参数和选项通常具有不同的数据类型或意义，很难找到一个满足所有需求的值。</p>
+<p>然而，<code>argument_default</code>(尽管 <code>ArgumentParser</code> 并没有直接提供这个参数，但这里是为了说明概念）的一个常见用例是当你想要避免将参数和选项添加到 <code>Namespace</code> 对象中。在这种情况下，你可以使用 <code>SUPPRESS</code> 常量作为默认值。这个默认值将确保只有命令行中提供的参数和选项才会被存储在 <code>arguments</code> 的 <code>Namespace</code> 中。</p>
+<p>作为一个例子，请继续修改你的自定义 <code>ls</code> 命令，如下面的代码片段所示：   <br />
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1"></a><a href="#__codelineno-22-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1"># ls.py v6</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2"></a><a href="#__codelineno-22-2"><span class="linenos" data-linenos=" 2 "></span></a>
+<a id="__codelineno-22-3" name="__codelineno-22-3"></a><a href="#__codelineno-22-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="kn">import</span> <span class="nn">argparse</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4"></a><a href="#__codelineno-22-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="kn">import</span> <span class="nn">datetime</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5"></a><a href="#__codelineno-22-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6"></a><a href="#__codelineno-22-6"><span class="linenos" data-linenos=" 6 "></span></a>
+<a id="__codelineno-22-7" name="__codelineno-22-7"></a><a href="#__codelineno-22-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8"></a><a href="#__codelineno-22-8"><span class="linenos" data-linenos=" 8 "></span></a>    <span class="n">prog</span><span class="o">=</span><span class="s2">&quot;ls&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-9" name="__codelineno-22-9"></a><a href="#__codelineno-22-9"><span class="linenos" data-linenos=" 9 "></span></a>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List the content of a directory&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-10" name="__codelineno-22-10"></a><a href="#__codelineno-22-10"><span class="linenos" data-linenos="10 "></span></a>    <span class="n">epilog</span><span class="o">=</span><span class="s2">&quot;Thanks for using </span><span class="si">%(prog)s</span><span class="s2">! :)&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11"></a><a href="#__codelineno-22-11"><span class="linenos" data-linenos="11 "></span></a>    <span class="n">argument_default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
+<a id="__codelineno-22-12" name="__codelineno-22-12"></a><a href="#__codelineno-22-12"><span class="linenos" data-linenos="12 "></span></a><span class="p">)</span>
+<a id="__codelineno-22-13" name="__codelineno-22-13"></a><a href="#__codelineno-22-13"><span class="linenos" data-linenos="13 "></span></a>
+<a id="__codelineno-22-14" name="__codelineno-22-14"></a><a href="#__codelineno-22-14"><span class="linenos" data-linenos="14 "></span></a><span class="c1"># ...</span>
+<a id="__codelineno-22-15" name="__codelineno-22-15"></a><a href="#__codelineno-22-15"><span class="linenos" data-linenos="15 "></span></a>
+<a id="__codelineno-22-16" name="__codelineno-22-16"></a><a href="#__codelineno-22-16"><span class="linenos" data-linenos="16 "></span></a><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">target_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+<a id="__codelineno-22-17" name="__codelineno-22-17"></a><a href="#__codelineno-22-17"><span class="linenos" data-linenos="17 "></span></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-22-18" name="__codelineno-22-18"></a><a href="#__codelineno-22-18"><span class="linenos" data-linenos="18 "></span></a>        <span class="n">long</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">long</span>
+<a id="__codelineno-22-19" name="__codelineno-22-19"></a><a href="#__codelineno-22-19"><span class="linenos" data-linenos="19 "></span></a>    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+<a id="__codelineno-22-20" name="__codelineno-22-20"></a><a href="#__codelineno-22-20"><span class="linenos" data-linenos="20 "></span></a>        <span class="n">long</span> <span class="o">=</span> <span class="kc">False</span>
+<a id="__codelineno-22-21" name="__codelineno-22-21"></a><a href="#__codelineno-22-21"><span class="linenos" data-linenos="21 "></span></a>    <span class="nb">print</span><span class="p">(</span><span class="n">build_output</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">long</span><span class="o">=</span><span class="n">long</span><span class="p">))</span>
+</code></pre></div></p>
+<p>通过将 <code>SUPPRESS</code> 传递给 <code>ArgumentParser</code> 构造函数，你可以防止未提供的参数被存储在 <code>argparse.Namespace</code> 对象中。这就是为什么在调用 <code>build_output()</code> 之前，你需要检查 <code>-l</code> 或 <code>--long</code> 选项是否实际被传递了。否则，你的代码会因为 <code>args</code> 中不存在 <code>long</code> 属性而引发 <code>AttributeError</code> 错误。</p>
+<p><code>ArgumentParser</code> 的另一个酷炫功能是允许你从外部文件中加载参数值。当你有一个具有冗长或复杂的命令行结构的应用，并希望自动化加载参数值的过程时，这个功能就非常有用。</p>
+<p>在这种情况下，你可以将参数值存储在一个外部文件中，并让你的程序从该文件中加载它们。为了尝试这个功能，请继续创建一个简单的命令行界面（CLI）应用，如下所示：   <br />
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1"></a><a href="#__codelineno-23-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1"># fromfile.py</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2"></a><a href="#__codelineno-23-2"><span class="linenos" data-linenos=" 2 "></span></a>
+<a id="__codelineno-23-3" name="__codelineno-23-3"></a><a href="#__codelineno-23-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="kn">import</span> <span class="nn">argparse</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4"></a><a href="#__codelineno-23-4"><span class="linenos" data-linenos=" 4 "></span></a>
+<a id="__codelineno-23-5" name="__codelineno-23-5"></a><a href="#__codelineno-23-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">fromfile_prefix_chars</span><span class="o">=</span><span class="s2">&quot;@&quot;</span><span class="p">)</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6"></a><a href="#__codelineno-23-6"><span class="linenos" data-linenos=" 6 "></span></a>
+<a id="__codelineno-23-7" name="__codelineno-23-7"></a><a href="#__codelineno-23-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;one&quot;</span><span class="p">)</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8"></a><a href="#__codelineno-23-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;two&quot;</span><span class="p">)</span>
+<a id="__codelineno-23-9" name="__codelineno-23-9"></a><a href="#__codelineno-23-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;three&quot;</span><span class="p">)</span>
+<a id="__codelineno-23-10" name="__codelineno-23-10"></a><a href="#__codelineno-23-10"><span class="linenos" data-linenos="10 "></span></a>
+<a id="__codelineno-23-11" name="__codelineno-23-11"></a><a href="#__codelineno-23-11"><span class="linenos" data-linenos="11 "></span></a><span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<a id="__codelineno-23-12" name="__codelineno-23-12"></a><a href="#__codelineno-23-12"><span class="linenos" data-linenos="12 "></span></a>
+<a id="__codelineno-23-13" name="__codelineno-23-13"></a><a href="#__codelineno-23-13"><span class="linenos" data-linenos="13 "></span></a><span class="nb">print</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</code></pre></div></p>
+<p>在这里，你向 <code>ArgumentParser</code> 的 <code>fromfile_prefix_chars</code> 参数传递 <code>@</code> 符号。然后，你创建了三个必须在命令行中提供的必需参数。</p>
+<p>现在，假设你经常使用此应用程序，并且总是使用相同的一组参数值。为了简化和优化你的工作流程，你可以创建一个文件，其中包含所有必需参数的适当值，每个参数占一行，就像下面的 <code>args.txt</code> 文件一样： <br />
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1"></a><a href="#__codelineno-24-1"><span class="linenos" data-linenos="1 "></span></a>first
+<a id="__codelineno-24-2" name="__codelineno-24-2"></a><a href="#__codelineno-24-2"><span class="linenos" data-linenos="2 "></span></a>second
+<a id="__codelineno-24-3" name="__codelineno-24-3"></a><a href="#__codelineno-24-3"><span class="linenos" data-linenos="3 "></span></a>third
+</code></pre></div></p>
+<p>有了这个文件，您现在可以调用您的程序并指示它从 <code>args.txt</code> 文件加载值，如以下命令运行所示：  <br />
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1"></a><a href="#__codelineno-25-1"><span class="linenos" data-linenos="1 "></span></a>$<span class="w"> </span>python<span class="w"> </span>fromfile.py<span class="w"> </span>@args.txt
+<a id="__codelineno-25-2" name="__codelineno-25-2"></a><a href="#__codelineno-25-2"><span class="linenos" data-linenos="2 "></span></a>Namespace<span class="o">(</span><span class="nv">one</span><span class="o">=</span><span class="s1">&#39;first&#39;</span>,<span class="w"> </span><span class="nv">two</span><span class="o">=</span><span class="s1">&#39;second&#39;</span>,<span class="w"> </span><span class="nv">three</span><span class="o">=</span><span class="s1">&#39;third&#39;</span><span class="o">)</span>
+</code></pre></div></p>
+<p>在此命令的输出中，你可以看到 <code>argparse</code> 已经读取了 <code>args.txt</code> 的内容，并顺序地将值分配给了 <code>fromfile.py</code> 程序的每个参数。所有参数及其值都已成功存储在 <code>Namespace</code> 对象中。</p>
+<p>接受缩写选项名称的能力是 <code>argparse</code> 命令行界面（CLI）的另一个酷炫特性。这个特性是默认启用的，当你的程序具有长选项名称时非常有用。例如，考虑以下程序，它会在命令行下打印出你在 <code>--argument-with-a-long-name</code> 选项后指定的值：   <br />
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1"></a><a href="#__codelineno-26-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1"># abbreviate.py</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2"></a><a href="#__codelineno-26-2"><span class="linenos" data-linenos=" 2 "></span></a>
+<a id="__codelineno-26-3" name="__codelineno-26-3"></a><a href="#__codelineno-26-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="kn">import</span> <span class="nn">argparse</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4"></a><a href="#__codelineno-26-4"><span class="linenos" data-linenos=" 4 "></span></a>
+<a id="__codelineno-26-5" name="__codelineno-26-5"></a><a href="#__codelineno-26-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6"></a><a href="#__codelineno-26-6"><span class="linenos" data-linenos=" 6 "></span></a>
+<a id="__codelineno-26-7" name="__codelineno-26-7"></a><a href="#__codelineno-26-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--argument-with-a-long-name&quot;</span><span class="p">)</span>
+<a id="__codelineno-26-8" name="__codelineno-26-8"></a><a href="#__codelineno-26-8"><span class="linenos" data-linenos=" 8 "></span></a>
+<a id="__codelineno-26-9" name="__codelineno-26-9"></a><a href="#__codelineno-26-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<a id="__codelineno-26-10" name="__codelineno-26-10"></a><a href="#__codelineno-26-10"><span class="linenos" data-linenos="10 "></span></a>
+<a id="__codelineno-26-11" name="__codelineno-26-11"></a><a href="#__codelineno-26-11"><span class="linenos" data-linenos="11 "></span></a><span class="nb">print</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">argument_with_a_long_name</span><span class="p">)</span>
+</code></pre></div></p>
+<p>这个程序会打印出你在 <code>--argument-with-a-long-name</code> 选项后传入的任何参数值。现在，请继续运行以下命令来检查 Python 的 <code>argparse</code> 模块如何处理这些缩写：  <br />
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1"></a><a href="#__codelineno-27-1"><span class="linenos" data-linenos="1 "></span></a>$<span class="w"> </span>python<span class="w"> </span>abbreviate.py<span class="w"> </span>--argument-with-a-long-name<span class="w"> </span><span class="m">42</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2"></a><a href="#__codelineno-27-2"><span class="linenos" data-linenos="2 "></span></a><span class="m">42</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3"></a><a href="#__codelineno-27-3"><span class="linenos" data-linenos="3 "></span></a>
+<a id="__codelineno-27-4" name="__codelineno-27-4"></a><a href="#__codelineno-27-4"><span class="linenos" data-linenos="4 "></span></a>$<span class="w"> </span>python<span class="w"> </span>abbreviate.py<span class="w"> </span>--argument<span class="w"> </span><span class="m">42</span>
+<a id="__codelineno-27-5" name="__codelineno-27-5"></a><a href="#__codelineno-27-5"><span class="linenos" data-linenos="5 "></span></a><span class="m">42</span>
+<a id="__codelineno-27-6" name="__codelineno-27-6"></a><a href="#__codelineno-27-6"><span class="linenos" data-linenos="6 "></span></a>
+<a id="__codelineno-27-7" name="__codelineno-27-7"></a><a href="#__codelineno-27-7"><span class="linenos" data-linenos="7 "></span></a>$<span class="w"> </span>python<span class="w"> </span>abbreviate.py<span class="w"> </span>--a<span class="w"> </span><span class="m">42</span>
+<a id="__codelineno-27-8" name="__codelineno-27-8"></a><a href="#__codelineno-27-8"><span class="linenos" data-linenos="8 "></span></a><span class="m">42</span>
+</code></pre></div></p>
+<p>这些示例展示了如何缩写 <code>--argument-with-a-long-name</code> 选项的名称，而应用程序仍能正常工作。此功能是默认启用的。如果你希望禁用它并禁止缩写，那么可以在 <code>ArgumentParser</code> 中使用 <code>allow_abbrev</code> 参数：  <br />
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1"></a><a href="#__codelineno-28-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1"># abbreviate.py</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2"></a><a href="#__codelineno-28-2"><span class="linenos" data-linenos=" 2 "></span></a>
+<a id="__codelineno-28-3" name="__codelineno-28-3"></a><a href="#__codelineno-28-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="kn">import</span> <span class="nn">argparse</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4"></a><a href="#__codelineno-28-4"><span class="linenos" data-linenos=" 4 "></span></a>
+<a id="__codelineno-28-5" name="__codelineno-28-5"></a><a href="#__codelineno-28-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">allow_abbrev</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-28-6" name="__codelineno-28-6"></a><a href="#__codelineno-28-6"><span class="linenos" data-linenos=" 6 "></span></a>
+<a id="__codelineno-28-7" name="__codelineno-28-7"></a><a href="#__codelineno-28-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--argument-with-a-long-name&quot;</span><span class="p">)</span>
+<a id="__codelineno-28-8" name="__codelineno-28-8"></a><a href="#__codelineno-28-8"><span class="linenos" data-linenos=" 8 "></span></a>
+<a id="__codelineno-28-9" name="__codelineno-28-9"></a><a href="#__codelineno-28-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<a id="__codelineno-28-10" name="__codelineno-28-10"></a><a href="#__codelineno-28-10"><span class="linenos" data-linenos="10 "></span></a>
+<a id="__codelineno-28-11" name="__codelineno-28-11"></a><a href="#__codelineno-28-11"><span class="linenos" data-linenos="11 "></span></a><span class="nb">print</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">argument_with_a_long_name</span><span class="p">)</span>
+</code></pre></div></p>
+<p>将 <code>allow_abbrev</code> 设置为 <code>False</code> 会禁用命令行选项中的缩写。从这一点开始，你将需要为程序提供完整的选项名称才能正确工作。否则，你会收到一个错误：   <br />
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1"></a><a href="#__codelineno-29-1"><span class="linenos" data-linenos="1 "></span></a>$<span class="w"> </span>python<span class="w"> </span>abbreviate.py<span class="w"> </span>--argument-with-a-long-name<span class="w"> </span><span class="m">42</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2"></a><a href="#__codelineno-29-2"><span class="linenos" data-linenos="2 "></span></a><span class="m">42</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3"></a><a href="#__codelineno-29-3"><span class="linenos" data-linenos="3 "></span></a>
+<a id="__codelineno-29-4" name="__codelineno-29-4"></a><a href="#__codelineno-29-4"><span class="linenos" data-linenos="4 "></span></a>$<span class="w"> </span>python<span class="w"> </span>abbreviate.py<span class="w"> </span>--argument<span class="w"> </span><span class="m">42</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5"></a><a href="#__codelineno-29-5"><span class="linenos" data-linenos="5 "></span></a>usage:<span class="w"> </span>abbreviate.py<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--argument-with-a-long-name<span class="w"> </span>...<span class="o">]</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6"></a><a href="#__codelineno-29-6"><span class="linenos" data-linenos="6 "></span></a>abbreviate.py:<span class="w"> </span>error:<span class="w"> </span>unrecognized<span class="w"> </span>arguments:<span class="w"> </span>--argument<span class="w"> </span><span class="m">42</span>
+</code></pre></div></p>
+<p>第二个示例中的错误消息告诉你 <code>--argument</code> 选项没有被识别为有效的选项。要使用该选项，你需要提供它的完整名称。</p>
+<h2 id="_11">微调你的命令行参数和选项<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
+<p>到目前为止，你已经学习了如何定制 <code>ArgumentParser</code> 类的多个功能，以改善你的命令行界面（CLI）的用户体验。现在，你知道了如何调整你的应用程序的使用说明和帮助信息，以及如何微调命令行参数和选项的一些全局方面。</p>
+<p>在本节中，你将学习如何定制你的 CLI 的命令行参数和选项的其他几个功能。在这种情况下，你将使用 <code>.add_argument()</code> 方法及其一些最相关的参数，包括 <code>action</code>、<code>type</code>、<code>nargs</code>、<code>default</code>、<code>help</code> 等。     </p>
+<h3 id="option-action">设置 Option 背后的 Action<a class="headerlink" href="#option-action" title="Permanent link">&para;</a></h3>
+<p>当你向命令行界面添加一个选项或标志时，通常需要定义如何将选项的值存储在调用 <code>.parse_args()</code> 后得到的 <code>Namespace</code> 对象中。为此，你会使用 <code>.add_argument()</code> 的 <code>action</code> 参数。<code>action</code> 参数的默认值为 "store"，意味着提供的选项值将原样存储在 <code>Namespace</code> 中。</p>
+<p><code>action</code> 参数可以接受几个可能的值。以下是这些可能值的列表及其含义：</p>
+<script src="https://giscus.app/client.js"
+    data-repo="shenweiyan/Knowledge-Garden"
+    data-repo-id="R_kgDOKgxWlg"
+    data-mapping="number"
+    data-term="75"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    crossorigin="anonymous"
+    async>
+</script>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="最后更新">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2024-09-01</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../../" class="md-footer__link md-footer__link--prev" aria-label="上一页: 编程技术">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                编程技术
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../2024-03-21-Python-%E9%87%8C%E9%9D%A2%E6%B2%A1-if-%E4%B9%9F%E8%83%BD%E7%94%A8-else-dis61/" class="md-footer__link md-footer__link--next" aria-label="下一页: Python 里面没 if 也能用 else">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                Python 里面没 if 也能用 else
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2023 <a href="http://joshzhong.top">赣ICP备2023014948号</a> 
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.prune", "toc.follow", "navigation.top", "search.suggest", "search.highlight", "search.share", "navigation.footer", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.af256bd8.min.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>

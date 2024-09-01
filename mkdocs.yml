@@ -1,0 +1,134 @@
+# 基本配置
+site_dir: "site"
+site_name: Josh's Blog   # 定义站点名称，会显示在网页的标题和导航栏中
+copyright: 'Copyright &copy; 2023 <a href="http://joshzhong.top">赣ICP备2023014948号</a> '     # 设置版权信息，通常显示在网站的页脚
+
+
+# Docs 
+docs_dir: "docs"
+# 主题配置
+theme:
+  language: 'zh'   # 设置网站的语言为中文
+  name: 'material'   # 使用Material主题，这是一个流行的MkDocs主题，提供了丰富的样式和功能
+  custom_dir: overrides
+  icon:
+    logo: 'material/github'   # 设置网站的logo图标为Material主题中的GitHub图标
+  include_search: true   # 启用&禁用搜索
+  # 增加调整亮暗模式
+  palette: 
+    # Palette toggle for light mode
+    - scheme: default   # 默认的配色方案
+      primary: 'teal'    # 设置主色调颜色
+      accent: 'pink'   # 设置强调色
+      toggle:
+        icon: material/weather-night   # 切换图标设置为夜间模式的图标
+        name: 切换到暗色模式
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: teal
+      accent: deep orange
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到亮色模式
+  # 主题功能
+  features:   # 启用了多个Material主题的增强功能，这些功能主要围绕导航、搜索和代码块的显示进行改进
+    - navigation.instant   # 页面不会跳转，而是像单页应用一样在当前页面内完成导航，提高页面响应速度和美观度
+    - navigation.tabs   # 页面上方显示标签页，便于多页面导航
+    - navigation.tracking   # 页面滚动时，导航栏会高亮显示当前页面所在位置
+    - navigation.sections   # 导航栏中的项目被分成不同的部分
+    - navigation.expand   # 默认展开导航栏中的所有项目
+    - navigation.prune   # 仅渲染当前页面的导航，简化导航结构
+    - toc.follow   # 滚动的时候侧边栏自动跟随
+    - navigation.top   # 在页面底部增加“返回顶部”按钮
+    - search.suggest   # 启用搜索建议功能，用户输入时会显示匹配的结果
+    - search.highlight   # 搜索结果中高亮显示匹配的内容
+    - search.share   # 允许分享搜索结果的链接
+    - navigation.footer   # 在页脚显示“下一章”的导航提示
+    - content.code.copy   # 在代码段上方添加“复制代码”的按钮
+
+# Markdown扩展
+markdown_extensions:   # 启用了许多 Markdown 扩展，增强了文档编辑的功能和显示效果
+  - admonition   # 支持警告语法块，用于显示重要提示、警告等内容
+  - def_list   # 支持定义列表
+  - footnotes   # 支持脚注
+  - abbr   # 支持缩略词
+  - md_in_html   # 允许在HTML标签中嵌入Markdown内容
+  - attr_list   # 为Markdown元素添加HTML属性（如类名、ID、样式等）
+  - toc:   # 支持目录（Table of Contents）的自动生成
+      permalink: true   # 在标题位置生成永久链接
+      toc_depth: 3   # 设置目录的深度为3级标题
+  - pymdownx.betterem   # 改进强调语法，如text会被美化
+  - pymdownx.caret   # 支持上下标语法
+  - pymdownx.mark   # 支持高亮显示
+  - pymdownx.tilde   # 支持删除线语法
+  - pymdownx.keys   # 显示按键组合（如：Ctrl+C）
+  - pymdownx.critic   # 启用审阅模式，支持文本的增删改功能
+  - pymdownx.details   # 支持可折叠的内容块
+  - pymdownx.inlinehilite   # 支持行内代码块高亮显示
+  - pymdownx.snippets   # 支持代码片段的显示
+  - pymdownx.superfences   # 增强代码块，支持嵌套代码块和 Mermaid 流程图
+  - pymdownx.magiclink   # 自动识别链接，将纯文本的URLs和电子邮件地址转换为可点击的超链接
+  - pymdownx.smartsymbols   # 智能符号，自动将文本中的一些常见符号替换为对应的特殊字符或符号
+  - pymdownx.arithmatex:  # 支持LaTeX数学公式的显示
+      generic: true   # 启用通用的LaTeX支持
+  - pymdownx.highlight:   # 增强代码块的高亮显示功能
+      anchor_linenums: true   # 为行号添加锚点
+      linenums: true   # 显示行号
+      use_pygments: true   # 使用Pygments进行代码高亮
+      pygments_lang_class: true   # 为每个代码块添加语言类名
+      auto_title: true   # 显示编程语言的名称作为标题
+      linenums_style: pymdownx-inline   # 使用内联样式显示行号，防止复制代码时复制行号
+  - pymdownx.emoji:   # 支持使用和显示表情符号（emoji）
+      emoji_index: !!python/name:material.extensions.emoji.twemoji   # 指定了使用twemoji作为表情符号的索引库
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg   # 指定了使用SVG格式来生成表情符号图像
+  - pymdownx.superfences:   # 增强代码块，支持嵌套代码块和Mermaid流程图
+      custom_fences:   # 支持自定义代码块，如Mermaid流程图
+        - name: mermaid   # 使用mermaid作为代码块名称
+          class: mermaid   # 使用mermaid作为类名
+          format: !!python/name:pymdownx.superfences.fence_code_format   # 定义代码块的格式化方式
+  - pymdownx.tabbed:   # 支持选项卡式内容显示
+      alternate_style: true   # 使用备用样式
+      combine_header_slug: true   #  合并标题的slug
+  - pymdownx.tasklist:   # 支持任务列表
+      custom_checkbox: true   # 启用自定义复选框
+      clickable_checkbox: true   # 允许点击复选框进行勾选
+  - meta   # 支持Markdown文件上方自定义标题标签等
+  - tables   # 支持表格显示
+
+
+plugins:  # 配置MkDocs的插件
+  - rss:  # 启用RSS插件
+      enabled: True  # 启用RSS订阅
+      image: https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Feed-icon.svg/128px-Feed-icon.svg.png  # RSS订阅图标的URL
+      pretty_print: True  # 格式化RSS输出
+      length: 1000  # 设置摘要的长度
+      date_from_meta:  # 从元数据中获取文章的日期
+          as_creation: "date"  # 将文章的创建日期视为发布日期
+          as_update: "date"  # 将文章的更新日期视为发布日期
+      abstract_chars_count: -1  # 设置摘要的字符数限制
+      match_path: "(blog/posts|flinks|galaxy|message|note|readme|tech|yuque)/.*"  # RSS订阅包含的路径模式
+  - glightbox:  # 启用gLightbox插件
+      auto_caption: false  # 自动生成图片标题
+      caption_position: bottom  # 图片标题显示在底部
+  - search:  # 启用搜索插件
+      lang:
+          - en  # 支持英文搜索
+          - zh  # 支持中文搜索
+  - git-revision-date-localized:  # 启用Git本地化修订日期插件
+      type: iso_date  # 显示ISO格式的日期
+      timezone: Asia/Shanghai  # 设置时区为上海时间
+      fallback_to_build_date: true  # 如果没有Git日期则使用构建日期
+      exclude:  # 排除某些路径不显示修订日期
+          - blog/archive/*  # 排除博客归档文件
+          - blog/category/*  # 排除博客分类文件
+  - awesome-pages:  # 启用Awesome Pages插件
+      order: desc  # 设置页面的默认排序方式为降序
+      sort_type: natural  # 使用自然排序
+      order_by: filename  # 按文件名排序
+
+
+
+
+extra_css:
+  - css/extra.css  # 引用自定义的CSS文件
+
