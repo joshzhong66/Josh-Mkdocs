@@ -22,7 +22,7 @@ function echo_log_error() {
 
 function git_pull(){
     cd /data/Mkdocs/Josh-Mkdocs
-    if ! git pull origin master; then
+    if ! git pull origin master >/dev/null 2>&1; then
         # 如果拉取失败，发送 webhook 通知
         curl -X POST -H 'Content-type: application/json' \
         --data '{"text":"Git pull failed on /data/Mkdocs/Josh-Mkdocs"}' \
