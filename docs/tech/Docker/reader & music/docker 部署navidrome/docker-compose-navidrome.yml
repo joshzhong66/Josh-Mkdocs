@@ -1,0 +1,47 @@
+version: "3"
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    networks:
+      - music_network
+    restart: unless-stopped
+    ports:
+      - "4533:4533"
+    environment:
+      ND_ENABLETRANSCODINGCONFIG: true
+      ND_TRANSCODINGCACHESIZE: 0
+      ND_SCANSCHEDULE: 1h
+      ND_LOGLEVEL: info  
+      ND_SESSIONTIMEOUT: 24h
+      ND_BASEURL: ""
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+    volumes:
+      - "/data/navidrome/data:/data"
+      - "/data/navidrome/music:/music:ro"
+
+  miniserve:
+    image: svenstaro/miniserve:latest
+    container_name: miniserve
+    networks:
+      - music_network
+    restart: unless-stopped
+    depends_on:
+      - navidrome
+    ports:
+      - "4534:8080"
+    environment:
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+    volumes:
+      - "/data/navidrome/music:/downloads"    # 上传文件的目标目录
+    command: "-r -z -u -q -p 8080 -a admin:dream13889 /downloads"
+
+networks:
+  music_network:
+    name: music_network
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.101.0.0/16

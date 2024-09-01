@@ -5,5 +5,13 @@ nav:
     - index.md
     - Linux
     - Shell
-	- Git
-	- 数据库
+    - Git
+    - 数据库
+    - Python
+    - Docker
+    - R&S
+    - Kubernetes
+    - Synology
+    - Ansible
+    - Bat
+    - VMware
