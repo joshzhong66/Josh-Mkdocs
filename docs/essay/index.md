@@ -17,3 +17,24 @@
 回想起在厦门的那近十年时光，那里是我另一段重要的人生经历。厦门的城建、绿化、舒适的居住环境，确实充满着宁静与美好，那些温暖的阳光和温润的空气，如今仍然在我的记忆中闪烁，成为我生命中不可替代的一部分。
 
 这段旅程还在继续，我期待着未来的每一天，继续在城市中穿梭，在生活中感悟，在旅途中探索更多的未知。
+
+
+
+```
+<script src="https://giscus.app/client.js"
+        data-repo="joshzhong66/Josh-Mkdocs"
+        data-repo-id="R_kgDOMrJV0A"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOMrJV0M4CiH4K"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="0"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+```
+
