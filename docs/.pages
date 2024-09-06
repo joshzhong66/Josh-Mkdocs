@@ -4,4 +4,13 @@ nav:
     - 首页: index.md
     - 博客: tech
     - 随笔: essay
-
+    - Linux: linux
+    - Shell: shell
+    - Python: python
+    - Docker: docker
+    - 路由交换: routeswitch
+    - 群晖: synology
+    - 数据库: sql
+    - 批处理: bat
+    - K8S: k8s
+    - Git: git
