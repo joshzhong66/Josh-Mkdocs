@@ -2,4 +2,4 @@ shell
 python
 yaml
 docker-compose
-上述目录与本项目关联
+上述目录与本项目无关
