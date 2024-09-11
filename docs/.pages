@@ -14,3 +14,4 @@ nav:
     - 批处理: bat
     - K8S: k8s
     - Git: git
+    - VMware: vmware

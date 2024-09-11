@@ -23,7 +23,6 @@ function echo_log_error() {
 function git_pull(){
     cd /data/Mkdocs/Josh-Mkdocs
     if ! git pull origin master >/dev/null 2>&1; then
-        # 如果拉取失败，发送 webhook 通知
         curl -X POST -H 'Content-type: application/json' \
         '{"text":"Git pull failed on /data/Mkdocs/Josh-Mkdocs"}' \
         https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=d575ce0e-6af6-4176-af18-56491df6b2e7
