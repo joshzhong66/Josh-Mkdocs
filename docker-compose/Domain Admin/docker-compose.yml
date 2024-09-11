@@ -1,0 +1,10 @@
+version: '3.3'
+services:
+    domain-admin:
+        volumes:
+            - './database:/app/database'
+            - './logs:/app/logs'
+        ports:
+            - '8000:8000'
+        container_name: domain-admin
+        image: mouday/domain-admin:latest

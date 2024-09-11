@@ -5,7 +5,6 @@ nav:
     - 博客: tech
     - 随笔: essay
     - Linux: linux
-    - Shell: shell
     - Python: python
     - Docker: docker
     - 路由交换: routeswitch

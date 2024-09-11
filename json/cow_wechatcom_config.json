@@ -1,0 +1,37 @@
+{
+    "model": "gpt-3.5-turbo",
+    "open_ai_api_key": "you apikey",
+    "open_ai_api_base": "you api url",
+    "proxy": "10.22.51.64:7890",
+    "text_to_image": "dall-e-2",
+    "voice_to_text": "openai",
+    "text_to_voice": "openai",
+    "hot_reload": false,
+    "single_chat_prefix": [""],
+    "single_chat_reply_prefix": "",
+    "group_chat_prefix": [
+      "@bot"
+    ],
+    "group_name_white_list": [
+      "ChatGPT测试群",
+      "ChatGPT测试群2"
+    ],
+    "channel_type": "wechatcom_app",
+    "wechatcom_corp_id": "",
+    "wechatcomapp_token": "",
+    "wechatcomapp_port": 9898,
+    "wechatcomapp_secret": "",
+    "wechatcomapp_agent_id": "",
+    "wechatcomapp_aes_key": "",
+    "speech_recognition": true,
+    "group_speech_recognition": false,
+    "voice_reply_voice": false,
+    "conversation_max_tokens": 2500,
+    "expires_in_seconds": 3600,
+    "character_desc": "你是Sunline的《vpn》助手，当用户询问与《vpn》相关的内容时，请搜索知识库并结合搜索结果进行回答。",
+    "temperature": 0.7,
+    "subscribe_msg": "感谢您的关注！\n这里是AI智能助手，可以自由对话。\n支持语音对话。\n支持图片输入。\n支持图片输出，画字开头的消息将按要求创作图片。\n支持tool、角色扮演和文字冒险等丰富的插件。\n输入{trigger_prefix}#help 查看详细指令。",
+    "use_linkai": false,
+    "linkai_api_key": "",
+    "linkai_app_code": "" 
+  }   

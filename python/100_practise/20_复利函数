@@ -1,0 +1,8 @@
+#设计一个复利函数invest(),它包含3个参数：amount资金，rate利率，time投资时间，输入每个参数后调用函数，应该返回每一年的资金总额，假设利率为5%。
+def invest(amount,rate,time):
+    print('principal amount:{}'.format(amount))
+    for i in range(1,time+1):
+        amount = amount * (1+rate)
+        print('year{}:${}'.format(i,amount))
+invest(100,0.5,8)
+invest(2000,0.25,5)
