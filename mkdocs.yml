@@ -35,6 +35,7 @@ theme:
     - navigation.instant   # 页面不会跳转，而是像单页应用一样在当前页面内完成导航，提高页面响应速度和美观度
     - navigation.tabs   # 页面上方显示标签页，便于多页面导航
     - navigation.tracking   # 页面滚动时，导航栏会高亮显示当前页面所在位置
+    - navigation.indexes   # 为页面生成一个基于标题的索引，通常显示在侧边栏，可以快速跳转到页面中的特定部分
     - navigation.sections   # 导航栏中的项目被分成不同的部分
     - navigation.expand   # 默认展开导航栏中的所有项目
     - navigation.prune   # 仅渲染当前页面的导航，简化导航结构
