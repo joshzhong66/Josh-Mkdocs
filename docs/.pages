@@ -2,11 +2,5 @@ title: "Hello"
 
 nav:
     - 首页: index.md
-    - 博客: tech
     - 随笔: essay
-    - Linux: linux
-    - Docker: docker
-    - 群晖: synology
-    - 批处理: bat
-    - Git: git
-    - VMware: vmware
+
