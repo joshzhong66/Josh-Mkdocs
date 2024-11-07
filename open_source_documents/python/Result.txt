@@ -1,0 +1,14 @@
+93.46.8.90	google.com
+172.217.14.206	play.google.com
+31.13.94.41	docs.google.com
+199.59.149.206	drive.google.com
+142.251.215.234	youtube.googleapis.com
+142.250.217.106	youtube.googleapis.com
+142.251.33.74	youtube.googleapis.com
+
+128.242.245.212	chatgpt.com
+128.242.245.180	ab.chatgpt.com
+104.18.41.241	auth.openai.com
+172.64.152.228	auth0.openai.com
+172.64.146.98	cdn.oaistatic.com
+104.18.95.41	challenges.cloudflare.com
