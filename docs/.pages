@@ -3,4 +3,5 @@ title: "Hello"
 nav:
     - 首页: index.md
     - 随笔: essay
+    - 读书笔记: readbook
 
