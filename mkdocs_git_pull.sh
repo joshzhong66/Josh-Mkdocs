@@ -2,14 +2,17 @@
 
 LOG_FILE="/data/Mkdocs/Josh-Mkdocs/pull_code.log"
 
-echo_log_info() {
-    local message="$1"
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - [INFO] $message" | tee -a "$LOG_FILE"
+echo_log() {
+    local color="$1"
+    shift
+    echo -e "$(date +'%F %T') -[${color}] $* \033[0m"
 }
-
+echo_log_info() {
+    echo_log "\033[32mINFO" "$*"
+}
 echo_log_error() {
-    local message="$1"
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - [ERROR] $message" | tee -a "$LOG_FILE"
+    echo_log "\033[31mERROR" "$*"
+    exit 1
 }
 
 git_pull() {
@@ -31,7 +34,7 @@ git_pull() {
 
 delete_log() {
     THREE_DAYS_AGO=$(date -d "3 days ago" +%Y-%m-%d)
-    TEMP_FILE=$(mktemp) # 存储保留日志
+    TEMP_FILE=$(mktemp) # 临时文件存储保留的日志
 
     awk -v date="$THREE_DAYS_AGO" '{
         log_date = substr($0, 1, 10); # 提取日志的日期部分 YYYY-MM-DD
