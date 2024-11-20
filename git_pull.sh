@@ -19,9 +19,9 @@ git_pull() {
         '{"text":"Git pull failed on /data/Mkdocs/Josh-Mkdocs"}' \
         https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=d575ce0e-6af6-4176-af18-56491df6b2e7
         
-        echo_log_error "Code pull failed" >> $LOGFILE
+        echo_log_error "Code pull failed"
     else
-        echo_log_info "Code pulled successfully" >> $LOGFILE
+        echo_log_info "Code pulled successfully"
     fi
 
     systemctl restart mkdocs
