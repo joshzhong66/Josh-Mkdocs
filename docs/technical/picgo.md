@@ -9,9 +9,13 @@
 使用curl测试是否可以上传：
 
 ```
+linux:
 curl -X POST https://pic.joshzhong.top/api/index.php \
 > -F "image=@/root/Dock.png" \
 > -F "token=22279fb1162c6b6e133c5910f6fb8"
+
+windows：
+curl -X POST https://pic.joshzhong.top/api/index.php -F "image=@C:\Users\joshz\Pictures\11.png" -F "token=22279fb1162c6b6e133c5910f6fb8"
 ```
 
 返回结果：
@@ -43,13 +47,30 @@ The operation was rejected by your operating system.
 
 
 
-### 3、其他报错
+## 3、其他报错
 
-检查上传设置
+### 1.检查上传设置
 
 ![image-20241123202223353](https://pic.joshzhong.top/i/2024/11/23/xfziag-0.png)
 
-检查是否开启API上传
+### 2.检查是否开启API上传
 
 ![image-20241123202246024](https://pic.joshzhong.top/i/2024/11/23/xg4f18-0.png)
+
+### 3.检查服务器权限
+
+```
+[root@josh ~]# ll /data/easyimage/
+total 12
+drwxr-xr-x 2 lighthouse lighthouse 4096 Sep 23 14:14 config
+-rwxr-xr-x 1 lighthouse lighthouse  525 Sep 23 13:58 docker-compose.yml
+drwxr-xr-x 4 lighthouse lighthouse 4096 Sep 23 14:21 image
+```
+
+没有则进行赋权
+
+```
+[root@josh data]# chmod 755 -R easyimage/
+[root@josh data]# chown -R lighthouse.lighthouse easyimage/
+```
 

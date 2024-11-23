@@ -132,4 +132,5 @@ plugins:  # 配置MkDocs的插件
 
 extra_css:
   - css/extra.css  # 引用自定义的CSS文件
+  - https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css #字体
 
