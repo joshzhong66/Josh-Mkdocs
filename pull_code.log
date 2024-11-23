@@ -431,3 +431,6 @@
 2024-11-23 13:00:09 - [INFO] Code pulled successfully
 2024-11-23 13:00:09 - [INFO] Mkdocs Service restart successfully
 2024-11-23 13:00:09 - [INFO] 已清除超过3天的日志。
+2024-11-23 14:02:19 - [ERROR] Code pull failed
+2024-11-23 14:02:19 - [INFO] Mkdocs Service restart successfully
+2024-11-23 14:02:19 - [INFO] 已清除超过3天的日志。
