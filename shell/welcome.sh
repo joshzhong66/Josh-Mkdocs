@@ -1,4 +1,5 @@
 #!/bin/bash
+#author:josh
 
 current_time=$(date)
 system_load=$(uptime | awk -F'load average: ' '{print $2}' | awk -F',' '{print $1}')
