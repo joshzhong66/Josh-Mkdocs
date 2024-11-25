@@ -3,18 +3,18 @@
 LOG_FILE="/data/Mkdocs/Josh-Mkdocs/pull_code.log"
 
 echo_log_info() {
-    local message="$1"
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - [INFO] $message" | tee -a "$LOG_FILE"
+    echo "$(date +'%F %T') - [INFO] $*" | tee -a "$LOG_FILE"
 }
 
 echo_log_error() {
-    local message="$1"
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - [ERROR] $message" | tee -a "$LOG_FILE"
+    echo "$(date +'%F %T') - [ERROR] $*" | tee -a "$LOG_FILE"
+    exit 1
 }
 
 git_pull() {
     cd /data/Mkdocs/Josh-Mkdocs
     if ! git pull origin master >/dev/null 2>&1; then
+        # 如果拉取失败，发送 webhook 通知
         curl -X POST -H 'Content-type: application/json' \
         '{"text":"Git pull failed on /data/Mkdocs/Josh-Mkdocs"}' \
         https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=d575ce0e-6af6-4176-af18-56491df6b2e7
@@ -24,10 +24,9 @@ git_pull() {
         echo_log_info "Code pulled successfully"
     fi
 
-    systemctl restart mkdocs
-    [ $? -eq 0 ] && echo_log_info "Mkdocs Service restart successfully" || { echo_log_error "Mkdocs Service restart fail!"; return;}
+    rm -rf /tmp/mkdocs_* && systemctl restart mkdocs
+    [ $? -eq 0 ] && echo_log_info "Mkdocs Service restart successfully!" || echo_log_error "Mkdocs Service restart fail!"
 }
-
 
 delete_log() {
     THREE_DAYS_AGO=$(date -d "3 days ago" +%Y-%m-%d)
