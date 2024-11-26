@@ -1,6 +1,0 @@
----
-- hosts: all 
-  gather_facts: no    # 不输出系统信息
-  tasks:
-    - name: checkhosts
-      script: ../scripts/check_linux_new.sh
