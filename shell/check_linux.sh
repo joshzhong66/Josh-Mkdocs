@@ -10,7 +10,7 @@ system_info() {
     os_info=$(awk '/^PRETTY_NAME=/' /etc/*-release 2>/dev/null | awk -F'=' '{gsub("\"","");print $2}')
     kernel=$(uname -r 2>/dev/null)
     system_facts=$(cat << EOF
-    {
+{
         "hostname": "${hostname:-}",
         "os_info": "${os_info:-}",
         "kernel": "${kernel:-}"
@@ -33,7 +33,7 @@ cpu_info() {
     fi
     cpuused=`echo ${idle} | awk '{sum=100-$idle}END{printf "%.2f\n",sum}'`
     cpu_facts=$(cat << EOF
-    {
+{
         "cpuused": "${cpuused:-0}%",
         "cpu_load_1min": "${cpu_loadavg1:-0}",
         "cpu_load_5min": "${cpu_loadavg5:-0}"
@@ -60,7 +60,7 @@ mem_info() {
     fi
 
     mem_facts=$(cat << EOF
-    {
+{
         "MemTotalSize": "${MemTotalSize:-}GB",
         "MemUsed": "${MemUsed}"
         "MemFree": "${MemFree:-}GB",
@@ -79,6 +79,7 @@ disk_info() {
 
     if [ `echo ${root_disk_info}|grep -Ev "^$"|wc -l` -eq 1 ];then
         root_total_disk=`echo ${root_disk_info}|awk '{print $3}'`
+        root_used_disk=`echo ${root_disk_info}|awk '{print $4}'`
         root_free_disk=`echo ${root_disk_info}|awk '{print $5}'`
         root_usage_disk=`echo ${root_disk_info}|awk '{print $(NF-1)}'`
     else
@@ -90,7 +91,8 @@ disk_info() {
     if mountpoint -q /data; then
         if [ "$(echo ${data_disk_info} | grep -Ev "^$" | wc -l)" -eq 1 ]; then
             data_total_disk=$(echo ${data_disk_info} | awk '{print $3}')
-            data_free_disk=$(echo ${data_disk_info} | awk '{print $4}')
+            data_used_disk=$(echo ${data_disk_info} | awk '{print $4}')
+            data_free_disk=$(echo ${data_disk_info} | awk '{print $5}')
             data_usage_disk=$(echo ${data_disk_info} | awk '{print $(NF-1)}')
         else
             data_total_disk=""
@@ -98,16 +100,16 @@ disk_info() {
             data_usage_disk=""
         fi
     else
-        data_total_disk=$(du -sh /data 2>/dev/null | awk '{print $1}')
-        data_free_disk="N/A"
-        data_usage_disk="N/A"
+        data_used_disk=$(du -sh /data 2>/dev/null | awk '{print $1}')
     fi
     disk_facts=$(cat << EOF
-    {
+{
         "root_total_disk": "${root_total_disk:-}",
+        "root_used_disk": "${root_used_disk:-}",
         "root_free_disk": "${root_free_disk:-}",
         "root_usage_disk": "${root_usage_disk:-}",
         "data_total_disk": "${data_total_disk:-}",
+        "data_used_disk": "${data_used_disk:-}",
         "data_free_disk": "${data_free_disk:-}",
         "data_usage_disk": "${data_usage_disk:-}"
     }
@@ -122,15 +124,15 @@ main() {
     mem_info
     disk_info
     check_facts=$(cat << EOF
-    {
-        "system": ${system_facts:-{}},
-        "cpu": ${cpu_facts:-{}},
-        "memory": ${mem_facts:-{}},
-        "disk": ${disk_facts:-{}}
-    }
+{
+        "system": ${system_facts:-},
+        "cpu": ${cpu_facts:-},
+        "memory": ${mem_facts:-},
+        "disk": ${disk_facts:-}
+}
 EOF
 )
-    echo "${check_facts:-{}}"
+    echo "${check_facts:-}"
 }
 
 main
