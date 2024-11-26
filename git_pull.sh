@@ -40,7 +40,7 @@ delete_log() {
     mv "$TEMP_FILE" "$LOG_FILE"
     echo_log_info "已清除超过3天的日志。"
 
-    git add . >/dev/null 2>&1
+    git add -A >/dev/null 2>&1
     git commit -m "提交所有更改，包括新增文件" >/dev/null 2>&1
     git push origin master >/dev/null 2>&1
 }
