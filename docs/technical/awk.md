@@ -73,3 +73,25 @@ system_load=$(uptime | awk -F'load average: ' '{print $2}' | awk -F', ' '{print 
 >
 >system_load=$(...)   将最终提取的  1分钟负载值 存储在变量 system_load 中。
 
+
+
+### 3.提取`PRETTY_NAME`
+
+从系统的 `/etc/*-release` 文件中提取操作系统的`PRETTY_NAME`字段的值
+
+```
+awk '/^PRETTY_NAME=/' /etc/*-release 2>/dev/null | awk -F'=' '{gsub("\"","");print $2}'
+```
+
+
+
+awk '/^PRETTY_NAME=/' /etc/*-release  `awk`会在所有匹配的文件中搜索以 `PRETTY_NAME=` 开头的行，再通过管道：`|`，将第一部分的输出（即匹配到的 `PRETTY_NAME=...` 的内容）传递到下一条 `awk` 命令，awk -F'=' '{gsub("\"","");print $2 }'，
+
+- `-F'='`: 将等号 `=` 作为分隔符，将字段分为两部分。
+
+- `{gsub("\"","");print $2}`:
+
+  - `gsub("\"","")`: 去掉字段中的双引号。
+
+    `print $2`: 打印等号右边的内容，即 `PRETTY_NAME` 的值。
+
