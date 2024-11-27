@@ -16,25 +16,22 @@ echo_log_error() {
 }
 
 ping_ip() {
-    # 正则表达式验证 IPv4 地址格式
-    local ip_pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$"
+    local ip_pattern="^([0-9]\.|[1-9][0-9]\.|1[0-9][0-9]\.|2[0-4][0-9]\.|25[0-5]\.){3}([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-4])$"
+    #local ip_pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$"
 
     while true; do
-        read -rp "请输入需要 ping 的 IP 地址（多个地址用空格分隔）：" ips
+        read -rp "Please enter IP addresses (separate multiple addresses with spaces):" ips
         if [ -z "$ips" ]; then
-            echo_log_info "IP 地址不能为空，请重新输入！"
+            echo_log_info "The IP address cannot be empty, please re-enter!"
         else
-            # 验证每个 IP 地址的格式
             invalid_ips=0
             for ip in $ips; do
                 if ! [[ $ip =~ $ip_pattern ]]; then
-                    echo_log_warn "$ip 格式不正确，请重新输入！"
+                    echo_log_warn "$ip The format is incorrect, please re-enter!"
                     invalid_ips=1
                     break
                 fi
             done
-
-            # 如果所有 IP 地址格式都正确，退出循环
             if [ $invalid_ips -eq 0 ]; then
                 break
             fi
@@ -44,17 +41,15 @@ ping_ip() {
     while true; do
         for ip in $ips; do
             if ping -c 2 -W 2 "$ip" &>/dev/null; then
-                echo_log_info "$ip 可达！"
+                echo_log_info "$ip Reachable！"
             else
-                echo_log_warn "$ip 不可达！"
+                echo_log_warn "$ip Unreachable！"
             fi
         done
-        #sleep 5  # 每轮循环后等待 5 秒
+        #sleep 5
         read -t 5 input
-        [ $? -eq 0 ] && { echo_log_info "ping IP 地址 $ips 完成！"; break; }
+        [ $? -eq 0 ] && { echo_log_info "ping IP address $ips Done!"; break; }
     done
 }
-
-
 
 ping_ip

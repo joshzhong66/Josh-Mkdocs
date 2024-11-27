@@ -45,11 +45,11 @@ EOF
 
 mem_info() {
     get_pymem_info=$(export LANG=en_US; free -k | grep -i mem)
-    MemTotalSize=$(echo ${get_pymem_info} | awk 'NR==1{printf "%.2f", $2 / 1024 / 1024}')                            # 内存总量 (GB)
-    MemUsed=$(echo ${get_pymem_info} | awk 'NR==1{printf "%.2f", $3 / 1024 / 1024}')                                 # 内存已使用 (GB)
-    MemFree=$(echo ${get_pymem_info} | awk 'NR==1{printf "%.2f", $4 / 1024 / 1024}')                                 # 内存空闲 (GB)
-    BuffCacheSize=$(echo ${get_pymem_info} | awk 'NR==1{printf "%.2f", $6 / 1024 / 1024}')                           # Buff&Cache (GB)
-    Available=$(export LANG=en_US; free -k | grep -A 1 available | awk 'NR==2{printf "%.2f", $NF / 1024 / 1024}')    # 可用内存 (GB)
+    MemTotalSize=$(echo ${get_pymem_info} | awk 'NR==1{printf "%.2f", $2 / 1024 / 1024}')  
+    MemUsed=$(echo ${get_pymem_info} | awk 'NR==1{printf "%.2f", $3 / 1024 / 1024}')     
+    MemFree=$(echo ${get_pymem_info} | awk 'NR==1{printf "%.2f", $4 / 1024 / 1024}')              
+    BuffCacheSize=$(echo ${get_pymem_info} | awk 'NR==1{printf "%.2f", $6 / 1024 / 1024}')  
+    Available=$(export LANG=en_US; free -k | grep -A 1 available | awk 'NR==2{printf "%.2f", $NF / 1024 / 1024}') 
 
     if [ -z ${Available} ]; then
         PhyMemUse=$(awk 'BEGIN{printf "%.2f", ('$MemTotalSize' - '$MemFree' - '$BuffCacheSize')}')
@@ -70,8 +70,6 @@ mem_info() {
 EOF
     )
 }
-
-
 
 disk_info() {
     root_disk_info=`df -HT |grep -w '/'`
@@ -116,7 +114,6 @@ disk_info() {
 EOF
     )
 }
-
 
 main() {
     system_info
