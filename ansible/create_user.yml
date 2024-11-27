@@ -1,0 +1,36 @@
+---
+- name: Create and configure user
+  hosts: all
+  become: true
+  vars:
+    username: yunwei1
+    password: "{{ 'Sun%2020' | password_hash('sha512') }}"
+    groups: wheel
+    append: yes
+    grant_nopass: true
+  tasks:
+    - name: Ensure the user is created
+      user:
+        name: "{{ username }}"
+        password: "{{ password }}"
+        groups: wheel
+        append: yes
+
+    - name: Allow passwordless sudo if selected
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: "^{{ username }} ALL=.*NOPASSWD: ALL"
+        line: "{{ username }} ALL=(ALL) NOPASSWD: ALL"
+        validate: "visudo -cf %s"
+      when: grant_nopass
+
+    - name: Test SSH login as the new user
+      shell: whoami
+      register: ssh_test
+      delegate_to: "{{ inventory_hostname }}"
+      remote_user: "{{ username }}"
+
+    - name: Display SSH login test result
+      debug:
+        msg: "Login test result for {{ username }}: {{ ssh_test.stdout }}"

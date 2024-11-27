@@ -1,0 +1,37 @@
+---
+- name: Install common applications on Centos7
+  #ansible-playbook -i /data/ansible/hosts  optimze_install_common_apps.yml 
+  hosts: web_server
+  become: yes
+  vars:
+    common_apps:
+      - tcpdump
+      - nmap
+      - wget
+      - lrzsz
+      - tree
+      - net-tools
+      - iftop
+      - bind-utils
+      - curl
+      - bash-completion
+      - vim-enhanced
+      - dos2unix
+      - traceroute
+      
+
+  tasks:
+    - name: Ensure common applications are install
+      yum:
+        name: "{{ common_apps }}"
+        state: present
+      register: install_result
+      until: install_result is succeeded
+      retries: 3
+      delay: 5
+
+    - name: Debug install result
+      debug:
+        #msg: "Changed: {{ install_result.changed }}, Results: {{ install_result.results | map(attribute='item') | join(', ') }}"
+        msg: "Changed: {{ install_result.changed }}, Results: {{ install_result.results }}"
+        #var: install_result
