@@ -42,7 +42,6 @@ EOF
     )
 }
 
-
 mem_info() {
     get_pymem_info=$(export LANG=en_US; free -k | grep -i mem)
     MemTotalSize=$(echo ${get_pymem_info} | awk 'NR==1{printf "%.2f", $2 / 1024 / 1024}')  

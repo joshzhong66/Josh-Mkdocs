@@ -1,5 +1,4 @@
 - name: Check disk space
-  #hosts: web_servers
   hosts: all
   tasks:
     - name: Disk free space
