@@ -1,1 +1,0 @@
-1.修改文件名为config.json

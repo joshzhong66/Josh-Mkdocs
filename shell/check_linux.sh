@@ -71,48 +71,33 @@ EOF
 }
 
 disk_info() {
-    root_disk_info=`df -HT |grep -w '/'`
-    data_disk_info=`df -HT |grep -w '/data'`
+    mount_disk_info="df -Th | egrep 'xfs|ext4' | grep -v '/boot'"
+    mount_disk_num=$(eval $mount_disk_info | wc -l)
 
-    if [ `echo ${root_disk_info}|grep -Ev "^$"|wc -l` -eq 1 ];then
-        root_total_disk=`echo ${root_disk_info}|awk '{print $3}'`
-        root_used_disk=`echo ${root_disk_info}|awk '{print $4}'`
-        root_free_disk=`echo ${root_disk_info}|awk '{print $5}'`
-        root_usage_disk=`echo ${root_disk_info}|awk '{print $(NF-1)}'`
-    else
-        root_total_disk=""
-        root_free_disk=""
-        root_usage_disk=""
-    fi
+    disk_fact="{"
 
-    if mountpoint -q /data; then
-        if [ "$(echo ${data_disk_info} | grep -Ev "^$" | wc -l)" -eq 1 ]; then
-            data_total_disk=$(echo ${data_disk_info} | awk '{print $3}')
-            data_used_disk=$(echo ${data_disk_info} | awk '{print $4}')
-            data_free_disk=$(echo ${data_disk_info} | awk '{print $5}')
-            data_usage_disk=$(echo ${data_disk_info} | awk '{print $(NF-1)}')
-        else
-            data_total_disk=""
-            data_free_disk=""
-            data_usage_disk=""
-        fi
-    else
-        data_used_disk=$(du -sh /data 2>/dev/null | awk '{print $1}')
-    fi
-    disk_facts=$(cat << EOF
-{
-        "root_total_disk": "${root_total_disk:-}",
-        "root_used_disk": "${root_used_disk:-}",
-        "root_free_disk": "${root_free_disk:-}",
-        "root_usage_disk": "${root_usage_disk:-}",
-        "data_total_disk": "${data_total_disk:-}",
-        "data_used_disk": "${data_used_disk:-}",
-        "data_free_disk": "${data_free_disk:-}",
-        "data_usage_disk": "${data_usage_disk:-}"
-    }
-EOF
-    )
+    for i in $(seq 1 $mount_disk_num); do
+        disk_info=$(eval $mount_disk_info | awk -v line=$i 'NR==line')
+        disk_mount_name=$(echo $disk_info | awk '{print $NF}')
+        [[ "$disk_mount_name" == "/" ]] && disk_name="root" || disk_name=${disk_mount_name#/}
+
+        disk_total=$(echo $disk_info | awk '{print $3}')
+        disk_used=$(echo $disk_info | awk '{print $4}')
+        disk_free=$(echo $disk_info | awk '{print $5}')
+        disk_usage=$(echo $disk_info | awk '{print $(NF-1)}')
+
+        disk_fact+="\n        \"${disk_name}_total_disk\": \"${disk_total}\","
+        disk_fact+="\n        \"${disk_name}_used_disk\": \"${disk_used}\","
+        disk_fact+="\n        \"${disk_name}_free_disk\": \"${disk_free}\","
+        disk_fact+="\n        \"${disk_name}_usage_disk\": \"${disk_usage}\","
+    done
+
+    disk_fact="${disk_fact%,}"
+    disk_fact+="\n    }"
+
+    disk_facts=$(echo -e "$disk_fact")
 }
+
 
 main() {
     system_info
