@@ -1,0 +1,43 @@
+- name: test yum_repository
+  hosts: centos7
+  become: true
+  tasks:
+    - name: backup /etc/yum.repos.d/CentOS-Base.repo
+      copy:
+        src: /etc/yum.repos.d/Centos-Base.repo
+        dest: /etc/yum.repos.d/Centos-Base.repo.bak
+        backup: yes
+        remote_src: yes
+
+    # - name: add aliyun yum repo by replacing CentOS-Base.repo
+    #   get_url:
+    #     url: http://mirrors.aliyun.com/repo/Centos-7.repo
+    #     dest: /etc/yum.repos.d/Centos-Base.repo
+    #     owner: root
+    #     group: root
+    #     mode: 0644
+
+    - name: add aliyun yum repo by replacing CentOS-Base.repo
+      yum_repository:
+        name: aliyun
+        description: aliyun CentOS 7 repo
+        baseurl: http://mirrors.aliyun.com/centos/7/os/x86_64/
+        enabled: yes
+        gpgcheck: yes
+        gpgkey: https://mirrors.aliyun.com/centos/RPM-GPG-KEY-CentOS-7
+        state: present
+
+    # test yum_repository and install tcpdump
+    - name: clean yum cache
+      command: yum clean all
+
+    - name: generate yum cache
+      command: yum makecache
+
+    - name: install tcpdump
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - tcpdump
+        - traceroute

@@ -1,7 +1,6 @@
 ---
 - name: Install common applications on Centos7
-  #ansible-playbook -i /data/ansible/hosts  optimze_install_common_apps.yml 
-  hosts: web_server
+  hosts: all
   become: yes
   vars:
     common_apps:

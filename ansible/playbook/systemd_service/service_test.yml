@@ -1,0 +1,28 @@
+- name: Service Model test
+  hosts: centos7
+  become: true
+  tasks:
+    - name: Yum Install Dnsmasq Service
+      yum:
+        name: dnsmasq 
+        state: present
+    
+    - name: Start Dnsmasq Service
+      service:
+        name: dnsmasq
+        state: started
+        enabled: yes
+    
+    - name: Stop Dnsmasq Service
+      service:
+        name: dnsmasq
+        state: restarted
+
+    - name: Check Dnsmasq Service Status
+      service:
+        name: dnsmasq
+        state: stopped
+      register: dnsmasq_status
+
+    - debug:
+        var: dnsmasq_status

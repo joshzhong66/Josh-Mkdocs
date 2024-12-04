@@ -1,0 +1,15 @@
+- name: 复制模块测试
+  hosts: all
+  become: true
+  tasks:
+    - name: "复制文件到目标机器"
+      copy:
+        src: /root/scripts/check_linux.sh
+        dest: /tmp/
+        mode: 0755
+        
+    - name: "复制文件夹到目标机器"
+      copy:
+        src: /root/scripts
+        dest: /tmp
+        mode: 0755

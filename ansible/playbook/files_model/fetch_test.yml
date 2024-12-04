@@ -1,0 +1,24 @@
+- name: fetch 测试 只能复制远端文件到本地
+  hosts: all
+  become: true
+  tasks:
+    - name: "fetch模块 复制文件"
+      fetch:
+        src: /etc/hosts
+        dest: /tmp/hosts
+        flat: yes
+    # 复制目录示例
+    - name: 压缩文件夹
+      shell: tar -czf /tmp/etc.tar.gz /etc
+      args:
+        creates: /tmp/etc.tar.gz
+
+    - name: 下载压缩包
+      fetch:
+        src: /tmp/etc.tar.gz
+        dest: /tmp/etc.tar.gz
+        flat: yes
+
+    - name: 解压文件
+      shell: tar -xzf /tmp/etc.tar.gz -C /tmp
+      delegate_to: localhost

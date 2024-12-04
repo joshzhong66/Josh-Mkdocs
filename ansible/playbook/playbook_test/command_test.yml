@@ -1,0 +1,33 @@
+# command模块： 在执行的时候如果命令中带有‘< > | &’ 是不执行的
+- name: "command模块"
+  hosts: all
+  tasks:
+    - name: "command模块 测试普通命令"
+      command: "echo 'hello world'"
+      register: result_normal
+      ignore_errors: yes
+    - name: "command模块 普通命令显示结果"
+      debug: "msg={{ result_normal.stdout }}"
+
+    - name: "command模块 测试管道命令"
+      command: "echo 'hello world' | grep -o 'hello'"
+      register: result_special
+      ignore_errors: yes
+    - name: "command模板 管道命令显示结果"
+      debug: "msg={{ result_special.stdout }}"
+
+    - name: "ls -l 命令执行"
+      command: "ls -l"
+      register: result_ls
+      ignore_errors: yes
+      become: yes
+      become_user: root
+      become_method: sudo
+
+    - name: "ls -l 命令执行结果"
+      when: "result_ls.rc == 0"
+      debug:
+        msg: "{{ result_ls.stdout_lines }}"
+      tags: ["ls"]
+      check_mode: no
+

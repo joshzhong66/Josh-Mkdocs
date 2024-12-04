@@ -1,0 +1,49 @@
+- name: "shell模块 测试实例"
+  hosts: all
+  tasks:
+    - name: "shell模块 测试实例"
+      shell: "echo 'hello world'"
+      register: result_shell
+      ignore_errors: yes
+    - name: "shell模块 测试结果"
+      debug: "msg={{ result_shell.stdout_lines }}"
+
+    - name: "shell模块1 特殊字符测试"
+      shell: "echo 'hello world' | grep -o hello"
+      register: result_special
+      ignore_errors: yes
+    - name: "shell模块 特殊字符测试结果"
+      debug: 
+        msg: "{{ result_special.stdout_lines }}"
+
+    # 创建文件（如果文件不存在）
+    - name: "指定条件运行命令"
+      ansible.builtin.shell: "touch /tmp/test.txt"
+      args:
+        creates: /tmp/test.txt
+
+    # 切换目录
+    - name: "切换目录后执行命令"
+      ansible.builtin.shell: "ls -la"
+      args:
+        chdir: /tmp
+      register: result_chdir
+      ignore_errors: yes
+    - name: "切换目录后执行命令结果"
+      debug: "msg={{ result_chdir.stdout_lines }}"
+    
+    - name: "指定使用/bin/bash执行命令"
+      ansible.builtin.shell: |
+        echo "Running with Bash"
+        echo $BASH_VERSION
+      args:
+        executable: /bin/bash
+      register: result_bash
+    - name: "指定使用/bin/bash执行命令结果"
+      debug: "msg={{ result_bash.stdout }}"
+
+    - name: "测试removes "
+      ansible.builtin.shell: "sh /data/ansible/scripts/hello.sh"
+      register: result_removes
+    - name: "测试removes 结果"
+      debug: "msg={{ result_removes.stdout }}"

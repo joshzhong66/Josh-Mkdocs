@@ -1,0 +1,8 @@
+- name: yum 模块测试
+  hosts: all
+  become: true
+  tasks:
+    - name: yum 安装 iftop
+      yum:
+        name: iftop
+        state: present

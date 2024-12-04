@@ -7,4 +7,5 @@
 
     - name: Show disk space
       debug:
-        msg: "{{ disk_space.stdout }}"
+        #msg: "{{ disk_space.stdout }}"
+        var: disk_space.stdout_lines

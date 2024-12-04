@@ -1,0 +1,25 @@
+- name: Cron Model test
+  hosts: centos7
+  become: true
+  tasks:
+    - name: Add a New Cron Job
+      cron:
+        name: "{{ item }}"
+        state: present
+        minute: "*"
+        hour: "*"
+        day: "*"
+        month: "*"
+        weekday: "*"
+        job: "echo '{{ item }}' >> /tmp/cron_test.txt"
+      with_items:
+        - "cron1"
+
+
+    - name: Remove a Cron Job
+      cron:
+        name: "{{ item }}"
+        state: absent
+
+      with_items:
+        - "cron1"

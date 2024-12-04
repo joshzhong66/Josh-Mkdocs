@@ -1,0 +1,18 @@
+- name: 创建用户yunwei
+  hosts: all
+  become: true
+  tasks:
+    - name: 创建组 yunwei
+      ansible.builtin.group:
+        name: yunwei
+        state: present
+        
+    - name: 创建用户yunwei
+      ansible.builtin.user:
+        name: yunwei
+        state: present
+        group: yunwei
+        create_home: yes
+        shell: /bin/bash
+        groups: wheel
+  

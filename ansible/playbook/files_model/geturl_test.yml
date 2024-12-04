@@ -1,0 +1,33 @@
+- name: Geturl Model Test 
+  hosts: centos7
+  become: true
+  tasks:
+    - name: Geturl Download File Test
+      get_url:
+        url: http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest
+        dest: /tmp 
+        mode: 0600
+    
+    - name: Geturl Download File Force (强制覆盖)
+      get_url:
+        url: http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest
+        dest: /tmp/delegated-apnic-latest
+        mode: 0600
+        force: yes
+
+    # md5 sum校验
+    # 执行：md5sum /data/software/9_脚本/set_proxy.sh
+    # 结果：b82c04fe82d7716cc9a97ea48833cddd  /data/software/9_脚本/set_proxy.sh
+
+    - name: Geturl Download File MD5 Sum Check
+      get_url:
+        url: http://10.22.51.64/9_%E8%84%9A%E6%9C%AC/set_proxy.sh
+        dest: /tmp/set_proxy.sh
+        mode: 0600
+        force: yes
+        checksum: "md5:b82c04fe82d7716cc9a97ea48833cddd"
+      register: result
+        
+    - debug:
+        var: result
+

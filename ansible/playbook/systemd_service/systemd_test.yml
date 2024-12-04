@@ -1,0 +1,34 @@
+- name: test systemd model
+  hosts: centos7
+  become: true 
+  tasks:
+    - name: Yum Install Samba Service
+      yum:
+        name: samba
+        state: present
+
+    - name: Start Samba Service
+      systemd:
+        name: smb 
+        enabled: yes
+        state: started
+
+    - name: Check Samba Service Status
+      systemd:
+        name: smb
+        state: started
+      register: smb_status
+    
+    - name: Stop Samba Service 
+      systemd:
+        name: smb
+        state: stopped
+
+    - name: Restart Samba Service
+      systemd:
+        name: smb
+        state: restarted
+
+    - name: Debug Samba Service Status
+      debug:
+        var: smb_status

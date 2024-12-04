@@ -1,0 +1,20 @@
+- name: ubuntu apt install packet
+  hosts: ubuntu
+  tasks:
+    - name: apt install packet
+      apt: 
+        name: "{{ item }}"
+        state: present
+      loop:
+        - tcpdump
+        - nmap
+        - wget
+        - lrzsz
+        - tree
+        - net-tools
+        - iftop
+        - bind-utils
+        - curl
+        - bash-completion
+        - vim-enhanced
+        - dos2unix

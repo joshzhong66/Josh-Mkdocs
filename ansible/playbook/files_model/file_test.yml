@@ -1,0 +1,43 @@
+---
+- name: "file模块"
+  hosts: all
+  become: true
+  tasks:
+    - name: "创建test目录"
+      file:
+        path: /tmp/test
+        state: directory
+        mode: 0755
+        owner: root
+        group: root
+
+    - name: "创建test文件"
+      file:
+        path: /tmp/test.txt
+        state: touch
+        mode: 0755
+        owner: root
+        group: root
+
+    - name: "更改文件的所有者和组"
+      ansible.builtin.file:
+        path: /tmp/test
+        owner: yunwei
+        group: yunwei
+
+    - name: "删除文件或目录"
+      file:
+        path: "{{ item }}"
+        state: absent
+        mode: 0755
+        owner: root
+        group: root
+      loop:
+        - /tmp/test
+        - /tmp/test.txt
+    
+    - name: "创建软链接"
+      file:
+        src: /tmp/service
+        dest: /tmp/service_link
+        state: link

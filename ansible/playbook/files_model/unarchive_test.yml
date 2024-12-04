@@ -1,0 +1,32 @@
+- name: Unarchive Model Test
+  hosts: centos7
+  become: true
+  tasks:
+    - name: Geturl Download File
+      get_url:
+        url: http://10.22.51.64/5_Linux/clash-linux-amd64-v1.7.1.tar.gz
+        dest: /tmp
+        mode: 0644
+        force: yes
+    
+    # 解压远端本地的文件
+    - name: Unarchive File
+      unarchive:
+        src: /tmp/clash-linux-amd64-v1.7.1.tar.gz
+        dest: /tmp
+        remote_src: yes
+
+    # 解压本地文件到远端
+    - name: Unarchive Localfile To Remote
+      unarchive:
+        src: /data/software/5_Linux/prometheus+grafana安装包/alertmanager-0.27.0.linux-386.tar.gz
+        dest: /tmp
+        remote_src: no
+    
+    # 解压并去掉解压目录
+    - name: Unarchive File And Remove Top Dir
+      unarchive:
+        src: /tmp/clash-linux-amd64-v1.7.1.tar.gz
+        dest: /tmp
+        extra_opts: ['--strip-components=1']
+        remote_src: yes
