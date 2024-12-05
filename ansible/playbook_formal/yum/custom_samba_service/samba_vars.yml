@@ -1,0 +1,7 @@
+share_name: software
+share_comment: software
+share_dir: /data/software
+allowed_group: software
+
+samba_user: josh
+samba_passwd: josh2024
