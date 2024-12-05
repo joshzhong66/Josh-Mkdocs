@@ -1,0 +1,74 @@
+- name: Firewalld Model Test
+  hosts: centos7
+  become: true
+  tasks:
+    - name: Firewalld Service Start
+      service:
+        name: firewalld
+        state: started
+        enabled: true
+
+    - name: Check Firewalld Status
+      command: systemctl status firewalld
+      register: firewalld_status
+      changed_when: false
+      ignore_errors: true
+
+    - name: Debug Firewalld Status
+      debug:
+        msg: "{{ firewalld_status.stdout_lines }}"
+
+    - name: Install SMB
+      yum:
+        name: samba
+        state: present
+
+    - name:  Service Start SMB
+      command: systemctl start smb
+      ignore_errors: true
+
+    - name: Allow Firewalld Port
+      firewalld:
+        port: "{{ item }}"
+        permanent: true
+        immediate: true
+        state: enabled
+      loop:
+        - 445/tcp
+        - 139/tcp    
+        - 22/tcp
+
+    - name: Delete Firewalld Port
+      firewalld:
+        port: "{{ item }}"
+        permanent: true
+        immediate: true
+        state: disabled
+      loop:
+        - 22/tcp
+    
+    - name: Install httpd
+      yum:
+        name: httpd
+        state: present
+
+    - name: Service Start httpd
+      command: systemctl start httpd
+      ignore_errors: true
+
+    - name: Allow HTTP Service
+      firewalld:
+        service: "{{ item }}"
+        permanent: true
+        immediate: true
+        state: enabled
+      loop:
+        - http
+        - ssh
+
+    - name: Romove SSH Service
+      firewalld:
+        service: ssh
+        permanent: true
+        immediate: true
+        state: disabled

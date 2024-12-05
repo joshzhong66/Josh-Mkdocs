@@ -1,0 +1,74 @@
+# 自定义变量  Playbook Test Yum Install Nginx
+- name: Custom Variable Test For Yum Install Nginx
+  hosts: centos7
+  become: true
+  vars:
+    nginx_port: 8099
+    nginx_server_name: "{{ ansible_hostname }}"
+    nginx_root: "/etc/nginx"
+  tasks:
+    - name:  Install Nginx
+      yum:
+        name: nginx 
+        state: present
+
+    - name: Service Stop Nginx
+      service:
+        name: nginx
+        state: stopped
+        enabled: true
+
+    - name: Create a New Directory
+      file: 
+        path: "{{ nginx_root }}"
+        state: directory
+        mode: '0755'
+
+    - name: Create index.html
+      copy:
+        content: "<html><body><h1>Welcome to {{ ansible_default_ipv4.address }}!</h1></body></html>"
+        dest: "{{ nginx_root }}/index.html"
+        mode: '0644'
+
+    - name: Create nginx/conf Directory
+      file:
+        path: "{{ nginx_root }}/conf"
+        state: directory
+        mode: '0755'    
+
+    - name: Configure Nginx Listen Port
+      template:
+        src: /data/ansible/templates/nginx.conf.j2
+        dest: "{{ nginx_root }}/conf/nginx.conf"
+        mode: '0644'
+    
+    - name: Create Nginx Group
+      group:
+        name: nginx
+        state: present
+    
+    - name: Create Nginx User
+      user:
+        name: nginx
+        state: present
+        group: nginx
+        home: "{{ nginx_root }}"
+
+    - name: Change Nginx Directory Owner
+      file:
+        path: "{{ nginx_root }}"
+        owner: nginx
+        group: nginx
+        mode: '0755'
+
+    - name: Modify /etc/nginx/nginx.conf
+      lineinfile:
+        path: "{{ nginx_root }}/nginx.conf"
+        line: 'include /etc/nginx/conf/*.conf;'
+        insertafter: 'http {'
+        create: yes
+
+    - name: Restart Nginx
+      service: 
+        name: nginx
+        state: restarted

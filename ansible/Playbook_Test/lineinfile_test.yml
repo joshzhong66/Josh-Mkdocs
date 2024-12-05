@@ -1,0 +1,32 @@
+- name: Lineinfile Model Test
+  hosts: centos7
+  become: true
+  tasks:
+    - name:  Copy /etc/passwd to /tmp
+      command: cp /etc/passwd /tmp
+
+    # 确保文件中存在某些行
+    - name: Ensure a line is present in the file
+      lineinfile:
+        path: /tmp/passwd
+        line: "{{ item }}"
+      loop:
+        - root:x:0:0:root:/root:/bin/bash
+        - bin:x:1:1:bin:/bin:/sbin/nologin
+
+    # 删除特定行daemon用户
+    - name: Ensure a line is absent in the file
+      lineinfile:
+        path: /tmp/passwd
+        line: "{{ item }}"
+        state: absent
+      loop:
+        - daemon:x:2:2:daemon:/sbin:/sbin/nologin
+
+    # 插入特定行
+    - name: Ensure a line is present in the file
+      lineinfile:
+        path: /tmp/passwd
+        line: "{{ item }}"
+      loop:
+        - joshtttp:x:1000:1000:joshtttp:/home/joshtttp:/bin/bash

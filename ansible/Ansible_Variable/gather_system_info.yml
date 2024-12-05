@@ -1,0 +1,28 @@
+# 这是由ansible内建变量编写的playbook
+- name: Gather System Info
+  hosts: centos7
+  become: true
+  tasks:
+    - name:  Display Gater Info
+      debug:
+        msg:
+          - "Hostname: {{ ansible_hostname }}"
+          - "IP Address: {{ ansible_default_ipv4.address }}"
+          - "Operating System: {{ ansible_os_family }} {{ ansible_distribution_version }}"
+          - "Total Memory: {{ ansible_memtotal_mb }} MB"
+          - "CPU Cores: {{ ansible_processor_vcpus }}"
+          - "Kernel: {{ ansible_kernel }}"
+          - "Architecture: {{ ansible_architecture }}"
+
+
+    - name: Save Info to a File
+      copy:
+        content: |
+          Hostname: {{ ansible_hostname}}
+          IP Address: {{ ansible_default_ipv4.address }}
+          Operating System: {{ ansible_os_family }} {{ ansible_distribution_version }}
+          Total Memory: {{ ansible_memtotal_mb }} MB
+          CPU Cores: {{ ansible_processor_vcpus }}
+          Kernel: {{ ansible_kernel }}
+          Architecture: {{ ansible_architecture }}
+        dest: "/tmp/{{ ansible_default_ipv4.address }}_info.txt"

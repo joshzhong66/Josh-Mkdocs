@@ -1,17 +1,38 @@
-# 安装模块
-# ansible-galaxy collection install community.general
-
-- name: synchronize模块测试 复制远端文件夹到本地
-  hosts: all
+- name: Synchronize Model Test
+  hosts: centos7
   become: true
   tasks: 
-    - name: 确保 rsync 已安装
+    - name: Remote ensure rsync is installed
       yum:
         name: rsync
         state: present
 
-    - name: "复制/etc 文件夹到本地"
+    - name: Local ensure rsync is installed
+      yum:
+        name: rsync
+        state: present
+      delegate_to: localhost
+
+    - name: Copy the Remote /etc directory to /tmp in the Localhost
       synchronize:
         src: /etc
         dest: /tmp/
         recursive: yes
+    
+    - name: Copy the Remote /etc/services file to /tmp in the Localhost
+      synchronize:
+        src: /etc/services
+        dest: /tmp 
+        mode: pull
+
+    - name:  Copy the Local /root/scripts/check_linux.sh  to the Remote /tmp directory
+      synchronize:
+        src: /root/scripts/check_linux.sh
+        dest: /tmp
+        mode: push
+    
+    - name: Copy the Local /root/scripts to the Remote /tmp directory
+      synchronize:
+        src: /root/scripts
+        dest: /tmp
+        mode: push
