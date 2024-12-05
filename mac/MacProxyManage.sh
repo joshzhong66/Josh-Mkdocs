@@ -8,24 +8,21 @@ ACTION=$1
 
 
 enable_proxy() {
-    echo "开启代理..."
     networksetup -setwebproxy "$NETWORK_SERVICE" "$PROXY_SERVER" "$PROXY_PORT"
     networksetup -setsecurewebproxy "$NETWORK_SERVICE" "$PROXY_SERVER" "$PROXY_PORT"
-    echo "代理已开启"
+    echo "Proxy Enable"
 }
 
 disable_proxy() {
-    echo "关闭代理..."
     networksetup -setwebproxystate "$NETWORK_SERVICE" off
     networksetup -setsecurewebproxystate "$NETWORK_SERVICE" off
-    echo "代理已关闭"
+    echo "Proxy Disable"
 }
 
 configure_proxy() {
-    echo "配置代理..."
     networksetup -setwebproxy "$NETWORK_SERVICE" "$PROXY_SERVER" "$PROXY_PORT"
     networksetup -setsecurewebproxy "$NETWORK_SERVICE" "$PROXY_SERVER" "$PROXY_PORT"
-    echo "代理已配置：$PROXY_SERVER:$PROXY_PORT"
+    echo "Proxy Configured：$PROXY_SERVER:$PROXY_PORT"
 }
 
 case "$ACTION" in
