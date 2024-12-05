@@ -31,3 +31,4 @@ nginx:
     volumes:
       - "/data/hexo/www/blog:/var/www/blog"
     container_name: "php"
+
