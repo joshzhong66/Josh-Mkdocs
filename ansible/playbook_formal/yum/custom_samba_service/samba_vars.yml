@@ -3,5 +3,8 @@ share_comment: software
 share_dir: /data/software
 allowed_group: software
 
-samba_user: josh
-samba_passwd: josh2024
+owner_user:
+  - { user: sunline, passwd: josh2024 }
+samba_user:
+  - { user: jerion, passwd: josh2024 }
+  - { user: josh, passwd: josh2024 }

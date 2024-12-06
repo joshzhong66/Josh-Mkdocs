@@ -1,0 +1,8 @@
+- import_playbook: install_openssl.yml
+
+- name: Playbook Reuse Test
+  hosts: centos7
+  become: true
+  tasks:
+    - name: Print OpenSSL Version
+      shell: openssl version

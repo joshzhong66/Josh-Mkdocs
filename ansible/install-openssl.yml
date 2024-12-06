@@ -1,0 +1,126 @@
+---
+# ansible-playbook install-openssl.yml
+
+- name: Install OpenSSL from source
+  hosts: server
+  become: yes
+  vars:
+    openssl_version: openssl-1.1.1w
+    openssl_install_dir: /usr/local/openssl
+    openssl_tar_file: /tmp/{{ openssl_version }}.tar.gz
+    openssl_download_url: http://mirrors.sunline.cn/source/openssl/{{ openssl_version }}.tar.gz
+
+  tasks:
+    - name: Detecting operating systems
+      fail:
+        msg: "Only supports the Redhat family. Currently {{ ansible_distribution }}-{{ ansible_distribution_version }} (Family: {{ ansible_os_family }})"
+      when: ansible_os_family != 'RedHat'
+
+    - name: Check if OpenSSL is already installed   # 检查 OpenSSL 是否已安装
+      stat:
+        path: "{{ openssl_install_dir }}"
+      register: openssl_directory
+      ignore_errors: true
+
+    - name: If OpenSSL is already installed, exit   # 如果 OpenSSL 已安装，退出执行
+      fail:
+        msg: "OpenSSL installed, exiting execution"
+      when: openssl_directory.stat.exists
+
+    - name: Check if /usr/bin/openssl exists   # 检查 /usr/bin/openssl 是否存在并重命名
+      stat:
+        path: /usr/bin/openssl
+      register: openssl_binfile
+    
+    - name: Rename /usr/bin/openssl to /usr/bin/openssl_bak
+      command: mv /usr/bin/openssl /usr/bin/openssl_bak
+      when: openssl_binfile.stat.exists
+
+    - name: Install build dependencies   # 安装依赖项
+      yum:
+        name:
+          - wget
+          - gcc
+          - gcc-c++
+          - make
+          - zlib-devel
+          - pcre-devel
+          - geoip-devel
+          - perl-IPC-Cmd
+          - perl-Test-Simple
+          - perl-Test-Harness
+        state: present
+
+    - name: Install OpenSSL
+      block:
+        - name: Download OpenSSL source package   # 下载 OpenSSL 源码包
+          get_url:
+            url: "{{ openssl_download_url }}"
+            dest: "{{ openssl_tar_file }}"
+            mode: 0644
+            force: true
+            timeout: 15
+
+        - name: Extract {{ openssl_tar_file }}   # 解压 OpenSSL 源码包
+          unarchive:
+            src: "{{ openssl_tar_file }}"
+            dest: /tmp
+            remote_src: yes
+        
+        - name: Configure OpenSSL  # 配置 OpenSSL 编译选项
+          command: ./config -fPIC --prefix={{ openssl_install_dir }} zlib
+          args:
+            chdir: /tmp/{{ openssl_version }}
+        
+        - name: Compile OpenSSL   # 编译 OpenSSL
+          command: make -j{{ ansible_processor_cores | default(4) }}
+          args: 
+            chdir: /tmp/{{ openssl_version }}
+
+        - name: Install OpenSSL   # 安装 OpenSSL
+          command: make install
+          args: 
+            chdir: /tmp/{{ openssl_version }}
+
+        - name: Create a symbolic link for OpenSSL   # 创建 openssl 软链接
+          file:
+            src: "{{ openssl_install_dir }}/bin/openssl"
+            dest: /usr/bin/openssl
+            state: link
+        
+        - name: Add OpenSSL library path to ld.so.conf   # 配置动态链接库
+          lineinfile:
+            path: /etc/ld.so.conf.d/openssl.conf
+            line: "{{ openssl_install_dir }}/lib"
+            create: yes
+            state: present
+        
+        - name: Run ldconfig to update dynamic linker cache   # 更新动态链接库缓存
+          command: ldconfig
+        
+        - name: Create OpenSSL environment variables   # 配置 OpenSSL 环境变量
+          copy:
+            dest: /etc/profile.d/openssl.sh
+            mode: 0644
+            content: |
+              export PKG_CONFIG_PATH={{ openssl_install_dir }}/lib/pkgconfig:$PKG_CONFIG_PATH
+              export LDFLAGS="-L{{ openssl_install_dir }}/lib"
+              export CPPFLAGS="-I{{ openssl_install_dir }}/include"
+        
+        - name: Verify OpenSSL installation   # 验证 OpenSSL 安装
+          shell: source /etc/profile && openssl version
+          register: verify_openssl_result
+          ignore_errors: true
+        
+        - name: If OpenSSL is not installed correctly, it will fail   # 如果验证版本失败，说明未成功安装
+          fail:
+            msg: "OpenSSL installation failed."
+          when: verify_openssl_result.rc != 0   # rc 表示 Return Code（返回码）
+      
+        - name: Clean up
+          file:
+            path: "{{ item }}"
+            state: absent
+          loop:
+            - "{{ openssl_tar_file }}"
+            - /tmp/{{ openssl_version }}

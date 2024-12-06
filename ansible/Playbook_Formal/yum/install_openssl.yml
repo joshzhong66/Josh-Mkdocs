@@ -1,0 +1,105 @@
+---
+# ansible_playbook install_openssl.yml
+# OpenSSL.tar.gz 官方下载地址（需要代理） url: https://www.openssl.org/source/openssl-1.1.1w.tar.gz
+# 公司镜像源 url: https://mirrors.sunline.cn/source/openssl/openssl-1.1.1w.tar.gz
+- name: Install OpenSSL
+  hosts: centos7
+  become: true
+  tasks:
+    - name: Detecting Operating System
+      fail:
+        msg: "Only Supports the Redhat family. Currently{{ ansible_distribution }}-{{ ansible_distribution_version }} (Family: {{ ansible_os_family }}"
+      when: ansible_os_family != "RedHat"
+
+    - name: Check If OpenSSL source is not installed
+      stat:
+        path: /usr/local/openssl
+      register: openssl_directory
+      ignore_errors: true
+
+    - name: If OpenSSL source is already installed, skip it
+      fail:
+        msg: "OpenSSL is already installed, skipping..."
+      when: openssl_directory.stat.exists
+
+    - name: Install OpenSSL Rely
+      yum:
+        name: 
+          - wget
+          - gcc
+          - gcc-c++
+          - make
+          - zlib-devel
+          - pcre-devel
+          - geoip-devel
+          - perl-IPC-Cmd
+          - perl-Test-Simple
+          - perl-Test-Harness
+        state: present
+      when: openssl_directory.stat.exists
+
+    - name: Doload OpenSSL Package
+      get_url:
+        url: http://10.22.51.64/5_Linux/openssl-1.1.1w.tar.gz
+        dest: /usr/local/src
+
+
+    - name: Unarchive OpenSSL Package
+      unarchive: 
+        src: /usr/local/src/openssl-1.1.1w.tar.gz
+        dest: /usr/local/src/
+        remote_src: yes
+
+    - name: Configurr OpenSSL
+      shell: |
+        cd /usr/local/src/openssl-1.1.1w
+        ./config -fPIC --prefix=/usr/local/openssl zlib
+
+    - name: Make OpenSSL
+      shell: |
+        cd /usr/local/src/openssl-1.1.1w
+        make -j $(nproc) 
+
+    - name: Install OpenSSL
+      shell: |
+        cd /usr/local/src/openssl-1.1.1w
+        make install
+
+    - name: Check if openssl exists
+      stat:
+        path: /usr/local/openssl
+      register: openssl_stat
+    - name: Backup openssl if it exists
+      command: mv /usr/bin/openssl /usr/bin/openssl.bak
+      when: openssl_stat.stat.exists
+
+    - name: Create Link
+      shell: ln -s /usr/local/openssl/bin/openssl /usr/bin/openssl
+
+    - name: Configure Dynamic Link Library
+      shell: |
+        echo "/usr/local/openssl/lib" | sudo tee -a /etc/ld.so.conf.d/openssl.conf
+        sudo ldconfig
+    
+    - name: Add Pkg-Config Path
+      copy:
+        content: |
+          export PKG_CONFIG_PATH=/usr/local/openssl/lib/pkgconfig:$PKG_CONFIG_PATH
+          export LDFLAGS="-L/usr/local/openssl/lib"
+          export CPPFLAGS="-I/usr/local/openssl/include"
+        dest: /etc/profile.d/openssl.sh
+        mode: '0644'
+
+    - name: Source Profile 
+      shell: source /etc/profile
+    
+    - name: Check OpenSSL Version
+      shell: openssl version
+      register: openssl_version
+
+    - name: Print OpenSSL Version
+      debug:
+        msg: "OpenSSL Version: {{ openssl_version.stdout }}"
+    
+
+        

@@ -1,55 +1,59 @@
-- name: Yum Install Samba
+---
+- name: Yum install samba
   hosts: centos7
   become: true
   vars_files:
-    - /data/ansible/samba_vars.yml
+    - samba_vars.yml
   tasks:
-    - name: Disable Firewalld Service
+    - name: Disable firewalld service
       shell: systemctl stop firewalld && systemctl disable firewalld
+      changed_when: false
 
     - name: Disable SELinux
-      shell: setenforce 0 && sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+      shell: setenforce 0 && sed -i 's/enforcing/disabled/' /etc/selinux/config
       when: ansible_selinux.status == "enabled"
 
     - name: Install Samba
       yum:
-        name: samba 
+        name: samba
         state: present
-
+    
     - name: Configure Samba settings in smb.conf
       template:
-        src: /data/ansible/templates/smb.conf.j2
+        src: samba.conf.j2
         dest: /etc/samba/smb.conf
         mode: 0644
-
-    - name: Create Samba Group
+    
+    - name: Create Samba group
       group:
         name: "{{ allowed_group }}"
         state: present
-
-    - name: Create System User
+    
+    - name: Create user and Add to Samba group
       user:
-        name: "{{ samba_user }}"
-        group: "{{ allowed_group }}"
+        name: "{{ item.user }}"
+        group: "{{ allowed_group }}"  # 修改主组
         shell: /sbin/nologin
-        system: no 
+        system: no
         create_home: no
-
-    - name: Create Samba User
-      command: smbpasswd -s -a {{ samba_user }}
-      args: 
-        stdin: "{{ samba_passwd }}\n{{ samba_passwd }}"
-
-    - name: Create Samba Share Directory
+      loop: "{{ owner_user + samba_user }}"    # 通过 + 合并两个列表
+    
+    - name: Configure password for Samba user
+      command: smbpasswd -s -a {{ item.user }}
+      args:
+        stdin: "{{ item.passwd }}\n{{ item.passwd }}"
+      loop: "{{ owner_user + samba_user }}"
+    
+    - name: Create Samba share directory
       file:
         path: "{{ share_dir }}"
         state: directory
-        mode: '0755'
-        owner: "{{ samba_user }}"
+        mode: 0775
+        owner: "{{ item.user }}"
         group: "{{ allowed_group }}"
-        recurse: yes
+      loop: "{{ owner_user }}"
 
-    - name: Service Start Samba
+    - name: Start Samba service
       service:
         name: smb
         state: started
