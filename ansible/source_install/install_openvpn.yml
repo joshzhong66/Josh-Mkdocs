@@ -1,0 +1,141 @@
+--- 
+# ansible_playbook install_openvpn.yml
+
+#- import_playbook: install_openssl.yml
+#- import_playbook: /data/ansible/playbook/install/source-install-depend/install-libnl3.yml
+#- import_playbook: install_go.yml
+
+- name: Install OpenVPN Server 
+  hosts: centos7
+  become: true
+  vars:
+    openvpn_version: openvpn-2.6.11
+    openvpn_download_path: /usr/local/src
+    openvpn_install_path: /usr/local/openvpn
+    openvpn_download_url: https://swupdate.openvpn.org/community/releases/openvpn-2.6.11.tar.gz
+
+  tasks:
+    - name: Detecting Operating System
+      fail:
+        msg: "Only Supports the Redhat family. Currently{{ ansible_distribution }}-{{ ansible_distribution_version }} (Family: {{ ansible_os_family }})"
+      when: ansible_os_family != "RedHat"
+
+    - name: Check If OpenVPN source is not installed
+      stat:
+        path: "{{ openvpn_install_path }}"
+      register: openvpn_directory
+      ignore_errors: true
+
+    - name: If OpenVPN source is already installed, skip it
+      fail:
+        msg: " OpenVPN is already installed, skipping..."
+      when: openvpn_directory.stat.exists
+
+    - name: Install Rely
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - gcc
+        - gcc-c++
+        - make
+        - zlib-devel
+        - pcre-devel
+        - geoip-devel
+        - epel-release
+        - perl-IPC-Cmd
+        - perl-Test-Simple
+        - autoconf
+        - automake
+        - bison
+        - flex
+        - cmake
+        - iproute
+        - lz4-devel
+        - lzo-devel
+        - pam-devel
+        - p11-kit-devel
+        - libselinux-devel
+        - systemd-devel
+        - libcap-ng-devel
+        - pkcs11-helper-devel
+        - sqlite-devel
+        - libtool
+        - libtool-ltdl
+      when: openvpn_directory.stat.exists
+
+    - name: Print OpenSSL Version
+      shell: openssl version
+
+    - name: Print Libnl3 Version
+      shell: pkg-config --modversion libnl-genl-3.0
+
+    - name: Download OpenVPN Source Package
+      #shell: wget https://swupdate.openvpn.org/community/releases/openvpn-2.6.11.tar.gz --no-check-certificate
+      get_url:
+        url: https://swupdate.openvpn.org/community/releases/openvpn-2.6.11.tar.gz
+        dest: /usr/local/src
+        mode: '0644'
+    
+    - name: Unarchive OpenVPN Source Package
+      unarchive:
+        src: /usr/local/src/openvpn-2.6.11.tar.gz
+        dest: /usr/local/src
+        remote_src: yes
+    
+    - name: Configure OpenVPN
+      shell: | 
+        cd /usr/local/src/openvpn-2.6.11
+        ./configure \
+        --prefix=/usr/local/openvpn \
+        --enable-lzo \
+        --enable-lz4 \
+        --enable-debug \
+        --enable-management \
+        --enable-async_push \
+        --enable-plugins \
+        --enable-port-share \
+        --enable-static \
+        --enable-plugin-auth-pam \
+        --enable-pam-dlopen \
+        --enable-silent-rules \
+        --enable-x509-alt-username \
+        --enable-pkcs11 \
+        --enable-selinux \
+        --with-crypto-library=openssl \
+        --with-gnu-ld \
+        --with-openssl-engine=auto \
+        --enable-iproute2 \
+        --enable-systemd
+
+    - name: Make OpenVPN
+      shell: |
+        cd /usr/local/src/openvpn-2.6.11
+        make -j $(nproc)
+        make install
+    
+    - name: Create Link
+      shell: |
+        ln -s /usr/local/openvpn/sbin/openvpn /usr/sbin/openvpn
+    
+    - name: Print OpenVPN Version
+      shell: openvpn --version
+    
+    - name: Install OpenVPN UI 
+      get_url:
+        url: https://github.com/d3vilh/openvpn-ui/archive/refs/tags/0.9.5.5.tar.gz
+        dest: /usr/local/src
+        mode: '0644'
+
+    - name: Unarchive OpenVPN UI
+      unarchive:
+        src: /usr/local/src/openvpn-ui-0.9.5.5.tar.gz
+        dest: /opt
+        remote_src: yes
+    
+    - name: Move openvpn-ui
+      shell: |
+        mv /opt/openvpn-ui-0.9.5.5 /opt/openvpn-ui
+
+    
+

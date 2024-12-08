@@ -1,0 +1,60 @@
+---
+- name: Yum install samba
+  hosts: centos7
+  become: true
+  vars_files:
+    - samba_vars.yml
+  tasks:
+    - name: Disable firewalld service
+      shell: systemctl stop firewalld && systemctl disable firewalld
+      changed_when: false
+
+    - name: Disable SELinux
+      shell: setenforce 0 && sed -i 's/enforcing/disabled/' /etc/selinux/config
+      when: ansible_selinux.status == "enabled"
+
+    - name: Install Samba
+      yum:
+        name: samba
+        state: present
+    
+    - name: Configure Samba settings in smb.conf
+      template:
+        src: samba.conf.j2
+        dest: /etc/samba/smb.conf
+        mode: 0644
+    
+    - name: Create Samba group
+      group:
+        name: "{{ allowed_group }}"
+        state: present
+    
+    - name: Create user and Add to Samba group
+      user:
+        name: "{{ item.user }}"
+        group: "{{ allowed_group }}"  # 修改主组
+        shell: /sbin/nologin
+        system: no
+        create_home: no
+      loop: "{{ owner_user + samba_user }}"    # 通过 + 合并两个列表
+    
+    - name: Configure password for Samba user
+      command: smbpasswd -s -a {{ item.user }}
+      args:
+        stdin: "{{ item.passwd }}\n{{ item.passwd }}"
+      loop: "{{ owner_user + samba_user }}"
+    
+    - name: Create Samba share directory
+      file:
+        path: "{{ share_dir }}"
+        state: directory
+        mode: 0775
+        owner: "{{ item.user }}"
+        group: "{{ allowed_group }}"
+      loop: "{{ owner_user }}"
+
+    - name: Start Samba service
+      service:
+        name: smb
+        state: started
+        enabled: true

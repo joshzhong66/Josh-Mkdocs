@@ -1,0 +1,16 @@
+--- 
+# ansible_playbook 检测操作系统 
+# when 条件判断 ansible_os_family != "RedHat" 为 False
+- name: Detecting_Operating_Systems 
+  hosts: centos7
+  become: true
+  tasks:
+    - name: Detecting_Operating_System
+      fail:
+        msg: "Only Supports the Redhat family. Currently {{ ansible_distribution }}-{{ ansible_distribution_version }} (Family: {{ ansible_os_family }})"
+      when: ansible_os_family != "RedHat"
+      register: result
+
+    - name: Print Result
+      debug:
+        var: result

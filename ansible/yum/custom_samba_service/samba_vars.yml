@@ -1,0 +1,10 @@
+share_name: software
+share_comment: software
+share_dir: /data/software
+allowed_group: software
+
+owner_user:
+  - { user: sunline, passwd: josh2024 }
+samba_user:
+  - { user: jerion, passwd: josh2024 }
+  - { user: josh, passwd: josh2024 }

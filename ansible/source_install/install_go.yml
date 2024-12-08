@@ -1,0 +1,74 @@
+--- 
+# ansible_playbook install_go.yml
+- name: Install Go language environment
+  hosts: centos7
+  become: true
+  vars:
+    go_version: "1.22.5"
+    go_install_path: /usr/local/go
+    go_download_path: /usr/local/src
+    go_download_url: https://golang.org/dl/go1.22.5.linux-amd64.tar.gz
+    #官方下载地址： https://golang.org/dl/go{{ go_version }}.linux-amd64.tar.gz
+  tasks:
+    - name: Detecting Operating System 
+      fail:
+        msg: "Only Supports the Redhat family. Currently {{ ansible_distribution }}-{{ ansible_distribution_version }} (Family: {{ ansible_os_family }})"
+      when: ansible_os_family != "RedHat"
+
+    - name: Check If Go source is not Installd 
+      stat:
+        path: "{{ go_install_path }}"
+      register: go_directory
+      ignore_errors: true
+    
+    - name: If Go source is already installed, skip installation
+      fail:
+        msg: "Go language environment has been installed, Exit"
+      when: go_directory.stat.exists
+
+    - name: Yum Install Rely
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - gcc
+        - sed 
+        - git 
+        - easy-rsa 
+        - curl 
+        - jq 
+        - oathtool
+        - wget
+      when: go_directory.stat.exists
+
+    - name: Download Go Source Package
+      get_url:
+        #url: 
+        url: http://10.22.51.64/5_Linux/go1.22.5.linux-amd64.tar.gz
+        dest: /usr/local/src
+        mode: '0644'
+
+    - name: Unarchive Go Source Package
+      unarchive:
+        src: /usr/local/src/go1.22.5.linux-amd64.tar.gz
+        dest: /usr/local 
+        remote_src: yes
+        mode: '0755'
+    
+    - name: Configuring environment variables
+      copy:
+        content: |
+          export GOROOT=/usr/local/go
+          export GOPATH=/usr/local/gopath
+          export GO111MODULE="on"
+          export GOPROXY=https://goproxy.cn,direct
+          export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+        dest: /etc/profile.d/golang.sh
+        mode: '0644'
+    
+    - name: Source Profile
+      shell: source /etc/profile
+
+    - name: Print Go Version
+      shell: go version
+
