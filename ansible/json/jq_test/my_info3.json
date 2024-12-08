@@ -1,0 +1,15 @@
+{
+    "my_info": {
+      "name": "Josh",
+      "age": 20,
+      "city": "Shen Zhen",
+      "like": {
+        "1": "骑车",
+        "2": "爬山"
+      },
+      "friends": [
+        { "name": "Tom", "age": 21 },
+        { "name": "Jerry", "age": 22 }
+      ]
+    }
+  }
