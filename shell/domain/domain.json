@@ -1,0 +1,66 @@
+{
+  "music.joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/data/nginxWebUI/cert/music.joshzhong.top/music.joshzhong.top.pem",
+    "key_file": "/data/nginxWebUI/cert/music.joshzhong.top/music.joshzhong.top.key",
+    "app_type": "docker"
+  },
+  "upload.joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/data/nginxWebUI/cert/upload.joshzhong.top/upload.joshzhong.top.pem",
+    "key_file": "/data/nginxWebUI/cert/upload.joshzhong.top/upload.joshzhong.top.key",
+    "app_type": "docker"
+  },
+  "reader.joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/data/nginxWebUI/cert/reader.joshzhong.top/reader.joshzhong.top.pem",
+    "key_file": "/data/nginxWebUI/cert/reader.joshzhong.top/reader.joshzhong.top.key",
+    "app_type": "docker"
+  },
+  "domain.joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/data/nginxWebUI/cert/domain.joshzhong.top/domain.joshzhong.top.pem",
+    "key_file": "/data/nginxWebUI/cert/domain.joshzhong.top/domain.joshzhong.top.key",
+    "app_type": "docker"
+  },
+  "joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/data/nginxWebUI/cert/joshzhong.top/joshzhong.top.pem",
+    "key_file": "/data/nginxWebUI/cert/joshzhong.top/joshzhong.top.key",
+    "app_type": "docker"
+  },
+  "nginx.joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/data/nginxWebUI/cert/nginx.joshzhong.top/nginx.joshzhong.top.pem",
+    "key_file": "/data/nginxWebUI/cert/nginx.joshzhong.top/nginx.joshzhong.top.key",
+    "app_type": "docker"
+  },
+  "nas.joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/data/nginxWebUI/cert/nas.joshzhong.top/nas.joshzhong.top.pem",
+    "key_file": "/data/nginxWebUI/cert/nas.joshzhong.top/nas.joshzhong.top.key",
+    "app_type": "docker"
+  },
+  "wiki.joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/data/nginxWebUI/cert/wiki.joshzhong.top/wiki.joshzhong.top.pem",
+    "key_file": "/data/nginxWebUI/cert/wiki.joshzhong.top/wiki.joshzhong.top.key",
+    "app_type": "docker"
+  },
+  "pic.joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/data/nginxWebUI/cert/pic.joshzhong.top/pic.joshzhong.top.pem",
+    "key_file": "/data/nginxWebUI/cert/pic.joshzhong.top/pic.joshzhong.top.key",
+    "app_type": "docker"
+  }
+}
+
