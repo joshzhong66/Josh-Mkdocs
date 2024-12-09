@@ -14,6 +14,8 @@ LOG_FILE="$DIR_PATH/sslcert-update.log"
 ACME_HOME="/root/.acme.sh"
 ACME_CMD="/root/.acme.sh/acme.sh"
 
+
+# 若文件存在且不为空，就增加几行空行
 if [[ -s $LOG_FILE ]]; then
     count=0
     while [ $count -lt 3 ]
@@ -23,36 +25,50 @@ if [[ -s $LOG_FILE ]]; then
     done
 fi
 
-echo_log() {
-    local color="$1"
-    shift
-    echo -e "$(date +'%F %T') -[${color}] $* \033[0m"
+# 日志打印
+function _log_info() {
+    echo -e "$(date +'%F %T') - [info] $* " | tee -a $LOG_FILE
 }
-echo_log_info() {
-    echo_log "\033[32mINFO" "$*"
-}
-echo_log_warn() {
-    echo_log "\033[33mWARN" "$*"
-}
-echo_log_error() {
-    echo_log "\033[31mERROR" "$*"
+function _log_err() {
+    echo -e "$(date +'%F %T') - [error] $* " | tee -a $LOG_FILE
+    exit 1
 }
 
+
 if ! command -v jq &> /dev/null; then
-    echo_log_info "jq Not installed"
+    _log_info "jq 未安装，准备安装依赖"
     yum -y install jq > /dev/null 2>&1
 fi
 
-check_ssl_certificate_folder() {
-    cert_info=$(echo | openssl s_client -servername "${ACME_HOME}/${domain}_ecc/fullchain.cer" -connect "$domain:$port" -showcerts 2> /dev/null | openssl x509 -noout -dates 2> /dev/null)
+
+
+# 生成证书
+function acme_generate_cert() {
+    if [ ! -d "${ACME_HOME}/${domain}_ecc" ]; then
+        _log_info "证书${ACME_HOME}/${domain}目录不存在，开始生成证书!"
+        _log_info "$ACME_CMD --issue --dns dns_huaweicloud
+        $ACME_CMD --issue --dns dns_huaweicloud -d $domain  > /dev/null 2>&1
+        [ $? -eq 0 ] && _log_info "生成证书成功" || { _log_err "生成证书失败"; }
+    else
+        _log_info "证书目录 ${ACME_HOME}/${domain}_ecc 已存在，跳过证书生成"
+        _log_info "检查证书到期时间"
+        request_cert_info "${ACME_HOME}/${domain}_ecc/fullchain.cer" "$port"
+        if [[ $cert_expire_day -gt $EXPIRE_DAYS ]]; then
+            _log_info "证书未过期，跳过更新"
+        else
+            _log_info "证书已过期，开始更新"
+            acme_update_cert "$domain"
+        fi
+    fi
 }
 
 
+
 # 获取证书信息
-request_cert_info() {
+function request_cert_info() {
     #_log_info "openssl s_client -servername "${ACME_HOME}/${domain}_ecc/fullchain.cer" -connect "$domain:$port" -showcerts 2> /dev/null | openssl x509 -noout -dates"
-    cert_info=$(echo | openssl s_client -servername "${ACME_HOME}/${domain}_ecc/fullchain.cer" -connect "$domain:$port" -showcerts 2> /dev/null | openssl x509 -noout -dates 2> /dev/null)
-    echo_log_info "获取[$domain:$port]证书信息"
+    cert_info=$(echo | openssl s_client -servername "$domain" -connect "$domain:$port" -showcerts 2> /dev/null | openssl x509 -noout -dates 2> /dev/null)
+    _log_info "获取[$domain:$port]证书信息"
     [[ $? -ne 0 ]] && _log_err "获取[$domain:$port]证书信息失败"
     # 获取证书到期时间并转换为时间戳
     cert_end_date=$(echo "$cert_info" | grep 'notAfter' | sed 's/notAfter=//')
@@ -64,30 +80,11 @@ request_cert_info() {
     cert_expire_day=$(((end_date_seconds - current_date_seconds) / 86400))
 }
 
-acme_generate_cert() {
-    if [ ! -d "${ACME_HOME}/${domain}_ecc" ]; then
-        #echo_log_info "证书${ACME_HOME}/${domain}目录不存在，开始生成证书!"
-        #echo_log_info "$ACME_CMD --issue --dns dns_huaweicloud -d $domain"
-        $ACME_CMD --issue --dns dns_huaweicloud -d $domain  > /dev/null 2>&1
-        [ $? -eq 0 ] && _log_info "生成证书成功" || { _log_err "生成证书失败"; }
-    else
-        #echo_log_info "证书目录 ${ACME_HOME}/${domain}_ecc 已存在，跳过证书生成"
-        #echo_log_info "检查证书到期时间"
-        request_cert_info "${ACME_HOME}/${domain}_ecc/fullchain.cer" "$port"
-        if [[ $cert_expire_day -gt $EXPIRE_DAYS ]]; then
-            echo_log_info "证书未过期，跳过更新"
-        else
-            _log_info "证书已过期，开始更新"
-            acme_update_cert "$domain"
-        fi
-    fi
-}
-
 
 # 通过acme.sh更新证书
 function acme_update_cert() {
     _log_info "$ACME_CMD --issue -d $domain --dns dns_huaweicloud -d $domain"
-    $ACME_CMD --issue -d $domain --dns dns_huaweicloud -d $domain
+    $ACME_CMD --issue -d $domain --dns dns_huaweicloud
     if [[ $? == 0 ]]; then
         echo "---------------------------------------------------"
     _log_info "acme.sh 更新域名[$domain]成功"
@@ -189,23 +186,24 @@ function check_cert_expire() {
             sleep 10
             request_cert_info "$domain" "$port"
 
-            if [[ $cert_expire_day -gt $EXPIRE_DAYS ]]; then
-            curl -s -X POST -H 'Content-Type: application/json' -d "{
-                \"msgtype\": \"text\",
-                \"text\": {
-                    \"content\": \"更新域名 $domain 成功, $update_end_date 后过期。\"
-                }
-            }" "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=05154f52-3b88-4a35-a143-ef7d8f7494f1"
-            _log_info "更新域名[$domain]成功,[$update_end_date]后过期"
-            else
-            curl -s -X POST -H 'Content-Type: application/json' -d "{
-                \"msgtype\": \"text\",
-                \"text\": {
-                    \"content\": \"更新域名 $domain 异常,请检查日志。\"
-                }
-            }" "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=05154f52-3b88-4a35-a143-ef7d8f7494f1"
-            _log_err "更新域名[$domain]异常,请检查"
-            fi
+
+			if [[ $cert_expire_day -gt $EXPIRE_DAYS ]]; then
+				curl -s -X POST -H 'Content-Type: application/json' -d "{
+					\"msgtype\": \"text\",
+					\"text\": {
+						\"content\": \"更新域名 $domain 成功, $update_end_date 后过期。\"
+					}
+				}" "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=05154f52-3b88-4a35-a143-ef7d8f7494f1"
+				_log_info "更新域名[$domain]成功,[$update_end_date]后过期"
+			else
+				curl -s -X POST -H 'Content-Type: application/json' -d "{
+					\"msgtype\": \"text\",
+					\"text\": {
+						\"content\": \"更新域名 $domain 异常,请检查日志。\"
+					}
+				}" "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=05154f52-3b88-4a35-a143-ef7d8f7494f1"
+				_log_err "更新域名[$domain]异常,请检查"
+			fi
         fi
     done
 }

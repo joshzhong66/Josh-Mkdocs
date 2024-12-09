@@ -1,0 +1,51 @@
+# Django基础框架
+Django==4.2.7
+djangorestframework==3.14.0
+django-filter==23.3
+django-cors-headers==4.3.0
+
+# 数据库相关
+mysqlclient==2.2.0
+redis==5.0.1
+django-redis==5.4.0
+
+# 异步任务
+celery==5.3.4
+django-celery-results==2.5.1
+django-celery-beat==2.5.0
+
+# 认证相关
+django-allauth==0.57.0
+django-oauth-toolkit==2.3.0
+
+# API文档
+drf-yasg==1.21.7
+
+# 监控相关
+psutil==5.9.6
+prometheus-client==0.18.0
+
+# 部署相关
+gunicorn==21.2.0
+supervisor==4.2.5
+
+# 开发工具
+python-dotenv==1.0.0
+ipython==8.16.1
+django-debug-toolbar==4.2.0
+
+# 测试相关
+pytest==7.4.3
+pytest-django==4.5.2
+coverage==7.3.2
+
+# 其他工具
+Pillow==10.1.0  # 图片处理
+paramiko==3.3.1  # SSH连接
+PyYAML==6.0.1   # YAML解析
+python-jose==3.3.0  # JWT
+requests==2.31.0  # HTTP请求
+
+
+#rest_framework_simplejwt
+djangorestframework-simplejwt==5.2.0
