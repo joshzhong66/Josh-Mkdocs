@@ -18,6 +18,7 @@ echo_log_info() {
 }
 echo_log_warn() {
     echo_log "\033[33mWARN" "$*"
+    exit 1
 }
 echo_log_error() {
     echo_log "\033[31mERROR" "$*"
@@ -41,7 +42,11 @@ check_libnl3() {
 }
 
 check_url() {
-    curl --head --silent --fail --connect-timeout 3 --max-time 5 "$1" >/dev/null 2>&1
+    if curl --head --silent --fail --connect-timeout 3 --max-time 5 "$1" >/dev/null 2>&1; then
+        echo "URL is valid"
+    else
+        echo "URL is invalid"
+    fi
 }
 
 download_libnl3() {
