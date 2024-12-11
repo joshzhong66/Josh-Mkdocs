@@ -1,11 +1,17 @@
 #!/bin/bash
-
+#
+# 官网下载：http://mirrors.sunline.cn/source/ansible/ansible-2.14.4.tar.gz
+# 公司资源：https://github.com/ansible/ansible/archive/refs/tags/v2.18.1.tar.gz
+#
+#
+#
 ANSIBLE_VERSION="2.14.4"
 ANSIBLE_TAR="ansible-${ANSIBLE_VERSION}.tar.gz"
 DOWNLOAD_PATH="/usr/local/src"
 INSTALL_PATH="/usr/local/ansible"
-INTERNAL_ANSIBLE_URL="http://mirrors.sunline.cn/source/ansible/${ANSIBLE_SOURCE}"
-EXTERNAL_ANSIBLE_URL="https://github.com/ansible/ansible/archive/refs/tags/v${ANSIBLE_SOURCE#ansible-}"
+WORK_PATH="/data/ansible"
+INTERNAL_ANSIBLE_URL="http://mirrors.sunline.cn/source/ansible/${ANSIBLE_TAR}"
+EXTERNAL_ANSIBLE_URL="https://github.com/ansible/ansible/archive/refs/tags/v${ANSIBLE_TAR}"
 
 echo_log() {
     local color="$1"
@@ -21,6 +27,7 @@ echo_log_warn() {
 }
 echo_log_error() {
     echo_log "\033[31mERROR" "$*"
+    exit 1
 }
 
 quit() {
@@ -37,18 +44,23 @@ check_url() {
 }
 
 check_ansible() {
-    if [ -d "$INSTALL_DIR" ] || (source /etc/profile && which ansible &>/dev/null) || rpm -qa | grep -q ansible; then
-        echo_log_warn "Please uninstall Ansible before installing it!"
-    elif source /etc/profile && which python3 &>/dev/null; then
-        echo_log_warn "Please install Python3 first!"
+    if [ -d "$INSTALL_PATH" ]; then
+        echo_log_warn "Installation directory '$INSTALL_PATH' already exists. Please uninstall Ansible before proceeding!"
+    elif which ansible &>/dev/null; then
+        echo_log_warn "Ansible is already installed. Please uninstall it before installing the new version!"
     fi
+
+    if ! which python3 &>/dev/null; then
+        echo_log_warn "Python 3 is not installed. Please install Python 3 first!"
+    fi
+    return 0
 }
 
 download_ansible() {
     for url in "$INTERNAL_ANSIBLE_URL" "$EXTERNAL_ANSIBLE_URL"; do
         if check_url "$url"; then
             echo_log_info "Download ansible source package from $url ..."
-            wget -P "$DOWNLOAD_DIR" "$url" &>/dev/null && {
+            wget -P "$DOWNLOAD_PATH" "$url" &>/dev/null && {
                 echo_log_info "$ANSIBLE_TAR Download Success"
                 return 0
             }
@@ -64,7 +76,7 @@ download_ansible() {
 install_ansible() {
     check_ansible
 
-    if [ -f "$DOWNLOAD_DIR/$ANSIBLE_TAR" ]; then
+    if [ -f "$DOWNLOAD_PATH/$ANSIBLE_TAR" ]; then
         echo_log_info "Ansible The source package already exists！"
     else
         echo_log_info "Start downloading the Ansible source package..."
@@ -74,12 +86,14 @@ install_ansible() {
     yum install -y sshpass >/dev/null 2>&1
     [ $? -eq 0 ] && echo_log_info "Dependency installation successful..." || echo_log_error "Failed to install dependencies..."
 
-    tar -xzf "DOWNLOAD_PATH/$ANSIBLE_TAR" -C $DOWNLOAD_PATH && mv $DOWNLOAD_PATH/>/dev/null 2>&1
+    tar -xzf "$DOWNLOAD_PATH/$ANSIBLE_TAR" -C $DOWNLOAD_PATH >/dev/null 2>&1
     [ $? -eq 0 ] && echo_log_info "Unzip the Ansible source package successfully..." || echo_log_error "Failed to unzip the Ansible source package..."
     
-    echo_log_info "Create a Python virtual environment"
+    mv "$DOWNLOAD_PATH/ansible-${ANSIBLE_VERSION}"  $INSTALL_PATH
+
     cd $INSTALL_PATH
     python3 -m venv venv && source venv/bin/activate
+    [ $? -eq 0 ] && echo_log_info "Create a Python virtual environment successfully" || echo_log_error "Failed to create a Python virtual environment"
 
     [ ! -d "/root/.pip" ] && mkdir -p /root/.pip
     cat > /root/.pip/pip.conf <<'EOF'
@@ -100,13 +114,13 @@ EOF
     python setup.py build &>/dev/null && python setup.py install &>/dev/null
     [ $? -eq 0 ] && echo_log_info "Build ansible successfully" || echo_log_error "Building ansible failed"
 
-    echo_log_info "Create ansible configuration file directory $INSTALL_PATH/bin" && mkdir -p "$INSTALL_PATH/bin"
-    echo_log_info "Copy the bin directory" && cp $INSTALL_PATH/venv/bin/ansible* $INSTALL_PATH/bin >/dev/null 2>&1
+    echo_log_info "Create ansible configuration file directory $WORK_PATH/bin" && mkdir -p "$WORK_PATH/bin"
+    echo_log_info "Copy the bin directory" && cp $INSTALL_PATH/venv/bin/ansible* $WORK_PATH/bin >/dev/null 2>&1
 
-    cat > $INSTALL_DIR/ansible.cfg <<EOF
+    cat > $WORK_PATH/ansible.cfg <<EOF
 [defaults]
 interpreter_python = auto_legacy_silent
-inventory = $INSTALL_DIR/hosts
+inventory = $WORK_PATH/hosts
 remote_tmp = \$HOME/.ansible/tmp
 local_tmp = \$HOME/.ansible/tmp
 remote_user = root
@@ -123,12 +137,13 @@ become_ask_pass = False
 [inventory]
 enable_plugins = host_list, script, yaml, ini
 EOF
+    [ $? -eq 0 ] && echo_log_info "Copy ansible.cfg successfully" || echo_log_error "Failed to copy ansible.cfg"
 
     if ! grep -q "ANSIBLE_HOME=" /etc/profile; then
-        echo_log_info "配置 ansible 环境变量"
+        echo_log_info "Configure ansible environment variables"
         cat >> /etc/profile <<EOF
 # ansible
-export ANSIBLE_HOME=${INSTALL_DIR}
+export ANSIBLE_HOME=${WORK_PATH}
 export PATH=\$PATH:\$ANSIBLE_HOME/bin
 export ANSIBLE_CONFIG=\$ANSIBLE_HOME/ansible.cfg
 EOF
@@ -137,29 +152,31 @@ EOF
 
     echo_log_info "Display Ansible Version $(ansible --version 2>/dev/null | head -n1 | awk '{print $NF}' | awk -F] '{print $1}')"
 
+    rm -rf $DOWNLOAD_PATH/ansible*
 }
 
 uninstall_ansible() {
-    if [ -d "${INSTALL_DIR}" ]; then
-        echo_log_info "Uninstall Ansible"
-        rm -rf ${INSTALL_DIR}
+    if [ -d "${INSTALL_PATH}" ]; then
+        echo_log_info "Ansible is installed, start uninstalling..."
+        rm -rf ${INSTALL_PATH} && rm -rf $WORK_PATH
+        rm -f /root/.pip
         echo_log_info "Uninstall Ansible Successfully"
+        sed -i '/# ansible/,/ansible.cfg/d' /etc/profile
+        source /etc/profile
     else
         echo_log_warn "Ansible is not installed"
     fi
-    sed -i '/# ansible/,/ansible.cfg/d' /etc/profile
-    source /etc/profile
 }
 
 
 main() {
     clear
     echo -e "———————————————————————————
-\033[32m Ansible${ANSIBLE_VERSION} 安装工具\033[0m
+\033[32m Ansible${ANSIBLE_VERSION} Install Tool\033[0m
 ———————————————————————————
 1. Install Ansible${ANSIBLE_VERSION}
 2. Uninstall Ansible${ANSIBLE_VERSION}
-3. quit\n"
+3. Quit Scripts\n"
 
     read -rp "Please enter the serial number and press Enter：" num
     case "$num" in
@@ -169,3 +186,6 @@ main() {
     *) (main) ;;
     esac
 }
+
+
+main

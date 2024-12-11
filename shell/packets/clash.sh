@@ -50,7 +50,7 @@ install_clash() {
     ln -s $install_path/clash/clash-linux-amd64 /usr/bin/clash
 
     cat > /etc/systemd/system/clash.service << EOF
-[Uint]
+[Unit]
 Description=Clash daemon, A rule-based proxy in Go.
 After=network.target
 
