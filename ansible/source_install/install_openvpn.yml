@@ -1,9 +1,10 @@
 --- 
 # ansible_playbook install_openvpn.yml
 
-#- import_playbook: install_openssl.yml
-#- import_playbook: /data/ansible/playbook/install/source-install-depend/install-libnl3.yml
-#- import_playbook: install_go.yml
+- import_playbook: uninstall-rpm-openssl.yml
+- import_playbook: install-openssl.yml
+- import_playbook: install-libnl3.yml
+- import_playbook: install-go.yml
 
 - name: Install OpenVPN Server 
   hosts: centos7
@@ -31,20 +32,26 @@
         msg: " OpenVPN is already installed, skipping..."
       when: openvpn_directory.stat.exists
 
+    - name: Stop Firewalld
+      service:
+        name: firewalld
+        state: stopped
+        enabled: no
+
+    - name: Disable SELinux
+      shell: setenforce 0 && sed -i 's/enforcing/disabled/' /etc/selinux/config
+      when: ansible_selinux.status == "enabled"
+
+    - name: Enable IPv4 Net 
+      shell: |
+        echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
+        sysctl -p
+
     - name: Install Rely
       yum:
         name: "{{ item }}"
         state: present
       loop:
-        - gcc
-        - gcc-c++
-        - make
-        - zlib-devel
-        - pcre-devel
-        - geoip-devel
-        - epel-release
-        - perl-IPC-Cmd
-        - perl-Test-Simple
         - autoconf
         - automake
         - bison
@@ -62,21 +69,18 @@
         - sqlite-devel
         - libtool
         - libtool-ltdl
-      when: openvpn_directory.stat.exists
 
-    - name: Print OpenSSL Version
-      shell: openssl version
-
-    - name: Print Libnl3 Version
-      shell: pkg-config --modversion libnl-genl-3.0
+    # - name: Download OpenVPN Source Package
+    #   shell:
+    #     wget https://swupdate.openvpn.org/community/releases/openvpn-2.6.11.tar.gz --no-check-certificate -P /usr/local/src
 
     - name: Download OpenVPN Source Package
       #shell: wget https://swupdate.openvpn.org/community/releases/openvpn-2.6.11.tar.gz --no-check-certificate
       get_url:
-        url: https://swupdate.openvpn.org/community/releases/openvpn-2.6.11.tar.gz
+        url: http://swupdate.openvpn.org/community/releases/openvpn-2.6.11.tar.gz
         dest: /usr/local/src
         mode: '0644'
-    
+
     - name: Unarchive OpenVPN Source Package
       unarchive:
         src: /usr/local/src/openvpn-2.6.11.tar.gz
@@ -84,8 +88,7 @@
         remote_src: yes
     
     - name: Configure OpenVPN
-      shell: | 
-        cd /usr/local/src/openvpn-2.6.11
+      command: | 
         ./configure \
         --prefix=/usr/local/openvpn \
         --enable-lzo \
@@ -107,35 +110,89 @@
         --with-openssl-engine=auto \
         --enable-iproute2 \
         --enable-systemd
+      args:
+        chdir: /usr/local/src/openvpn-2.6.11
 
     - name: Make OpenVPN
       shell: |
-        cd /usr/local/src/openvpn-2.6.11
         make -j $(nproc)
+      args:
+        chdir: /usr/local/src/openvpn-2.6.11
+
+    - name: Install OpenVPN
+      shell: |
         make install
+      args:
+        chdir: /usr/local/src/openvpn-2.6.11 
+
+    - name: Create OpenVPN Configuration Directory
+      file:
+        path: /usr/local/openvpn/config
+        state: directory
     
+    - name: Setup OpenVPN Service
+      copy:
+        dest: /usr/lib/systemd/system/openvpn.service
+        mode: 0644
+        content: |
+          [Unit]
+          Description=OpenVPN service for server
+          After=syslog.target network-online.target
+          Wants=network-online.target
+          Documentation=man:openvpn(8)
+          Documentation=https://community.openvpn.net/openvpn/wiki/Openvpn24ManPage
+          Documentation=https://community.openvpn.net/openvpn/wiki/HOWTO
+
+          [Service]
+          Type=notify
+          PrivateTmp=true
+          WorkingDirectory={{ openvpn_install_dir }}
+          ExecStart={{ openvpn_install_dir }}/sbin/openvpn --config {{ openvpn_install_dir }}/config/{{ openvpn_ovpn_file }}
+          CapabilityBoundingSet=CAP_IPC_LOCK CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW CAP_SETGID CAP_SETUID CAP_SETPCAP CAP_SYS_CHROOT CAP_DAC_OVERRIDE CAP_AUDIT_WRITE
+          LimitNPROC=10
+          DeviceAllow=/dev/null rw
+          DeviceAllow=/dev/net/tun rw
+          ProtectHome=true
+          KillMode=process
+          RestartSec=5s
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target        
+
+    - name: Reload systemd to apply the new service
+      command: systemctl daemon-reload
+
+    - name: Enable and start OpenVPN service
+      systemd:
+        name: openvpn
+        enabled: yes
+        state: started
+
     - name: Create Link
-      shell: |
-        ln -s /usr/local/openvpn/sbin/openvpn /usr/sbin/openvpn
-    
-    - name: Print OpenVPN Version
+      file:
+        src: /usr/local/openvpn/sbin/openvpn
+        dest: /usr/sbin/openvpn
+        state: link
+        force: yes
+
+    - name: Verify OpenVPN installation
       shell: openvpn --version
+      register: openvpn_version
+      ignore_errors: true
     
-    - name: Install OpenVPN UI 
-      get_url:
-        url: https://github.com/d3vilh/openvpn-ui/archive/refs/tags/0.9.5.5.tar.gz
-        dest: /usr/local/src
-        mode: '0644'
-
-    - name: Unarchive OpenVPN UI
-      unarchive:
-        src: /usr/local/src/openvpn-ui-0.9.5.5.tar.gz
-        dest: /opt
-        remote_src: yes
+    - name: If OpenVPN is not installed, fail the play
+      fail:
+        msg: "OpenVPN installation failed"
+        when: openvpn_version.rc != 0
     
-    - name: Move openvpn-ui
-      shell: |
-        mv /opt/openvpn-ui-0.9.5.5 /opt/openvpn-ui
-
+    - name: Clean File
+      file: 
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /usr/local/src/openvpn-2.6.11.tar.gz
+        - /usr/local/src/openvpn-2.6.11
     
+  
 

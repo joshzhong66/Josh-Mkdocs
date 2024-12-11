@@ -1,0 +1,21 @@
+- name: Install OpenSSL
+  hosts: centos7
+  become: true
+  tasks:
+    - name: Detecting Operating System
+      fail:
+        msg: "Only Supports the Redhat family. Currently{{ ansible_distribution }}-{{ ansible_distribution_version }} (Family: {{ ansible_os_family }}"
+      when: ansible_os_family != "RedHat"
+
+    - name: Check if OpenSSL is installed
+      shell: rpm -qa | grep openssl
+      register: rpm_openssl
+      ignore_errors: yes
+
+    - name: Remove RPM OpenSSL packages if installed
+      shell: rpm -e openssl --nodeps
+      when: rpm_openssl.stdout != ""
+      ignore_errors: yes
+      notify:
+        - Verify OpenSSL Removed
+      

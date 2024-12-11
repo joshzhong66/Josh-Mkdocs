@@ -1,9 +1,20 @@
 ---
-# ansible_playbook install_openssl.yml
-# OpenSSL.tar.gz 官方下载地址（需要代理） url: https://www.openssl.org/source/openssl-1.1.1w.tar.gz
-# 公司镜像源 url: https://mirrors.sunline.cn/source/openssl/openssl-1.1.1w.tar.gz
+# 
+# ansible_playbook install_openssl.yml in Version OpenSSL 1.1.1w
+# 
+#
+# OpenSSL.tar.gz 官方下载地址（需要代理） 
+# https://www.openssl.org/source/openssl-1.1.1w.tar.gz
+#
+#
+#
+# 公司镜像源 
+# https://mirrors.sunline.cn/source/openssl/openssl-1.1.1w.tar.gz
+#
+#
+
 - name: Install OpenSSL
-  hosts: centos7
+  hosts: centos72
   become: true
   tasks:
     - name: Detecting Operating System
@@ -11,11 +22,30 @@
         msg: "Only Supports the Redhat family. Currently{{ ansible_distribution }}-{{ ansible_distribution_version }} (Family: {{ ansible_os_family }}"
       when: ansible_os_family != "RedHat"
 
-    - name: Check If OpenSSL source is not installed
-      stat:
-        path: /usr/local/openssl
-      register: openssl_directory
-      ignore_errors: true
+    # - name: Check if RPM OpenSSL is installed
+    #   shell: rpm -qa | grep openssl
+    #   register: rpm_openssl
+    #   changed_when: false
+    #   failed_when: false
+    
+    # - name: Remove RPM OpenSSL packages if installed
+    #   yum:
+    #     name: "{{ item }}"
+    #     state: absent
+    #   loop: 
+    #     - xmlsec1-openssl
+    #     - openssl098e
+    #     - openssl-libs
+    #     - openssl-devel
+    #   when: rpm_openssl.stdout != ""
+    #   notify:
+    #     - Verify OpenSSL Removed
+
+    # - name: Check If Source OpenSSL-1.1.1W  is not installed
+    #   stat:
+    #     path: /usr/local/openssl
+    #   register: openssl_directory
+    #   ignore_errors: true
 
     - name: If OpenSSL source is already installed, skip it
       fail:
@@ -36,7 +66,6 @@
           - perl-Test-Simple
           - perl-Test-Harness
         state: present
-      when: openssl_directory.stat.exists
 
     - name: Doload OpenSSL Package
       get_url:
@@ -67,8 +96,9 @@
 
     - name: Check if openssl exists
       stat:
-        path: /usr/local/openssl
+        path: /usr/bin/openssl
       register: openssl_stat
+
     - name: Backup openssl if it exists
       command: mv /usr/bin/openssl /usr/bin/openssl.bak
       when: openssl_stat.stat.exists

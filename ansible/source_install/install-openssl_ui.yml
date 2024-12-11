@@ -1,0 +1,15 @@
+    - name: Install OpenVPN UI 
+      get_url:
+        url: https://github.com/d3vilh/openvpn-ui/archive/refs/tags/0.9.5.5.tar.gz
+        dest: /usr/local/src
+        mode: '0644'
+
+    - name: Unarchive OpenVPN UI
+      unarchive:
+        src: /usr/local/src/openvpn-ui-0.9.5.5.tar.gz
+        dest: /opt
+        remote_src: yes
+    
+    - name: Move openvpn-ui
+      shell: |
+        mv /opt/openvpn-ui-0.9.5.5 /opt/openvpn-ui
