@@ -55,7 +55,7 @@
         remote_src: yes
         mode: '0755'
     
-    - name: Configuring environment variables
+    - name: Configure go environment variables
       copy:
         content: |
           export GOROOT=/usr/local/go
@@ -66,7 +66,7 @@
         dest: /etc/profile.d/golang.sh
         mode: '0644'
     
-    - name: Source Profile
+    - name: Go Environment Variables Source Profile
       shell: source /etc/profile
 
     - name: Print Go Version

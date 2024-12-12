@@ -41,11 +41,11 @@
     #   notify:
     #     - Verify OpenSSL Removed
 
-    # - name: Check If Source OpenSSL-1.1.1W  is not installed
-    #   stat:
-    #     path: /usr/local/openssl
-    #   register: openssl_directory
-    #   ignore_errors: true
+    - name: Check If Source OpenSSL-1.1.1W  is not installed
+      stat:
+        path: /usr/local/openssl
+      register: openssl_directory
+      ignore_errors: true
 
     - name: If OpenSSL source is already installed, skip it
       fail:

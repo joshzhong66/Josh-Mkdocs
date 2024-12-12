@@ -1,7 +1,19 @@
+# ansible-playbook install-openvpn-ui.yml
+#
+#
+# 官方下载地址：https://github.com/d3vilh/openvpn-ui/archive/refs/tags/0.9.5.5.tar.gz
+# Sunline下载：http://mirrors.sunline.cn/source/openvpn/openvpn-ui-0.9.5.5.tar.gz
+- name: Install OpenVPN UI 
+  hosts: centos7 
+  become: true
+  vars:
+      openvpnui_download_path: /usr/local/src
+      openvpnui_install_path: /opt/openvpn-ui
+  tasks:
     - name: Install OpenVPN UI 
       get_url:
-        url: https://github.com/d3vilh/openvpn-ui/archive/refs/tags/0.9.5.5.tar.gz
-        dest: /usr/local/src
+        url: http://mirrors.sunline.cn/source/openvpn/openvpn-ui-0.9.5.5.tar.gz
+        dest: "{{ openvpnui_download_path }}"
         mode: '0644'
 
     - name: Unarchive OpenVPN UI
@@ -12,4 +24,158 @@
     
     - name: Move openvpn-ui
       shell: |
-        mv /opt/openvpn-ui-0.9.5.5 /opt/openvpn-ui
+        mv /opt/openvpn-ui-0.9.5.5 {{ openvpnui_install_path }}
+
+    - name: Change to OpenVPN UI directory
+      command: chdir=/opt/openvpn-ui go mod download
+      args:
+        chdir: "{{ openvpnui_install_path }}"
+
+    - name: Run go mod download in OpenVPN UI directory
+      shell: |
+        cd "{{ openvpnui_install_path }}" && go mod download
+
+    - name: Install Beego to bee tool
+      shell: |
+        go install github.com/beego/bee/v2@develop
+      args:
+        chdir: /usr/local/gopath
+
+    - name: Check bee tool Version
+      shell: |
+        bee version
+    
+    - name: Ensure /opt/openvpn-ui/build directory exists
+      file:
+        path: "{{ openvpnui_install_path }}/build"
+        state: directory
+
+    - name: Git Clone the qrencode repository
+      git: 
+        repo: https://github.com/d3vilh/qrencode
+        dest: "{{ openvpnui_install_path }}/build/qrencode"
+        clone: yes
+    
+    - name: Ensure /opt/openvpn-ui/build/qrencode directory exists
+      file:
+        path: "{{ openvpnui_install_path }}/build/qrencode"
+        state: directory
+
+    - name: Change to qrencode directory and set GOFLAGS environment variable
+      shell: go env -w GOFLAGS="-buildvcs=false"
+      args:
+        chdir: "{{ openvpnui_install_path }}/build/qrencode"
+
+    - name: Run bee pack in /opt/openvpn-ui directory
+      shell: bee pack -exr='^vendor|^ace.tar.bz2|^data.db|^build|^README.md|^docs'
+      args:
+        chdir: "{{ openvpnui_install_path}}"
+    
+    - name: Mkdir {{ install_openvpnui_path }}/openvpn-ui-pack Directory
+      file:
+        path: "{{ openvpnui_install_path }}/openvpn-ui-pack"
+        state: directory
+    
+    - name: Unarchive openvpn-ui.tar.gz -C to openvpn-ui-pack
+      shell: |
+        tar -xzf openvpn-ui.tar.gz -C openvpn-ui-pack
+        cp {{ openvpnui_install_path  }}//openvpn-ui-pack/openvpn-ui {{ openvpnui_install_path }}
+      args:
+        chdir: "{{ openvpnui_install_path }}"
+
+    - name: Copy openvpn-ui to Go Environment Variables /usr/local/gopath/bin
+      copy:
+        src: "{{ openvpnui_install_path }}/openvpn-ui"
+        dest: /usr/local/gopath/bin
+        remote_src: yes
+    
+    - name: Clean openvpn-ui-pack Directory
+      file:
+        path: "{{ openvpnui_install_path }}/openvpn-ui-pack"
+        state: absent
+    
+    - name: Clean openvpn-ui.tar.gz file 
+      file:
+        path: "{{ openvpnui_install_path }}/openvpn-ui.tar.gz"
+        state: absent
+
+    - name: Build the qrencode executable
+      shell: go build -o qrencode main.go
+      args:
+        chdir: "{{ openvpnui_install_path }}/build/qrencode"
+
+    - name: Add chmod +x qrencode
+      shell: chmod +x qrencode
+      args:
+        chdir: "{{ openvpnui_install_path }}/build/qrencode"
+
+    - name: Copy qrencode to /usr/local/gopath/bin
+      copy:
+        src: "{{ openvpnui_install_path }}/build/qrencode/qrencode"
+        dest: /usr/local/gopath/bin
+        mode: '0755'
+        remote_src: yes
+    
+    - name: Clean qrencode Directory
+      file:
+        path: "{{ openvpnui_install_path }}/build/qrencode"
+        state: absent
+
+    - name: Create db Directory
+      file:
+        path: "{{ openvpnui_install_path }}/db"
+        state: directory
+      
+    - name: Modify {{ openvpnui_install_path }}/conf/app.conf in EasyRsaPath
+      lineinfile:
+        path: "{{ openvpnui_install_path }}/conf/app.conf"
+        regexp: "^EasyRsaPath"
+        line: "EasyRsaPath = {{ openvpnui_install_path }}/easyrsa"
+    
+    - name: Modify {{ openvpnui_install_path }}/conf/app.conf in OpenVPNPath
+      lineinfile:
+        path: "{{ openvpnui_install_path }}/conf/app.conf"
+        regexp: "^OpenVpnPath"
+        line: OpenVpnPath = "/usr/local/openvpn
+
+    - name: Ensure the entry for openvpn is in /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: "127.0.0.1 openvpn"
+        state: present
+
+    - name: Backup openvpn-server-config.tpl.bak template
+      shell:
+        cp openvpn-server-config.tpl openvpn-server-config.tpl.bak
+      args:
+        chdir: "{{ openvpnui_install_path }}/conf"
+
+    - name: Copy {{ openvpnui_install_path }}/build/assets/ /opt/scripts
+      copy:
+        src: "{{ openvpnui_install_path }}/build/assets/"
+        dest: /opt/scripts
+        remote_src: yes
+
+    - name: Setup openvpn-ui service
+      shell: |
+        cat > /usr/lib/systemd/system/openvpn-ui.service <<'EOF'
+        [Unit]
+        Description=OpenVPN UI
+        After=network.target
+
+        [Service]
+        Type=simple
+        WorkingDirectory=/opt/openvpn-ui
+        Environment="OPENVPN_ADMIN_USERNAME=admin"
+        Environment="OPENVPN_ADMIN_PASSWORD=sunline"
+        ExecStart=/bin/bash -c '/opt/openvpn-ui/openvpn-ui > /opt/openvpn-ui/openvpn-ui.log 2>&1'
+        Restart=always
+
+        [Install]
+        WantedBy=multi-user.target
+        EOF
+      
+    - name: Reload systemd
+      shell: |
+        systemctl daemon-reload && systemctl start openvpn-ui && systemctl enable openvpn-ui
+        
