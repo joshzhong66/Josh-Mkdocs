@@ -1,0 +1,34 @@
+version: '3'
+services:
+nginx:
+ restart: always
+ build: ./nginx
+ ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/data/hexo/www/blog:/var/www/blog"
+      # - "/data/hexo/www/ssl/certs:/var/www/ssl/certs" # 暂时注释SSL证书挂载
+      - "/data/hexo/nginx/conf.d:/etc/nginx/conf.d"
+    command: /bin/bash /start.sh
+    env_file:
+      - docker.env
+    extra_hosts:
+      - "raw.githubusercontent.com:199.232.96.133"
+    container_name: "nginx"
+  nodejs:
+    build: ./nodejs
+    ports:
+      - "4000:4000"
+    volumes:
+      - "/data/hexo/www/blog:/var/www/blog"
+    container_name: "nodejs"
+  php:
+    restart: always
+    build: ./php
+    expose:
+      - "9000"
+    volumes:
+      - "/data/hexo/www/blog:/var/www/blog"
+    container_name: "php"
+
