@@ -22,7 +22,6 @@ echo_log_info() {
 }
 echo_log_warn() {
     echo_log "\033[33mWARN" "$*"
-    exit 1
 }
 echo_log_error() {
     echo_log "\033[31mERROR" "$*"
@@ -44,9 +43,9 @@ check_url() {
 
 check_python() {
     if [ -d "$INSTALL_PATH" ]; then
-        echo_log_warn "Installation directory '$INSTALL_PATH' already exists. Please uninstall Python3 before proceeding!"
+        echo_log_error "Installation directory '$INSTALL_PATH' already exists. Please uninstall Python3 before proceeding!"
     elif which python3 &>/dev/null; then
-        echo_log_warn "Python3 is already installed. Please uninstall it before installing the new version!"
+        echo_log_error "Python3 is already installed. Please uninstall it before installing the new version!"
     fi
     return 0
 }
@@ -59,7 +58,7 @@ download_python() {
                 echo_log_info "$PYTHON_TAR Download Success"
                 return 0
             }
-            echo_log_warn "$url Download failed"
+            echo_log_error "$url Download failed"
         else
             echo_log_warn "$url invalid"
         fi
