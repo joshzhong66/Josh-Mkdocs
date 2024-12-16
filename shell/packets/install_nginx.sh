@@ -191,11 +191,8 @@ add_ngx_fancyindex_model() {
         download_package $PACKAGE_NAME $DOWNLOAD_PATH "$INTERNAL_NGINX_URL" "$EXTERNAL_NGINX_URL"
     fi
     
-
     tar -zxf ${DOWNLOAD_PATH}/${NGINX_TAR} -C $DOWNLOAD_PATH >/dev/null 2>&1
     [ $? -ne 0 ] && echo_log_error "Unarchive $PACKAGE_NAME Failed" || echo_log_info "Unarchive $PACKAGE_NAME Successful"
-
-
 
     if [ -f "$DOWNLOAD_PATH/$NGX_TAR" ]; then
         echo_log_info "The $NGX_TAR source package already exists！"

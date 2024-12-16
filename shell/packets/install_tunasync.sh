@@ -81,18 +81,18 @@ install_tunasync() {
     mkdir -p $MIRRORS_PATH
     [ $? -eq 0 ] && echo_log_info "Successfully mkdir $MIRRORS_PATH"
     
-    if ! command -v git >/dev/null 2>&1; then
-        echo_log_info "git is not installed, installing..."
+    if ! command -v rsync >/dev/null 2>&1; then
+        echo_log_info "Rsync is not installed, installing..."
 
         yum -y install rsync >>/tmp/install.log 2>&1
         if [ $? -eq 0 ]; then
-            echo_log_info "rsync installed successfully!"
+            echo_log_info "Rsync installed successfully!"
         else
-            echo_log_error "rsync installation failed! Error log: /tmp/install.log"
+            echo_log_error "Rsync installation failed! Error log: /tmp/install.log"
             cat /tmp/install.log
         fi
     else
-        echo_log_info "rsync is installed."
+        echo_log_info "Rsync is installed."
     fi
 
     if [ -f "$DOWNLOAD_PATH/$TUNASYNC_TAR" ]; then
