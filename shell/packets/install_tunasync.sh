@@ -7,7 +7,7 @@ DOWNLOAD_PATH="/usr/local/src"
 INSTALL_PATH="/usr/local/tunasync"
 PROFILE_FILE="/etc/profile"
 TUNASYNC_TAR="tunasync-linux-amd64-bin.tar.gz"
-INTERNAL_TUNASYNC_URL="http://10.22.51.64/tunasync-linux-amd64-bin.tar.gz"
+INTERNAL_TUNASYNC_URL="http://mirrors.sunline.cn/source/tunasync/tunasync-linux-amd64-bin.tar.gz"
 EXTERNAL_TUNASYNC_URL="https://github.com/tuna/tunasync/releases/download/v0.8.0/tunasync-linux-amd64-bin.tar.gz"
 
 echo_log() {
@@ -82,10 +82,17 @@ install_tunasync() {
     [ $? -eq 0 ] && echo_log_info "Successfully mkdir $MIRRORS_PATH"
     
     if ! command -v rsync >/dev/null 2>&1; then
-        yum install rsync >/dev/null 2&>1
-        [ $? -eq 0 ] && echo_log_info "rsync Installed Successfully!" || echo_log_error "rsync Installed Failed!"
+        echo_log_info "Rsync is not installed, installing..."
+
+        yum -y install rsync >>/tmp/install.log 2>&1
+        if [ $? -eq 0 ]; then
+            echo_log_info "Rsync installed successfully!"
+        else
+            echo_log_error "Rsync installation failed! Error log: /tmp/install.log"
+            cat /tmp/install.log
+        fi
     else
-        echo_log_info "rsync Has Been Installed"
+        echo_log_info "Rsync is installed."
     fi
 
     if [ -f "$DOWNLOAD_PATH/$TUNASYNC_TAR" ]; then
@@ -185,6 +192,21 @@ clone_tunasync_theme() {
     echo_log_info "Cloning tunasync-theme..."
 
     cd /data/mirrors
+
+    if ! command -v git >/dev/null 2>&1; then
+        echo_log_info "Git is not installed, installing..."
+
+        yum -y install git >>/tmp/install.log 2>&1
+        if [ $? -eq 0 ]; then
+            echo_log_info "Git installed successfully!"
+        else
+            echo_log_error "Git installation failed! Error log: /tmp/install.log"
+            cat /tmp/install.log
+        fi
+    else
+        echo_log_info "Git is installed."
+    fi
+
     git clone https://github.com/marioplus/nginx-fancyindex-theme.git >/dev/null 2>&1
     [ $? -eq 0 ] && echo_log_info "Clone tunasync-theme successfully!" || echo_log_error "Clone tunasync-theme failed!"
     mv /data/mirrors/nginx-fancyindex-theme /data/mirrors/fancyindex
@@ -199,7 +221,7 @@ EOF
     [ $? -eq 0 ] &&  echo_log_info "Add nginx module successfully!" || echo_log_error "Add nginx module failed!"
 
     nginx_conf="/usr/local/nginx/conf/nginx.conf"
-    config_line="load_module   /usr/local/nginx/modules/ngx_http_fancyindex_module.so;;"
+    config_line="load_module   /usr/local/nginx/modules/ngx_http_fancyindex_module.so;"
 
     sed -i "1i $config_line" "$nginx_conf"
     
@@ -241,14 +263,13 @@ EOF
     [ $? -eq 0 ] && echo_log_info "Create a tunasync site configuration file Successfully!" || echo_log_error "Create a tunasync site configuration file Failed!"
 
     nginx -s reload 2>/dev/null
-    [ $? -eq 0 ] && echo "Reload nginx Successfully!" || echo_log_error "Reload nginx Failed!"
+    [ $? -eq 0 ] && echo_log_info "Reload nginx Successfully!" || echo_log_error "Reload nginx Failed!"
 
-    vim /data/mirrors/fancyindex/header.html
     head_file="/data/mirrors/fancyindex/header.html"
     sed -i 's#<title>File Browser</title>#<title>Sunline软件镜像站|Sunline Mirrors</title>#' "$head_file"
     [ $? -eq 0 ] && echo_log_info "Modify the header.html Successfully!" || echo_log_error "Modify the header.html Failed!"
 
-    sed -i 's|FancyIndex|Mirrors|' /data/mirrors/fancyindex/header.html
+    sed -i 's|Fancyindex|Mirrors|' /data/mirrors/fancyindex/header.html
     [ $? -eq 0 ] && echo_log_info "Modify the header.html Successfully!" || echo_log_error "Modify the header.html Failed!"]
 
 
@@ -284,7 +305,7 @@ main() {
 3. Clone Tunasync_Theme
 4. Quit Scripts\n"
 
-    read -rp "Please enter the serial number and press Enter：" num
+    read -rp "Please enter the serial number and press Enter:" num
     case "$num" in
     1) install_tunasync ;;
     2) uninstall_tunasync ;;
@@ -294,6 +315,5 @@ main() {
     *) main ;;
     esac
 }
-
 
 main

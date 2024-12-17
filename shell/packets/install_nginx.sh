@@ -5,11 +5,14 @@ NGINX_VERSION="1.21.6"
 NGINX_TAR="nginx-$NGINX_VERSION.tar.gz"
 DOWNLOAD_PATH="/usr/local/src"
 NGINX_INSTALL_PATH="/usr/local/nginx"
-INTERNAL_NGINX_URL="http://10.22.51.64/$NGINX_TAR"
+INTERNAL_NGINX_URL="http://mirrors.sunline.cn/nginx/linux/$NGINX_TAR"
 EXTERNAL_NGINX_URL="http://nginx.org/download/$NGINX_TAR"
 
+
 NGX_TAR="ngx-fancyindex-0.5.2.tar.xz"
-NGX_FANCYINDEX="https://github.com/aperezdc/ngx-fancyindex/releases/download/v0.5.2/ngx-fancyindex-0.5.2.tar.xz"
+INTERNAL_NGX_FANCYINDEX="http://mirrors.sunline.cn/nginx/linux/ngx-fancyindex-0.5.2.tar.xz"
+EXTERNAL_NGX_FANCYINDEX="https://github.com/aperezdc/ngx-fancyindex/releases/download/v0.5.2/ngx-fancyindex-0.5.2.tar.xz"
+
 
 echo_log() {
     local color="$1"
@@ -188,13 +191,14 @@ add_ngx_fancyindex_model() {
         download_package $PACKAGE_NAME $DOWNLOAD_PATH "$INTERNAL_NGINX_URL" "$EXTERNAL_NGINX_URL"
     fi
     
-
     tar -zxf ${DOWNLOAD_PATH}/${NGINX_TAR} -C $DOWNLOAD_PATH >/dev/null 2>&1
     [ $? -ne 0 ] && echo_log_error "Unarchive $PACKAGE_NAME Failed" || echo_log_info "Unarchive $PACKAGE_NAME Successful"
 
-    if [ ! -f "$DOWNLOAD_PATH/$NGX_TAR" ]; then
-        wget $NGX_FANCYINDEX_URL -P $DOWNLOAD_PATH >/dev/null 2>&1
-        [ $? -ne 0 ] && echo_log_error "Download $NGX_FANCYINDEX Failed" || echo_log_info "Download $NGX_FANCYINDEX Successful"
+    if [ -f "$DOWNLOAD_PATH/$NGX_TAR" ]; then
+        echo_log_info "The $NGX_TAR source package already exists！"
+    else
+        echo_log_info "Start downloading the $$NGX_TAR source package..."
+        wget $INTERNAL_NGX_FANCYINDEX -P $DOWNLOAD_PATH >/dev/null 2>&1
     fi
 
     tar -xJf $DOWNLOAD_PATH/ngx-fancyindex-0.5.2.tar.xz -C $DOWNLOAD_PATH>/dev/null 2>&1
