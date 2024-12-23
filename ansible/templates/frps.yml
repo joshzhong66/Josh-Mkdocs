@@ -1,0 +1,9 @@
+-
+# Install frps
+
+- name: Install frps
+  hosts: centos7
+  become: true
+  vars:
+    version: 0.61.0
+    

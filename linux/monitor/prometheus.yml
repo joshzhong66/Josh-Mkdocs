@@ -1,0 +1,83 @@
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          #- 10.22.51.66:9093
+
+rule_files:
+  - "rules/*.yml"
+
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["10.22.51.64:9090"]
+
+#  - job_name: 'node'
+#    static_configs:
+#      - targets: ['10.22.51.66:9100']
+  - job_name: 'blackbox_http_2xx'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  #配置get请求检测
+    static_configs:
+      - targets:
+        - http://proxy.its.sunline.cn   # 使用https监测的目标
+        - https://minio.iboss.sunline.cn:9000
+        - http://test.erp.sunline.cn:9806
+        - https://hr.iboss.sunline.cn:9443
+        - https://test.boss.sunline.cn
+        - http://pan.sunline.cn
+        - http://mirrors.sunline.cn
+        - http://password.its.sunline.cn
+        - https://jump.its.sunline.cn
+        - https://ers.sunline.cn:8898
+        - http://demo.its.sunline.cn
+        - https://harbor.sh.sunline.cn
+        - http://wecom.iboss.sunline.cn:6443
+        - https://iboss.sunline.cn
+        - https://yhtprdnew.clhd.sunline.cn:17777
+        - https://boss.sunline.cn
+        - https://onlyoffice.cloud.sunline.cn
+        - https://yhtprd.clhd.sunline.cn:17779
+        - https://yhtsit.clhd.sunline.cn:17778
+        - https://mail.sunline-i.com
+        - https://mail.sunline.cn
+        - http://registry.sunline-i.com
+        - https://sunline-i.com
+        - https://sunline.cn
+        - http://nac.sunline.cn    
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 10.22.51.64:9115  #blackbox地址和端口号
+  - job_name: 'blackbox_tcp_connect' # 检测某些端口是否在线
+    scrape_interval: 30s
+    metrics_path: /probe
+    params:
+      module: [tcp_connect]
+    static_configs:
+      - targets:
+        - 100.100.100.7:8080
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 10.22.51.64:9115 # blackbox-exporter 服务所在的机器和端口
+
+
+  - job_name: 'pushgateway'
+    scrape_interval: 30s
+    honor_labels: true  #加上此配置exporter节点上传数据中的一些标签将不会被pushgateway节点的相同标签覆盖
+    static_configs:
+      - targets: ['10.22.51.65:9091']
+        labels:
+          instance: pushgateway

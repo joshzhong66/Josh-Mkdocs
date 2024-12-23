@@ -1,0 +1,47 @@
+serverAddr = "159.75.238.93"
+serverPort = 7000
+
+auth.method = "token"
+auth.token = "token123456"
+
+webServer.addr = "0.0.0.0"
+webServer.port = 7400
+webServer.user = "admin"
+webServer.password = "josh2024"
+webServer.pprofEnable = false
+
+# tls
+#transport.tls.certFile="/etc/frp/ssl/client.crt
+#transport.tls.keyFile="/etc/frp/ssl/client.key"
+#transport.tls.trustedCaFile="/etc/frp/ssl/ca.crt'
+
+{% set my_array = ['coc', 'ds', 'file', 'grafana', 'job', 'more'] %}
+
+
+{% for item in my_array %}
+[[proxies]]
+name = "{{item}}{{system_env.to_domain_name_frpc('name')}}"
+type = "https"
+localPort = 443
+customDomains = ["{{item}}{{system_env.to_domain_name_frpc('name')}}"]
+{% endfor %}
+
+
+
+[proxies]
+name = "coc.my.domain.com"
+type = "https"
+localPort = 443
+customDomains = ["coc.my.domain.com"]
+
+[proxies]
+name = "ds.my.domain.com"
+type = "https"
+localPort = 443
+customDomains = ["ds.my.domain.com"]
+
+[proxies]
+name = "grafana.my.domain.com"
+type = "https"
+localPort = 443
+customDomains = ["grafana.my.domain.com"]
