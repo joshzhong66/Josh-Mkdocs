@@ -1,0 +1,79 @@
+--- 
+#Install node_exporter
+
+
+- name: Install node_exporter
+  hosts: centos7
+  become: true
+  vars:
+      version: 1.8.2 
+      tar_package: node_exporter-{{ version }}.linux-amd64.tar.gz
+      download_url: http://mirrors.sunline.cn/prometheus/linux/{{ tar_package }}
+      external_url: https://github.com/prometheus/node_exporter/releases/download/v{{ version }}/{{  tar_package }}
+      download_path: /usr/local/src
+      install_path: /usr/local/node_exporter
+  
+  tasks:
+    - name: Check if node_exporter is already installed
+      stat:
+        path: "{{ install_path }}/node_exporter"
+      register: node_exporter_installed
+
+    - name: Stop if node_exporter is already installed
+      when: node_exporter_installed.stat.exists
+      debug:
+        msg: "node_exporter is already installed. Stopping the playbook."
+
+    - name: Download package
+      get_url:
+        url: "{{ download_url }}"
+        dest: "{{ download_path }}"
+        mode: '0644'
+
+    - name: Unarchive package
+      unarchive:
+        src: "{{ download_path }}/{{ tar_package }}"
+        dest: "{{ download_path }}"
+        remote_src: yes
+
+    - name: Mv node_exporter name
+      shell: mv "{{ download_path }}/node_exporter-1.8.2.linux-amd64" "{{ install_path }}"
+
+    - name: Create Prometheus user
+      user:
+        name: prometheus
+        state: present
+        group: prometheus
+        home: "{{ install_path }}"
+
+    - name: Create node_exporter service
+      copy:
+        dest: /usr/lib/systemd/system/node_exporter.service
+        mode: 0644
+        content: | 
+          [Unit]
+          Description=node_exporter
+          Documentation=https://prometheus.io/
+          After=network.target
+
+          [Service]
+          Type=simple
+          User=prometheus
+          ExecStart={{ install_path }}/node_exporter
+          Restart=on-failure
+
+          [Install]
+          WantedBy=multi-user.target
+    
+    - name: Configure startup service permissions
+      shell: |
+        chown -R prometheus:prometheus {{ install_path }}
+        chmod 755 {{ install_path }}
+    
+    - name: Start node_exporter service
+      systemd:
+        name: node_exporter
+        enabled: yes
+        state: started
+        daemon_reload: yes
+    
