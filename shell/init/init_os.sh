@@ -209,11 +209,8 @@ EOF
 }
 
 
-#!/bin/bash
 
-version() {
-    sed -rn 's#^.* ([0-9]+)\..*#\1#p' /etc/redhat-release
-}
+
 
 install_os_base_rely() {
     set -e
