@@ -16,7 +16,7 @@
   tasks:
     - name: Check if node_exporter is already installed
       stat:
-        path: "{{ install_path }}/node_exporter"
+        path: "{{ install_path }}"
       register: node_exporter_installed
 
     - name: Stop if node_exporter is already installed
