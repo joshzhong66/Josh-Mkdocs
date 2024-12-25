@@ -1,0 +1,29 @@
+version: '3.9'
+# github : https://github.com/imsyy/SPlayer?tab=readme-ov-file
+
+services:
+  splayer:
+    image: ghcr.io/imsyy/splayer
+    container_name: SPlayer
+    ports:
+      - "25884:25884"
+    volumes:
+      - ${DATA_PATH:-/data/SPlayer}:/data/SPlayer
+    restart: always
+    networks:
+      - bridge  # 使用现有的 bridge 网络
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:25884/health"]
+      interval: 30s
+      retries: 3
+      start_period: 5s
+      timeout: 5s
+
+networks:
+  bridge:
+    external: true  # 表示这个网络是外部已有的
