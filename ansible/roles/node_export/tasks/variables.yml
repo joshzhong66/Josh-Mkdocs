@@ -1,0 +1,5 @@
+---
+node_export_version: "1.8.2"
+node_export_install_path: /usr/local/node_exporter
+node_export_download_path: /usr/local/src
+node_export_download_url: http://mirrors.sunline.cn/prometheus/linux/node_exporter-{{ node_export_version }}.linux-amd64.tar.gz

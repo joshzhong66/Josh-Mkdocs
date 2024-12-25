@@ -1,0 +1,15 @@
+---
+# RedHat setup tasks
+- name: Install necessary packages on RedHat
+  ansible.builtin.yum:
+    name:
+      - wget
+      - curl
+    state: present
+
+- name: Ensure firewalld is running
+  ansible.builtin.service:
+    name: firewalld
+    state: started
+    enabled: true
+

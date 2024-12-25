@@ -1,0 +1,17 @@
+---
+# Debian setup tasks
+- name: Install necessary packages on Debian
+  ansible.builtin.apt:
+    name:
+      - wget
+      - curl
+      - ufw
+    state: present
+    update_cache: yes
+
+- name: Ensure ufw is running
+  ansible.builtin.service:
+    name: ufw
+    state: started
+    enabled: true
+

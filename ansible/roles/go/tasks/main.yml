@@ -1,0 +1,22 @@
+- ansible.builtin.include_vars: variables.yml
+
+- ansible.builtin.include_tasks: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- ansible.builtin.include_tasks: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Unsupported OS Family
+  fail:
+    msg: "This role only supports RedHat and Debian families. Detected: {{ ansible_os_family }}"
+  when: ansible_os_family not in ['RedHat', 'Debian']
+
+- name: Verify Go installation
+  ansible.builtin.shell: go version
+  register: go_version_check
+  ignore_errors: yes
+
+- name: Fail if Go installation failed
+  fail:
+    msg: "Go installation failed. Please check logs for more details."
+  when: go_version_check.rc != 0

@@ -1,0 +1,31 @@
+- name: Install dependencies for Debian
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - build-essential
+    - wget
+    - tar
+    - curl
+
+- name: Download Go Source Package
+  get_url:
+    url: "{{ go_download_url }}"
+    dest: "{{ go_download_path }}/go{{ go_version }}.linux-amd64.tar.gz"
+    mode: '0644'
+
+- name: Unarchive Go Source Package
+  unarchive:
+    src: "{{ go_download_path }}/go{{ go_version }}.linux-amd64.tar.gz"
+    dest: /usr/local
+    remote_src: yes
+    mode: '0755'
+
+- name: Configure Go environment variables
+  template:
+    src: golang.sh.j2
+    dest: /etc/profile.d/golang.sh
+    mode: '0644'
+
+- name: Reload environment variables
+  shell: source /etc/profile

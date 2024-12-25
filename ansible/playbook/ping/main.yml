@@ -1,0 +1,23 @@
+---
+- name: Main Playbook
+  hosts: all
+  vars_files:
+    - /data/ansible/roles/ping/variables.yml
+
+  tasks:
+    - name: Include RedHat setup tasks
+      ansible.builtin.include_tasks: /data/ansible/roles/ping/setup-RedHat.yml
+      when: ansible_os_family == 'RedHat'
+
+    - name: Include Debian setup tasks
+      ansible.builtin.include_tasks: /data/ansible/roles/ping/setup-Debian.yml
+      when: ansible_os_family == 'Debian'
+
+    - name: Ping 4 times for RedHat-based systems
+      ansible.builtin.shell: ping -c 4 localhost
+      when: ansible_os_family == 'RedHat'
+
+    - name: Ping 5 times for Debian-based systems
+      ansible.builtin.shell: ping -c 5 localhost
+      when: ansible_os_family == 'Debian'
+

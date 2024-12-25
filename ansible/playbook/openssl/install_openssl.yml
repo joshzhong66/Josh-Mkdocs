@@ -3,15 +3,13 @@
 # ansible_playbook install_openssl.yml in Version OpenSSL 1.1.1w
 # 
 #
-# OpenSSL.tar.gz 官方下载地址（需要代理） 
+# 官方地址（需代理） 
 # https://www.openssl.org/source/openssl-1.1.1w.tar.gz
 #
-#
-#
-# 公司镜像源 
+# Sunline镜像源 
 # https://mirrors.sunline.cn/source/openssl/openssl-1.1.1w.tar.gz
 #
-#
+
 
 - name: Install OpenSSL
   hosts: centos72
@@ -21,25 +19,6 @@
       fail:
         msg: "Only Supports the Redhat family. Currently{{ ansible_distribution }}-{{ ansible_distribution_version }} (Family: {{ ansible_os_family }}"
       when: ansible_os_family != "RedHat"
-
-    # - name: Check if RPM OpenSSL is installed
-    #   shell: rpm -qa | grep openssl
-    #   register: rpm_openssl
-    #   changed_when: false
-    #   failed_when: false
-    
-    # - name: Remove RPM OpenSSL packages if installed
-    #   yum:
-    #     name: "{{ item }}"
-    #     state: absent
-    #   loop: 
-    #     - xmlsec1-openssl
-    #     - openssl098e
-    #     - openssl-libs
-    #     - openssl-devel
-    #   when: rpm_openssl.stdout != ""
-    #   notify:
-    #     - Verify OpenSSL Removed
 
     - name: Check If Source OpenSSL-1.1.1W  is not installed
       stat:

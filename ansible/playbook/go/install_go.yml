@@ -1,0 +1,6 @@
+---
+- name: Install Go language environment
+  hosts: centos7
+  become: true
+  roles:
+    - go
