@@ -4,4 +4,5 @@
 go_version: "1.22.5"
 go_install_path: /usr/local/go
 go_download_path: /usr/local/src
+go_bin: /usr/local/go/bin/go
 go_download_url: http://mirrors.sunline.cn/source/go/x86_64/go{{ go_version }}.linux-amd64.tar.gz

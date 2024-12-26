@@ -1,0 +1,15 @@
+---
+
+- name: Check If node_export is  already installed
+  stat: 
+    path: "{{ install_path }}"
+  register: node_export_installed
+
+- name: Stop is node_export is already installed
+  when: node_export_installed.stat.exists
+  debug:
+    msg: "node_export has been installed, Exit."
+
+- name: End play if Go is already installed
+  when: node_export_installed.stat.exists
+  meta: end_play

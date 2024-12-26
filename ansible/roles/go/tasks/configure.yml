@@ -1,0 +1,15 @@
+---
+- name: Check If Go Source is  already installed
+  stat: 
+    path: "{{ go_install_path }}"
+  register: go_installed
+
+- name: Stop if Go is already installed
+  when: go_installed.stat.exists
+  debug:
+    msg: "Go language environment has been installed, Exit."
+
+# 如果 Go 已安装：通过 meta: end_play 停止该 play
+- name: End play if Go is already installed
+  when: go_installed.stat.exists
+  meta: end_play

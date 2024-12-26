@@ -1,3 +1,5 @@
+--- 
+
 - name: Install dependencies for Debian
   apt:
     name: "{{ item }}"
@@ -28,4 +30,5 @@
     mode: '0644'
 
 - name: Reload environment variables
-  shell: source /etc/profile
+  shell: "bash -c 'source /etc/profile'"  # ". /etc/profile"
+  when: go_installed.stat.exists

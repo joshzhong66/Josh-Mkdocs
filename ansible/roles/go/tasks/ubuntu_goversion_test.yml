@@ -1,0 +1,14 @@
+---
+
+- name: Go version test
+  hosts: ubuntu
+  become: true
+  tasks: 
+    - name: Check Go version 
+      command: /usr/local/go/bin/go version
+      register: go_version
+
+    - name: Print Go version
+      debug:
+        msg: "Go Version is {{ go_version.stdout }}"
+      

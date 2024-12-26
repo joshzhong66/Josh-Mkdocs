@@ -1,32 +1,9 @@
---- 
-#Install node_exporter
-
-
-- name: Install node_exporter
-  hosts: centos7
-  become: true
-  vars:
-      version: 1.8.2 
-      tar_package: node_exporter-{{ version }}.linux-amd64.tar.gz
-      download_url: http://mirrors.sunline.cn/prometheus/linux/{{ tar_package }}
-      external_url: https://github.com/prometheus/node_exporter/releases/download/v{{ version }}/{{  tar_package }}
-      download_path: /usr/local/src
-      install_path: /usr/local/node_exporter
-  
-  tasks:
-    - name: Check if node_exporter is already installed
-      stat:
-        path: "{{ install_path }}"
-      register: node_exporter_installed
-
-    - name: Stop if node_exporter is already installed
-      when: node_exporter_installed.stat.exists
-      debug:
-        msg: "node_exporter is already installed. Stopping the playbook."
+---
+# Install node_export ubuntu
 
     - name: Download package
       get_url:
-        url: "{{ download_url }}"
+        url: "{{ internal_url }}"
         dest: "{{ download_path }}"
         mode: '0644'
 
@@ -38,11 +15,6 @@
 
     - name: Mv node_exporter name
       shell: mv "{{ download_path }}/node_exporter-1.8.2.linux-amd64" "{{ install_path }}"
-
-    - name: Ensure Prometheus Group Exists
-      group:
-        name: prometheus
-        state: present
 
     - name: Create Prometheus user
       user:
@@ -81,4 +53,3 @@
         enabled: yes
         state: started
         daemon_reload: yes
-    
