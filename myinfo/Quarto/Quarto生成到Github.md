@@ -556,10 +556,34 @@ quarto convert "Latest exercise1.ipynb"  #文件有空格，需要加冒号
 Converted to Latest exercise1.qmd
 
 cd notebooks   	#进入jupyter源文件目录 
-quarto convert "Latest exercise1.ipynb" -o ../jupyter_qmd/Latest_exercise1.qmd		# 转换该文件到../jupyter_qmd
+quarto convert "Latest exercise1.ipynb" -o ../jupyter/Latest_exercise1.qmd		# 转换该文件到../jupyter_qmd
 
 
 ```
 
 - 如果需要使用到csv文件，将Latest_exercise1.qmd放到qmd同一目录下
+
+
+
+## 八、使用Jupyter
+
+### 1.vs code安装jupyter
+
+打开python虚拟环境，执行`pip install jupyte`安装jupyter
+
+```
+(venv) E:\>pip install jupyter 
+```
+
+### 2.启动jupyter
+
+在python虚拟环境下，执行`jupyter notebook`
+
+```
+(venv) E:\>jupyter notebook
+```
+
+执行成功，会自动打开网页
+
+![image-20241230114552990](http://pic.its.sunline.cn/i/0/2024/12/30/iy20bs-0.png)
 

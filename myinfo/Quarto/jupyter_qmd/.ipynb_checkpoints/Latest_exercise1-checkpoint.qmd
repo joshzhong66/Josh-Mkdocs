@@ -1,0 +1,117 @@
+---
+jupyter: python3
+---
+
+```{python}
+#| collapsed: true
+# -*- coding: utf-8 -*-
+# 导入所需库
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+from lets_plot import *
+```
+
+```{python}
+
+# 设置 Lets-Plot 显示
+LetsPlot.setup_html(no_js=True)
+
+# ------------------------ PART 1: 加载和查看数据 ------------------------
+# 读取 NH.Ts+dSST.csv (北半球气温异常数据)
+temp_df = pd.read_csv("NH.Ts+dSST.csv", skiprows=1, na_values="***")
+
+# 清理列名
+temp_df.columns = temp_df.columns.str.strip()
+
+# 查看数据前几行
+print("气温异常数据 (NH.Ts+dSST.csv):")
+print(temp_df.head())
+
+# 读取 1_CO2-data.csv (CO2 数据)
+co2_df = pd.read_csv("1_CO2-data.csv")
+
+# 查看 CO2 数据
+print("CO2 数据 (1_CO2-data.csv):")
+print(co2_df.head())
+```
+
+```{python}
+
+# ------------------------ PART 2: 温度异常时序图 ------------------------
+# 将年份作为索引
+temp_df = temp_df.set_index("Year")
+
+# 绘制一个月的温度异常图（例如: 1月）
+month = "Jan"
+plt.figure(figsize=(10, 5))
+plt.axhline(0, color="orange", linestyle="--")
+plt.annotate("1951–1980 average", xy=(0.7, -0.2), xycoords=("axes fraction", "data"))
+temp_df[month].plot()
+plt.title(f"Average Temperature Anomaly in {month} (1880—{temp_df.index.max()})")
+plt.ylabel("Temperature anomaly (°C)")
+plt.xlabel("Year")
+plt.show()
+```
+
+```{python}
+
+# 绘制四个季节的温度异常图
+seasons = ["DJF", "MAM", "JJA", "SON"]
+for season in seasons:
+    plt.figure(figsize=(10, 5))
+    plt.axhline(0, color="orange", linestyle="--")
+    plt.annotate("1951–1980 average", xy=(0.7, -0.2), xycoords=("axes fraction", "data"))
+    temp_df[season].plot()
+    plt.title(f"Average Temperature Anomaly in {season} (1880—{temp_df.index.max()})")
+    plt.ylabel("Temperature anomaly (°C)")
+    plt.xlabel("Year")
+    plt.show()
+```
+
+```{python}
+
+# ------------------------ PART 3: CO₂ 数据的时序图 ------------------------
+# 筛选1960年后的数据
+co2_df = co2_df[co2_df["Year"] >= 1960]
+
+# 绘制 CO₂ 时间序列图
+plt.figure(figsize=(10, 5))
+plt.plot(co2_df["Year"] + co2_df["Month"] / 12, co2_df["Interpolated"], label="Interpolated CO₂")
+plt.plot(co2_df["Year"] + co2_df["Month"] / 12, co2_df["Trend"], label="Trend CO₂")
+plt.title("CO₂ Levels Over Time (from 1960)")
+plt.xlabel("Year")
+plt.ylabel("CO₂ concentration (ppm)")
+plt.legend()
+plt.show()
+```
+
+```{python}
+
+# ------------------------ PART 4: 温度和 CO₂ 数据相关性分析 ------------------------
+# 筛选 CO₂ 数据中的6月数据
+co2_june = co2_df[co2_df["Month"] == 6]
+
+# 合并 CO₂ 数据和温度数据（6月）
+merged_df = pd.merge(co2_june, temp_df, left_on="Year", right_index=True)
+print("合并后的 CO₂ 和温度数据:")
+print(merged_df[["Year", "Interpolated", "Jun"]].head())
+
+# 计算相关系数
+correlation = merged_df[["Interpolated", "Jun"]].corr()
+print("CO₂ 浓度与 6 月温度异常的相关性:")
+print(correlation)
+
+# 绘制散点图 (CO₂ 和温度的关系)
+(
+    ggplot(merged_df, aes(x="Jun", y="Interpolated"))
+    + geom_point(color="blue", size=3)
+    + labs(
+        title="Scatterplot of Temperature Anomalies vs CO₂ Levels",
+        x="Temperature Anomaly in June (°C)",
+        y="CO₂ Concentration (ppm)"
+    )
+)
+```
+
+
