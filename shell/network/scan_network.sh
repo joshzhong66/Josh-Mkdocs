@@ -57,8 +57,16 @@ function scan_network() {
         if [[ $input =~ $ipzz ]]; then
             ip_part=$(echo "$input" | cut -d'/' -f1)
             cidr_part=$(echo "$input" | cut -d'/' -f2)
-            echo && echo_log_info "网段格式正确，开始计算 $input 网段的主机范围..."
-            break
+            
+            if [[ $cidr_part -eq 32 ]]; then
+                echo && echo_log_info "网段格式正确，单个IP地址：$ip_part。开始扫描该IP..."
+                # Add logic to scan the single IP address here (e.g., ping, port scan, etc.)
+                break
+            else
+                echo && echo_log_info "网段格式正确，开始计算 $input 网段的主机范围..."
+                # Perform range calculation logic for non-/32 subnets
+                break
+            fi
         else
             echo "输入的网段格式不正确，请重新输入。"
         fi

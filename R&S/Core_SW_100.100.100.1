@@ -1,0 +1,4252 @@
+
+[CL_A_CORE_S7706]disp current-configuration 
+!Software Version V200R008C00SPC500
+#
+sysname CL_A_CORE_S7706
+#
+info-center source default channel 4 log level notification
+info-center logbuffer size 1024
+info-center timestamp debugging date precision-time tenth-second
+info-center timestamp log date precision-time tenth-second
+#
+ipv6
+#
+vlan batch 10 to 39 50 to 79 114 to 115 119 172 to 173 192 205 220 to 233 235 to 236 240 to 246
+vlan batch 250 to 252 260 to 266 269 283 to 286 291 to 292 310 to 339 350 to 370 410 420 to 422 430
+vlan batch 440 to 441 450 502 to 503 506 to 509 600 to 605 710 to 769 1100 to 1102 1110 to 1117
+#
+stp instance 0 root primary
+#
+transceiver phony-alarm-disable
+#
+lldp enable
+#
+http server load s7700-v200r008c00.001.web.7z
+http acl 2001
+#
+clock timezone BJ add 08:00:00
+#
+icmp-reply fast
+#
+observe-port 5 interface GigabitEthernet2/4/0/7
+observe-port 6 interface GigabitEthernet2/4/0/9
+observe-port 7 interface GigabitEthernet2/4/0/10
+#
+dhcp enable
+#
+dhcp snooping enable
+#
+mac-address update arp
+#
+mac-address flapping detection exclude vlan 430 
+#
+diffserv domain default
+#
+radius-server authorization 10.22.51.206 shared-key cipher %^%#et$1QKlAkUDUk/V4W@qI'x7D#",8%@Fg+i(i3l_*%^%# 
+#
+acl number 2000  
+ rule 5 deny 
+acl number 2001  
+ description ACCESS_control_TO_CORE
+ rule 3 permit source 10.18.106.5 0 
+ rule 4 permit source 10.18.88.5 0 
+ rule 5 permit source 10.18.12.23 0 
+ rule 6 permit source 10.18.252.0 0.0.0.255 
+ rule 7 permit source 10.22.50.246 0 
+ rule 8 permit source 172.20.8.8 0 
+ rule 9 permit source 10.18.100.8 0 
+ rule 11 permit source 172.18.0.253 0 
+ rule 12 permit source 10.22.50.249 0 
+ rule 13 permit source 10.18.88.135 0 
+ rule 15 permit source 172.20.8.12 0 
+ rule 16 permit source 172.21.8.12 0 
+ rule 17 permit source 172.21.8.8 0 
+acl number 2292  
+#
+acl number 3000  
+acl number 3001  
+ description SW-Core TO FW outbound
+ rule 1 permit ip source 10.18.252.5 0 
+ rule 3 permit ip source 10.18.88.135 0 
+ rule 5 permit ip source 10.22.102.13 0 
+ rule 6 permit ip source 10.22.102.11 0 
+ rule 7 permit ip source 10.22.102.12 0 
+ rule 8 permit ip source 10.18.89.91 0 
+ rule 9 deny udp destination-port eq 17788 
+ rule 10 deny ip source 10.18.12.54 0 
+ rule 11 permit ip source 10.22.60.20 0 
+ rule 12 deny ip source 10.22.2.17 0 
+ rule 13 permit ip destination 192.168.105.0 0.0.0.255 
+ rule 14 permit ip destination 192.168.230.0 0.0.0.255 
+ rule 16 permit ip destination 192.168.66.0 0.0.0.255 
+ rule 17 permit ip destination 192.168.88.0 0.0.0.255 
+ rule 18 permit ip destination 10.30.0.0 0.0.255.255 
+ rule 19 permit ip destination 10.10.0.0 0.0.255.255 
+ rule 20 permit ip destination 172.20.0.0 0.0.255.255 
+ rule 21 permit ip destination 10.25.0.0 0.0.255.255 
+ rule 22 permit ip destination 10.31.0.0 0.0.255.255 
+ rule 23 deny tcp source 10.18.0.0 0.0.255.255 destination-port eq 4430 
+ rule 25 permit ip destination 172.17.12.0 0.0.0.255 
+ rule 26 permit ip destination 10.4.10.0 0.0.0.255 
+ rule 27 permit ip destination 172.23.133.0 0.0.0.255 
+ rule 28 permit ip destination 172.24.107.0 0.0.0.255 
+ rule 29 permit ip destination 172.31.240.0 0.0.15.255 
+ rule 30 permit ip destination 192.168.105.109 0 
+ rule 31 permit ip destination 172.16.10.0 0.0.0.255 
+ rule 51 permit ip destination 10.2.30.0 0.0.0.255 
+ rule 52 permit ip destination 10.6.32.0 0.0.7.255 
+ rule 53 permit ip destination 172.18.0.253 0 
+ rule 54 permit ip destination 10.3.30.0 0.0.0.255 
+ rule 55 permit ip destination 10.4.30.0 0.0.0.255 
+ rule 56 permit ip destination 10.7.30.0 0.0.0.255 
+ rule 57 permit ip destination 10.8.30.0 0.0.0.255 
+ rule 58 permit ip destination 10.6.30.0 0.0.0.255 
+ rule 59 permit ip destination 10.1.0.0 0.0.0.255 
+ rule 60 permit ip destination 10.100.10.0 0.0.1.255 
+ rule 61 permit ip destination 192.168.150.0 0.0.0.255 
+ rule 63 permit ip destination 10.6.130.0 0.0.0.255 
+ rule 64 permit ip source 10.18.82.0 0.0.0.255 
+ rule 65 permit ip destination 192.168.2.0 0.0.0.255 
+ rule 66 permit ip destination 172.21.8.0 0.0.7.255 
+ rule 67 permit ip source 172.18.0.104 0 
+ rule 68 permit ip source 10.22.110.0 0.0.0.255 
+ rule 69 permit ip destination 10.250.1.0 0.0.0.255 
+ rule 110 permit ip destination 142.250.71.131 0 
+ rule 111 permit ip destination 142.250.71.142 0 
+ rule 112 permit ip destination 142.250.71.170 0 
+ rule 113 permit ip destination 142.250.71.238 0 
+ rule 114 permit ip destination 142.250.76.3 0 
+ rule 115 permit ip destination 142.250.76.238 0 
+ rule 116 permit ip destination 142.250.157.94 0 
+ rule 117 permit ip destination 142.250.196.196 0 
+ rule 118 permit ip destination 142.250.197.14 0 
+ rule 119 permit ip destination 142.250.197.110 0 
+ rule 120 permit ip destination 142.250.197.163 0 
+ rule 121 permit ip destination 142.250.197.170 0 
+ rule 122 permit ip destination 142.250.197.206 0 
+ rule 123 permit ip destination 142.250.197.238 0 
+ rule 124 permit ip destination 142.250.198.65 0 
+ rule 125 permit ip destination 142.250.198.74 0 
+ rule 126 permit ip destination 142.250.198.78 0 
+ rule 127 permit ip destination 142.250.198.106 0 
+ rule 128 permit ip destination 142.250.198.110 0 
+ rule 129 permit ip destination 142.250.198.123 0 
+ rule 130 permit ip destination 142.250.198.138 0 
+ rule 131 permit ip destination 142.250.198.142 0 
+ rule 132 permit ip destination 142.250.198.202 0 
+ rule 133 permit ip destination 142.250.217.74 0 
+ rule 134 permit ip destination 142.250.217.106 0 
+ rule 135 permit ip destination 142.250.217.110 0 
+ rule 136 permit ip destination 142.250.82.0 0.0.0.255 
+ rule 137 permit ip destination 142.250.199.27 0 
+ rule 200 deny ip destination 10.0.0.0 0.255.255.255 
+ rule 201 deny ip destination 172.0.0.0 0.31.255.255 
+ rule 202 deny ip destination 192.168.0.0 0.0.255.255 
+ rule 204 deny udp destination-port eq netbios-dgm 
+ rule 205 deny ip source 10.22.96.0 0.0.31.255 
+ rule 206 deny udp destination-port eq 15600 
+ rule 207 deny udp destination-port eq 5353 
+ rule 208 deny tcp destination-port eq 37527 
+ rule 209 deny tcp destination-port eq 26881 
+ rule 210 deny tcp destination-port eq 36688 
+ rule 211 deny udp destination-port eq 26881 
+ rule 300 deny ip destination 116.181.3.212 0 
+ rule 301 deny ip destination 120.52.183.184 0 
+ rule 302 deny ip destination 216.58.200.238 0 
+ rule 303 deny ip destination 120.92.124.241 0 
+ rule 304 deny ip destination 120.92.124.242 0 
+ rule 305 deny ip destination 20.44.229.112 0 
+ rule 306 deny ip destination 135.84.76.121 0 
+ rule 307 deny ip destination 110.43.34.72 0 
+ rule 308 deny ip destination 139.159.246.60 0 
+ rule 309 deny ip destination 59.36.120.122 0 
+ rule 310 deny ip destination 193.123.33.15 0 
+ rule 311 deny ip destination 14.18.180.88 0 
+ rule 312 deny ip destination 39.156.80.0 0.0.0.255 
+ rule 313 deny ip destination 110.43.89.229 0 
+ rule 314 deny ip destination 110.43.89.242 0 
+ rule 315 deny ip destination 116.181.3.4 0 
+ rule 317 deny ip destination 11.163.152.91 0 
+ rule 319 deny ip destination 216.58.200.0 0.0.0.255 
+ rule 320 deny ip destination 110.249.194.0 0.0.0.255 
+ rule 321 deny ip destination 124.236.26.0 0.0.0.255 
+ rule 322 deny ip destination 113.96.156.217 0 
+ rule 324 deny ip destination 2.57.121.241 0 
+ rule 325 deny ip destination 106.15.91.172 0 
+ rule 326 deny ip destination 37.49.229.58 0 
+ rule 327 deny ip destination 185.53.90.21 0 
+ rule 329 deny ip destination 125.39.240.55 0 
+ rule 330 deny ip destination 91.108.56.171 0 
+ rule 331 deny ip destination 142.250.0.0 0.1.255.255 
+ rule 332 deny ip destination 172.217.0.0 0.0.255.255 
+ rule 333 deny ip destination 74.125.0.0 0.0.255.255 
+ rule 334 deny ip destination 101.101.101.101 0 
+ rule 335 deny ip destination 5.5.5.5 0 
+ rule 336 deny ip destination 101.226.4.6 0 
+ rule 337 deny ip destination 149.154.167.41 0 
+ rule 338 deny ip destination 95.161.76.100 0 
+acl number 3002  
+ description wifi-sunline_guest inbound
+ rule 1 permit udp source 10.18.80.0 0.0.1.255 destination 10.22.50.1 0 destination-port eq bootps 
+ rule 4 permit udp source 10.18.80.0 0.0.1.255 destination 10.22.50.1 0 destination-port eq bootpc 
+ rule 5 permit udp source 10.18.80.0 0.0.1.255 destination 10.22.50.5 0 destination-port eq dns 
+ rule 6 permit tcp source 10.18.80.0 0.0.1.255 destination 172.18.0.105 0 destination-port eq 443 
+ rule 7 permit tcp source 10.18.80.0 0.0.1.255 destination 172.18.0.105 0 destination-port eq www 
+ rule 8 permit tcp source 10.18.80.0 0.0.1.255 destination 172.18.0.50 0 destination-port eq 443 
+ rule 9 permit tcp source 10.18.80.0 0.0.1.255 destination 10.24.1.133 0 destination-port eq www 
+ rule 10 permit tcp source 10.18.80.0 0.0.1.255 destination 172.18.0.50 0 destination-port eq www 
+ rule 11 permit ip source 10.18.80.0 0.0.1.255 destination 10.22.6.0 0.0.0.255 
+ rule 12 permit ip source 10.18.80.0 0.0.1.255 destination 172.18.0.8 0 
+ rule 13 permit tcp source 10.18.80.0 0.0.1.255 destination 172.18.0.253 0 
+ rule 14 permit tcp source 10.18.80.0 0.0.1.255 destination 172.18.0.160 0 destination-port eq 6443 
+ rule 15 permit tcp source 10.18.80.0 0.0.1.255 destination 172.18.0.161 0 destination-port eq 6443 
+ rule 16 permit ip source 10.18.80.0 0.0.1.255 destination 10.22.51.0 0.0.0.255 
+ rule 17 permit ip source 10.18.80.0 0.0.1.255 destination 172.18.0.0 0.0.0.255 
+ rule 18 permit ip source 10.18.80.0 0.0.1.255 destination 10.22.12.12 0 
+ rule 20 deny ip source 10.18.80.0 0.0.1.255 destination 10.18.0.0 0.0.255.255 
+ rule 21 deny ip source 10.18.80.0 0.0.1.255 destination 172.18.0.0 0.0.0.255 
+ rule 22 deny ip source 10.18.80.0 0.0.1.255 destination 10.22.0.0 0.0.255.255 
+ rule 23 deny ip source 10.18.80.0 0.0.1.255 destination 10.19.0.0 0.0.255.255 
+ rule 24 deny ip source 10.18.80.0 0.0.1.255 destination 10.24.0.0 0.0.1.255 
+ rule 25 deny ip source 10.18.80.0 0.0.1.255 destination 10.30.0.0 0.0.255.255 
+ rule 26 deny ip source 10.18.80.0 0.0.1.255 destination 10.31.0.0 0.0.255.255 
+ rule 27 deny ip source 10.18.80.0 0.0.1.255 destination 10.10.0.0 0.0.255.255 
+acl number 3003  
+acl number 3004  
+acl number 3005  
+ description VLan 250 acl NetDevice Manager
+ rule 4 permit ip source 10.18.106.5 0 destination 10.18.250.0 0.0.0.255 
+ rule 5 permit ip source 10.22.50.110 0 destination 10.18.250.0 0.0.0.255 
+ rule 6 permit ip source 10.18.88.5 0 destination 10.18.250.0 0.0.0.255 
+ rule 7 permit ip source 172.18.0.253 0 destination 10.18.250.0 0.0.0.255 
+ rule 8 permit ip source 10.18.89.91 0 destination 10.18.250.0 0.0.0.255 
+ rule 10 permit ip source 10.18.252.0 0.0.0.255 
+ rule 11 permit ip source 10.22.50.249 0 
+ rule 12 permit ip source 10.18.89.251 0 
+ rule 14 permit ip source 172.20.8.8 0 destination 10.18.250.0 0.0.0.255 
+ rule 15 permit ip source 172.21.8.8 0 destination 10.18.250.0 0.0.0.255 
+ rule 16 permit ip source 10.18.100.8 0 destination 10.18.250.0 0.0.0.255 
+ rule 21 permit ip source 10.18.88.135 0 destination 10.18.250.0 0.0.0.255 
+ rule 23 permit ip source 172.20.8.12 0 destination 10.18.250.0 0.0.0.255 
+ rule 50 deny tcp destination 10.18.250.0 0.0.0.255 destination-port eq 443 
+ rule 51 deny tcp destination 10.18.250.0 0.0.0.255 destination-port eq 22 
+acl number 3006  
+ description vLan252 inbound Mananger
+ rule 5 permit ip source 10.18.252.0 0.0.0.255 destination 10.18.12.23 0 
+ rule 6 permit ip source 10.18.252.0 0.0.0.255 destination 10.18.88.5 0 
+ rule 7 permit ip source 10.18.252.0 0.0.0.255 destination 10.18.88.135 0 
+ rule 8 permit ip source 10.18.252.0 0.0.0.255 destination 10.18.100.8 0 
+ rule 9 permit ip source 10.18.252.0 0.0.0.255 destination 10.18.10.44 0 
+ rule 50 deny ip source 10.18.252.0 0.0.0.255 destination 10.18.0.0 0.0.127.255 
+ rule 51 deny ip source 10.18.252.0 0.0.0.255 destination 10.19.0.0 0.0.255.255 
+acl number 3007  
+ description office all lan  inbound
+ rule 1 permit tcp source 10.18.0.0 0.0.255.255 destination 10.24.1.105 0 destination-port eq 445 
+ rule 2 permit tcp source 10.18.0.0 0.0.255.255 destination 10.18.10.40 0 destination-port eq 445 
+ rule 3 permit tcp source 10.22.50.231 0 destination 10.24.1.135 0 destination-port eq 445 
+ rule 5 permit tcp source 10.18.0.0 0.0.255.255 destination 10.24.1.108 0 destination-port eq 445 
+ rule 6 permit ip destination 10.18.10.31 0 
+ rule 7 permit ip destination 10.18.10.44 0 
+ rule 8 permit tcp source 10.18.0.0 0.0.255.255 destination 10.22.51.64 0 destination-port eq 445 
+ rule 9 permit tcp source 10.18.0.0 0.0.255.255 destination 10.24.1.133 0 destination-port eq 445 
+ rule 10 permit tcp source 10.18.0.0 0.0.255.255 destination 10.22.51.63 0 destination-port eq 445 
+ rule 11 permit tcp source 10.18.0.0 0.0.255.255 destination 10.22.51.67 0 destination-port eq 445 
+ rule 12 permit tcp source 10.18.0.0 0.0.255.255 destination 10.22.51.65 0 destination-port eq 445 
+ rule 100 deny tcp destination-port eq 445 
+ rule 101 deny udp destination-port eq netbios-ns 
+ rule 102 deny udp destination-port eq 17788 
+ rule 103 deny udp destination-port eq 15926 
+ rule 104 deny udp destination-port eq netbios-dgm 
+ rule 105 deny udp destination-port eq 5684 
+ rule 106 deny udp destination-port eq 15600 
+ rule 107 deny udp destination-port eq 5353 
+ rule 108 deny udp destination-port eq 1900 
+ rule 109 deny udp destination-port eq 5355 
+acl number 3008  
+ description vLan 220 acl YFZX Server outbound
+ rule 1 permit ip source 10.22.50.5 0 
+ rule 2 permit ip source 10.18.88.135 0 
+ rule 3 permit ip source 10.18.89.91 0 
+ rule 4 permit ip source 172.18.0.105 0 
+ rule 6 permit ip source 10.22.50.249 0 
+ rule 7 permit ip source 172.18.0.18 0 
+ rule 8 permit ip source 172.18.0.23 0 
+ rule 9 permit ip source 10.18.252.0 0.0.0.255 
+ rule 10 permit ip source 10.18.10.22 0 
+ rule 11 permit ip source 10.18.88.5 0 
+ rule 90 permit ip source 10.22.1.10 0 destination 10.22.0.120 0 
+ rule 91 permit ip source 10.22.110.0 0.0.0.255 destination 10.22.0.120 0 
+ rule 92 permit ip source 10.22.0.0 0.0.0.255 destination 10.22.0.120 0 
+ rule 95 deny ip destination 10.22.0.120 0 
+ rule 101 permit ip source 10.22.96.0 0.0.31.255 destination 10.22.0.0 0.0.0.255 
+ rule 107 permit ip source 172.30.0.0 0.1.255.255 destination 10.22.0.0 0.0.0.255 
+ rule 108 permit ip source 172.29.0.0 0.0.255.255 destination 10.22.0.0 0.0.0.255 
+ rule 109 permit ip source 10.30.205.0 0.0.0.255 destination 10.22.0.0 0.0.0.255 
+ rule 110 permit tcp source 10.22.12.97 0 source-port eq 3306 destination 10.22.0.0 0.0.0.255 
+ rule 111 permit ip source 10.22.12.98 0 destination 10.22.0.180 0 
+ rule 112 permit ip destination 10.22.0.151 0 
+ rule 113 permit ip source 10.22.0.0 0.0.1.255 destination 10.22.0.0 0.0.0.255 
+ rule 114 permit ip source 10.10.20.150 0 destination 10.22.0.49 0 
+ rule 115 permit ip source 10.22.2.0 0.0.0.255 destination 10.22.0.0 0.0.0.255 
+ rule 116 permit ip source 10.10.20.9 0 destination 10.22.0.49 0 
+ rule 117 permit ip source 10.22.51.185 0 destination 10.22.0.49 0 
+ rule 118 permit ip source 10.22.20.0 0.0.0.255 destination 10.22.0.49 0 
+ rule 119 permit ip source 10.10.20.13 0 destination 10.22.0.49 0 
+ rule 120 permit ip source 10.10.20.17 0 destination 10.22.0.49 0 
+ rule 122 permit ip source 10.10.20.222 0 destination 10.22.0.49 0 
+ rule 123 permit ip source 10.22.60.26 0 destination 10.22.0.51 0 
+ rule 124 permit ip source 10.22.60.20 0 destination 10.22.0.51 0 
+ rule 125 permit tcp source 10.22.0.0 0.0.255.255 destination 10.22.0.51 0 destination-port eq 443 
+ rule 127 deny ip source 10.0.0.0 0.255.255.255 destination 10.22.0.0 0.0.0.255 
+ rule 128 permit ip source 10.22.52.21 0 destination 10.22.0.9 0 
+ rule 129 permit ip destination 10.22.0.36 0 
+ rule 130 permit ip destination 10.22.0.10 0 
+ rule 131 permit ip destination 10.22.0.53 0 
+ rule 132 permit ip destination 10.22.0.30 0 
+ rule 133 permit ip destination 10.22.0.181 0 
+ rule 137 permit ip source 10.22.20.72 0 destination 10.22.0.218 0 
+ rule 200 deny ip destination 10.22.0.0 0.0.0.255 
+acl number 3009  
+ description VLan 241 acl outbound
+ rule 1 permit ip source 10.22.50.0 0.0.0.7 
+ rule 9 permit ip source 10.18.89.194 0 
+ rule 10 permit tcp source 10.18.252.5 0 
+ rule 11 permit tcp source 10.18.88.5 0 
+ rule 13 permit ip source 10.18.12.27 0 
+ rule 14 permit ip source 172.20.8.10 0 
+ rule 15 permit tcp source 10.18.12.22 0 
+ rule 16 permit ip source 10.22.50.249 0 
+ rule 17 permit ip source 10.24.1.138 0 
+ rule 18 permit ip source 10.30.205.30 0 
+ rule 19 permit ip source 10.18.88.77 0 
+ rule 20 permit ip source 10.22.92.0 0.0.0.255 destination 10.24.1.30 0 
+ rule 21 permit ip source 10.18.88.135 0 
+ rule 22 permit ip source 10.18.88.18 0 
+ rule 23 permit ip source 172.20.8.12 0 
+ rule 24 permit ip source 172.18.0.105 0 
+ rule 25 permit ip source 10.22.51.71 0 
+ rule 102 permit tcp source 10.24.1.108 0 destination 10.24.1.109 0 destination-port eq 445 
+ rule 103 permit tcp destination 10.24.1.108 0 destination-port eq 445 
+ rule 104 permit tcp destination 10.24.1.105 0 destination-port eq 445 
+ rule 105 permit tcp source 10.24.1.105 0 destination 10.30.80.0 0.0.1.255 destination-port eq 445 
+ rule 106 permit tcp source 10.18.12.0 0.0.0.255 destination 10.24.1.133 0 
+ rule 107 permit tcp source 10.22.50.231 0 destination 10.24.1.135 0 destination-port eq 445 
+ rule 113 permit tcp destination 10.24.1.138 0 destination-port eq 3389 
+ rule 114 permit tcp destination 10.24.1.136 0 destination-port eq 3389 
+ rule 115 permit tcp destination 10.24.1.133 0 destination-port eq 445 
+ rule 122 permit tcp destination 10.24.1.150 0 destination-port eq 3389 
+ rule 123 permit tcp destination 10.22.50.132 0 
+ rule 124 permit ip source 10.18.88.137 0 
+ rule 201 deny tcp destination-port eq 3389 
+ rule 202 deny tcp destination-port eq 445 
+ rule 203 deny ip destination 10.24.1.30 0 
+acl number 3010  
+ description CloudVM 10.22.3.0 outbound
+ rule 7 permit tcp source 10.18.0.0 0.0.255.255 destination 172.18.0.11 0 destination-port eq 445 
+ rule 10 permit tcp destination 10.22.3.0 0.0.0.255 destination-port eq 1494 
+ rule 11 permit tcp destination 10.22.3.0 0.0.0.255 destination-port eq 2598 
+ rule 12 permit tcp destination 10.22.3.0 0.0.0.255 destination-port eq www 
+ rule 13 permit tcp destination 10.22.3.0 0.0.0.255 destination-port eq 8080 
+ rule 14 permit udp destination 10.22.3.0 0.0.0.255 destination-port eq ntp 
+ rule 112 permit ip source 10.22.50.1 0 destination 10.22.3.0 0.0.0.255 
+ rule 113 permit ip source 10.24.1.105 0 destination 10.22.3.0 0.0.0.255 
+ rule 115 permit ip source 10.24.1.138 0 destination 10.22.3.0 0.0.0.255 
+ rule 120 permit ip source 10.22.0.0 0.0.0.255 destination 10.22.3.0 0.0.0.255 
+ rule 121 permit ip source 10.22.2.0 0.0.0.255 destination 10.22.3.0 0.0.0.255 
+ rule 122 permit ip source 10.22.3.0 0.0.0.255 destination 10.22.3.0 0.0.0.255 
+ rule 123 permit ip source 10.22.1.92 0 destination 10.22.3.0 0.0.0.255 
+acl number 3011  
+ description VM-Server 10.22.2.0 outbound
+ rule 1 permit ip source 10.18.88.5 0 
+ rule 10 permit tcp destination 10.22.2.16 0 destination-port eq www 
+ rule 14 permit ip source 10.22.50.0 0.0.0.255 destination 10.22.2.0 0.0.0.255 
+ rule 16 permit ip source 10.18.252.0 0.0.0.255 
+ rule 20 permit ip source 10.22.0.0 0.0.0.255 destination 10.22.2.0 0.0.0.255 
+ rule 21 permit ip source 10.22.2.0 0.0.0.255 destination 10.22.2.0 0.0.0.255 
+ rule 25 permit ip source 10.24.1.138 0 destination 10.22.2.0 0.0.0.255 
+ rule 27 permit ip source 10.18.88.135 0 destination 10.22.2.0 0.0.0.255 
+ rule 101 permit ip source 10.22.91.0 0.0.0.255 destination 10.22.2.0 0.0.0.255 
+ rule 102 permit ip source 10.22.92.0 0.0.0.255 destination 10.22.2.0 0.0.0.255 
+ rule 199 deny ip destination 10.22.2.0 0.0.0.255 
+acl number 3012  
+acl number 3013  
+acl number 3019  
+acl number 3020  
+ description vLan 222 CLHD Server outbound
+ rule 1 permit ip source 10.18.252.0 0.0.0.255 
+ rule 2 permit ip source 10.22.50.249 0 
+ rule 3 permit ip source 10.18.88.5 0 
+ rule 4 permit ip source 10.18.88.135 0 
+ rule 5 permit ip source 172.18.0.18 0 
+ rule 6 permit ip source 172.18.0.105 0 
+ rule 11 permit ip source 10.22.50.5 0 
+ rule 13 permit ip source 172.18.0.23 0 
+ rule 20 permit ip source 10.22.0.51 0 destination 10.22.20.0 0.0.0.255 
+ rule 27 permit ip source 10.22.1.10 0 destination 10.22.20.0 0.0.0.255 
+ rule 28 permit ip source 10.22.0.36 0 destination 10.22.20.0 0.0.0.255 
+ rule 29 permit tcp destination 10.22.20.58 0 destination-port eq 50659 
+ rule 31 permit ip source 10.22.21.99 0 destination 10.22.20.156 0 
+ rule 32 permit ip source 10.22.21.99 0 destination 10.22.20.162 0 
+ rule 33 permit ip source 10.22.21.120 0 destination 10.22.20.162 0 
+ rule 40 permit ip source 10.22.0.30 0 destination 10.22.20.0 0.0.0.255 
+ rule 44 permit tcp destination 10.22.20.41 0 destination-port eq 7012 
+ rule 45 permit tcp destination 10.22.20.0 0.0.0.255 destination-port eq 60010 
+ rule 46 permit ip source 10.22.21.64 0 destination 10.22.20.0 0.0.0.255 
+ rule 47 permit ip source 10.22.51.0 0.0.0.255 destination 10.22.20.0 0.0.0.255 
+ rule 48 permit ip source 10.22.1.89 0 destination 10.22.20.0 0.0.0.255 
+ rule 49 permit ip source 47.118.63.57 0 destination 10.22.20.156 0 
+ rule 50 permit ip source 116.62.203.189 0 destination 10.22.20.156 0 
+ rule 53 permit ip source 10.22.1.0 0.0.0.240 destination 10.22.20.0 0.0.0.255 
+ rule 54 permit ip source 10.22.0.49 0 destination 10.22.20.0 0.0.0.255 
+ rule 100 permit ip source 10.22.20.0 0.0.0.255 destination 10.22.20.0 0.0.0.255 
+ rule 101 permit ip source 10.22.80.0 0.0.0.255 destination 10.22.20.0 0.0.0.255 
+ rule 102 permit ip source 10.22.111.0 0.0.0.255 destination 10.22.20.0 0.0.0.255 
+ rule 103 permit ip destination 10.22.20.72 0 
+ rule 104 permit ip source 10.22.110.0 0.0.0.255 destination 10.22.20.0 0.0.0.255 
+ rule 105 permit ip source 10.22.0.218 0 destination 10.22.20.72 0 
+ rule 106 permit ip destination 10.22.20.154 0 
+ rule 110 deny ip destination 10.22.20.0 0.0.0.255 
+acl number 3021  
+ description XXGLB Server  10.22.50.0 outbound vlan 225
+ rule 1 permit ip source 10.18.252.5 0 
+ rule 2 permit ip source 10.18.12.27 0 
+ rule 3 permit ip source 10.18.12.23 0 
+ rule 4 permit ip source 10.18.88.5 0 
+ rule 5 permit ip source 10.22.50.231 0 
+ rule 6 permit ip source 10.22.50.230 0 
+ rule 7 permit ip source 10.22.50.232 0 
+ rule 8 permit ip source 172.18.0.110 0 
+ rule 9 permit ip source 10.24.1.135 0 
+ rule 10 permit ip source 10.18.88.77 0 
+ rule 11 permit tcp source 172.18.0.6 0 destination 10.22.50.231 0 destination-port eq 1433 
+ rule 12 permit ip source 172.18.0.36 0 destination 10.22.50.34 0 
+ rule 13 permit tcp source 10.22.50.247 0 destination 10.22.50.231 0 destination-port eq 10050 
+ rule 18 permit tcp source 172.20.0.0 0.0.255.255 
+ rule 19 permit tcp source 172.18.0.5 0 destination 10.22.50.231 0 destination-port eq 1433 
+ rule 20 permit ip source 10.18.89.194 0 
+ rule 21 permit ip source 10.18.50.31 0 
+ rule 22 permit ip source 10.18.88.135 0 
+ rule 23 permit ip source 10.22.50.5 0 
+ rule 25 permit tcp source 172.18.0.12 0 destination 10.22.50.231 0 destination-port eq 1433 
+ rule 27 permit ip source 10.18.12.54 0 
+ rule 29 permit ip source 10.24.1.109 0 
+ rule 31 permit tcp source 172.18.0.34 0 destination 10.22.50.231 0 destination-port eq 1433 
+ rule 36 permit ip source 172.18.0.18 0 
+ rule 37 permit ip source 10.22.52.21 0 
+ rule 38 permit tcp source 10.30.206.6 0 destination 10.22.50.231 0 destination-port eq 1433 
+ rule 39 permit ip source 10.30.205.231 0 
+ rule 40 permit tcp source 10.22.50.249 0 destination-port eq 3389 
+ rule 42 permit tcp source 172.18.0.85 0 destination 10.22.50.231 0 destination-port eq 1433 
+ rule 43 permit tcp source 172.18.0.86 0 destination 10.22.50.231 0 destination-port eq 1433 
+ rule 44 permit tcp source 172.18.0.91 0 destination 10.22.50.231 0 destination-port eq 1433 
+ rule 45 permit tcp source 10.18.12.22 0 destination 10.22.50.231 0 destination-port eq 1433 
+ rule 46 permit tcp source 10.18.88.183 0 destination 10.22.50.231 0 destination-port eq 1433 
+ rule 47 permit tcp source 172.18.0.36 0 destination 10.22.50.231 0 destination-port eq 1433 
+ rule 50 permit ip source 10.22.100.0 0.0.0.255 destination 10.22.50.128 0 
+ rule 51 permit ip source 10.22.100.0 0.0.0.255 destination 10.22.50.129 0 
+ rule 99 permit ip source 10.22.50.28 0 destination 10.22.50.231 0 
+ rule 151 deny tcp destination-port eq 445 
+ rule 152 deny tcp destination-port eq 3389 
+acl number 3022  
+acl number 3025  
+acl number 3031  
+acl number 3042  
+acl number 3044  
+acl number 3050  
+acl number 3051  
+acl number 3052  
+ description vLan 245 acl backup ibmc outbound
+ rule 5 permit ip source 10.18.12.27 0 
+ rule 6 permit ip source 10.18.88.135 0 
+ rule 7 permit ip source 10.18.252.5 0 
+ rule 8 permit ip source 10.18.88.5 0 
+ rule 9 permit ip source 172.20.8.8 0 
+ rule 10 permit ip source 172.18.0.0 0.0.0.255 destination 10.22.52.0 0.0.0.255 
+ rule 11 permit ip source 10.18.89.91 0 
+ rule 12 permit ip source 172.21.8.12 0 
+ rule 15 permit ip source 10.22.0.0 0.0.255.255 destination 10.22.52.0 0.0.0.255 
+ rule 16 permit ip source 10.30.205.0 0.0.0.255 destination 10.22.52.0 0.0.0.255 
+ rule 50 deny ip destination 10.22.52.0 0.0.0.255 
+acl number 3059  
+acl number 3060  
+ description CLHT Server 10.22.60.0 outbound vlan 226
+ rule 3 permit ip source 172.18.0.18 0 
+ rule 4 permit ip source 172.18.0.105 0 
+ rule 5 permit ip source 10.18.252.0 0 destination 10.22.60.0 0.0.0.255 
+ rule 8 permit ip source 10.18.88.135 0 destination 10.22.60.0 0.0.0.255 
+ rule 10 permit ip source 10.22.50.5 0 destination 10.22.60.0 0.0.0.255 
+ rule 20 permit ip source 10.22.113.0 0.0.0.255 destination 10.22.60.192 0.0.0.31 
+ rule 21 permit ip source 10.22.60.0 0.0.0.255 destination 10.22.60.0 0.0.0.255 
+ rule 22 permit ip source 10.22.113.0 0.0.0.255 destination 10.22.60.20 0 
+ rule 100 deny ip destination 10.22.60.192 0.0.0.31 
+acl number 3061  
+acl number 3069  
+acl number 3070  
+acl number 3080  
+acl number 3082  
+ description CLSJ Server 10.22.82.0 inbound vlan 230
+ rule 1 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.50.0 0.0.0.7 
+ rule 20 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.82.0 0.0.0.255 
+ rule 21 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.50.249 0 
+ rule 22 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.12.0 0.0.0.255 
+ rule 23 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.4.0 0.0.1.255 
+ rule 24 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.114.0 0.0.0.255 
+ rule 25 permit ip source 10.22.82.0 0.0.0.255 destination 10.10.20.0 0.0.0.255 
+ rule 28 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.51.0 0.0.0.255 
+ rule 29 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.80.28 0 
+ rule 30 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.1.0 0.0.0.255 
+ rule 31 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.20.154 0 
+ rule 32 permit ip source 10.22.82.0 0.0.0.255 destination 10.10.20.85 0 
+ rule 33 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.21.0 0.0.0.255 
+ rule 34 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.70.0 0.0.1.255 
+ rule 35 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.110.0 0.0.0.255 
+ rule 36 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.90.21 0 
+ rule 37 permit ip source 10.22.82.93 0 destination 10.22.86.21 0 
+ rule 38 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.0.10 0 
+ rule 39 permit ip source 10.22.82.86 0 destination 10.22.86.21 0 
+ rule 40 permit ip source 10.22.82.87 0 destination 10.22.86.21 0 
+ rule 41 permit ip source 10.22.82.86 0 destination 10.22.86.19 0 
+ rule 42 permit ip source 10.22.82.87 0 destination 10.22.86.19 0 
+ rule 43 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.60.0 0.0.0.255 
+ rule 44 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.64.0 0.0.0.255 
+ rule 45 permit ip source 10.22.82.76 0 destination 10.22.50.30 0 
+ rule 46 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.6.0 0.0.0.255 
+ rule 47 permit ip source 10.22.82.94 0 destination 10.22.86.20 0 
+ rule 48 permit ip source 10.22.82.94 0 destination 10.22.86.21 0 
+ rule 100 deny ip source 10.22.0.0 0.0.255.255 destination 10.22.0.0 0.0.255.255 
+acl number 3083  
+ description YHT Server 10.22.83.0 outbound vlan 283
+ rule 11 permit ip source 10.22.50.249 0 
+ rule 12 permit ip source 10.18.252.0 0.0.0.255 
+ rule 13 permit ip destination 10.22.83.80 0 
+ rule 14 permit ip source 10.18.88.135 0 
+ rule 15 permit ip source 10.18.88.5 0 
+ rule 100 deny tcp destination-port eq 38822 
+ rule 101 deny tcp destination-port eq 3389 
+acl number 3084  
+acl number 3086  
+ description vLan 286 CLSJ Server GELI outbound
+ rule 5 permit ip source 10.22.50.249 0 
+ rule 6 permit ip source 10.18.252.5 0 
+ rule 7 permit ip source 10.18.88.135 0 
+ rule 8 permit ip source 10.18.88.5 0 
+ rule 20 permit ip source 10.22.50.5 0 destination 10.22.0.0 0.0.255.255 
+ rule 21 permit ip source 10.22.1.10 0 destination 10.22.0.0 0.0.255.255 
+ rule 22 permit ip source 10.22.1.50 0 destination 10.22.0.0 0.0.255.255 
+ rule 23 permit ip source 10.22.82.86 0 destination 10.22.86.21 0 
+ rule 24 permit ip source 10.22.82.87 0 destination 10.22.86.21 0 
+ rule 25 permit ip source 10.22.82.93 0 destination 10.22.86.21 0 
+ rule 26 permit ip source 10.22.82.86 0 destination 10.22.86.19 0 
+ rule 27 permit ip source 10.22.82.87 0 destination 10.22.86.19 0 
+ rule 28 permit ip source 10.22.82.94 0 destination 10.22.86.20 0 
+ rule 29 permit ip source 10.22.82.94 0 destination 10.22.86.21 0 
+ rule 30 permit ip source 10.22.86.0 0.0.0.255 destination 10.22.86.0 0.0.0.255 
+ rule 31 permit ip source 10.22.114.0 0.0.0.255 destination 10.22.86.0 0.0.0.255 
+ rule 32 permit ip source 172.18.0.100 0 destination 10.22.86.0 0.0.0.255 
+ rule 100 deny ip 
+acl number 3089  
+acl number 3090  
+ description public Server 10.22.90.0 inbound vlan 233
+ rule 10 permit udp source 10.22.90.0 0.0.0.255 destination 10.22.50.5 0 destination-port eq dns 
+ rule 12 permit ip source 10.22.90.0 0.0.0.255 destination 10.22.50.249 0 
+ rule 13 permit ip source 10.22.90.0 0.0.0.255 destination 10.18.88.5 0 
+ rule 14 permit ip source 10.22.90.0 0.0.0.255 destination 10.22.90.0 0.0.0.255 
+ rule 20 permit ip source 10.22.90.0 0.0.0.255 destination 10.22.82.0 0.0.0.255 
+ rule 21 permit ip source 10.22.90.21 0 
+ rule 100 deny ip source 10.22.90.0 0.0.0.255 destination 10.0.0.0 0.255.255.255 
+acl number 3091  
+ description HTDEV CTX VDI 10.22.91.0 outbound vlan 291
+ rule 10 permit ip source 10.22.50.1 0 destination 10.22.91.0 0.0.0.255 
+ rule 11 permit ip source 10.22.50.3 0 destination 10.22.91.0 0.0.0.255 
+ rule 12 permit ip source 10.22.1.10 0 destination 10.22.91.0 0.0.0.255 
+ rule 13 permit ip source 10.22.1.50 0 destination 10.22.91.0 0.0.0.255 
+ rule 14 permit ip source 10.22.10.121 0 destination 10.22.91.0 0.0.0.255 
+ rule 30 permit ip source 10.22.91.0 0.0.0.255 destination 10.22.91.0 0.0.0.255 
+ rule 31 permit ip source 10.22.2.0 0.0.0.255 destination 10.22.91.0 0.0.0.255 
+ rule 33 permit ip source 10.22.60.149 0 destination 10.22.91.0 0.0.0.255 
+ rule 34 permit ip source 10.22.60.20 0 destination 10.22.91.0 0.0.0.255 
+ rule 35 permit ip source 10.22.61.0 0.0.0.255 destination 10.22.91.0 0.0.0.255 
+ rule 36 permit ip source 10.22.62.0 0.0.0.255 destination 10.22.91.0 0.0.0.255 
+ rule 37 permit ip source 10.22.63.0 0.0.0.255 destination 10.22.91.0 0.0.0.255 
+ rule 38 permit ip source 10.22.60.132 0 destination 10.22.91.0 0.0.0.255 
+ rule 39 permit ip source 10.22.60.133 0 destination 10.22.91.0 0.0.0.255 
+ rule 40 permit ip source 10.22.60.179 0 destination 10.22.91.0 0.0.0.255 
+ rule 50 permit tcp destination 10.22.91.0 0.0.0.255 destination-port eq 1494 
+ rule 51 permit tcp destination 10.22.91.0 0.0.0.255 destination-port eq 2598 
+ rule 100 deny ip destination 10.22.91.0 0.0.0.255 
+acl number 3092  
+ description ZN CTX VDI 10.22.92.0 outbound vlan 292
+ rule 10 permit ip source 10.22.50.1 0 
+ rule 11 permit ip source 10.22.50.3 0 
+ rule 28 permit ip source 10.24.1.30 0 
+ rule 29 permit ip source 10.22.102.11 0 
+ rule 30 permit ip source 10.22.2.0 0.0.0.255 
+ rule 31 permit ip source 10.22.92.0 0.0.0.255 destination 10.22.92.0 0.0.0.255 
+ rule 32 permit ip source 10.22.50.220 0 destination 10.22.92.0 0.0.0.255 
+ rule 33 permit ip source 10.22.50.221 0 destination 10.22.92.0 0.0.0.255 
+ rule 50 permit tcp destination 10.22.92.0 0.0.0.255 destination-port eq 1494 
+ rule 51 permit tcp destination 10.22.92.0 0.0.0.255 destination-port eq 2598 
+ rule 100 deny ip destination 10.22.92.0 0.0.0.255 
+acl number 3095  
+acl number 3100  
+ description HWCloud Manager outbound
+ rule 1 permit ip source 10.18.252.5 0 destination 10.22.0.0 0.0.255.255 
+ rule 2 permit ip source 10.22.52.0 0.0.0.255 destination 10.22.0.0 0.0.255.255 
+ rule 3 permit ip source 10.22.50.240 0.0.0.15 destination 10.22.0.0 0.0.255.255 
+ rule 5 permit ip source 10.18.88.15 0 destination 10.22.0.0 0.0.255.255 
+ rule 10 permit ip source 10.22.50.5 0 destination 10.22.100.0 0.0.0.255 
+ rule 11 permit ip source 10.24.1.133 0 destination 10.22.100.0 0.0.0.255 
+ rule 12 permit ip source 10.18.88.5 0 destination 10.22.100.0 0.0.0.255 
+ rule 13 permit ip source 10.18.88.135 0 destination 10.22.100.0 0.0.0.255 
+ rule 14 permit ip source 10.22.102.0 0.0.0.255 destination 10.22.100.0 0.0.0.255 
+ rule 15 permit ip source 10.22.100.0 0.0.1.255 destination 10.22.100.0 0.0.0.255 
+ rule 16 permit ip source 10.22.51.65 0 destination 10.22.100.0 0.0.0.255 
+ rule 17 permit ip source 10.22.51.66 0 destination 10.22.100.0 0.0.0.255 
+ rule 18 permit ip source 10.18.89.91 0 destination 10.22.100.0 0.0.0.255 
+ rule 19 permit ip source 10.22.51.64 0 destination 10.22.100.0 0.0.0.255 
+ rule 20 permit ip source 172.18.0.18 0 destination 10.22.100.0 0.0.0.255 
+ rule 21 permit ip source 172.18.0.17 0 destination 10.22.100.0 0.0.0.255 
+ rule 22 permit ip source 172.18.0.23 0 destination 10.22.100.0 0.0.0.255 
+ rule 23 permit ip source 172.20.8.8 0 destination 10.22.100.0 0.0.0.255 
+ rule 24 permit ip source 10.22.50.6 0 destination 10.22.100.0 0.0.0.255 
+ rule 25 permit ip source 172.20.8.12 0 destination 10.22.100.0 0.0.0.255 
+ rule 26 permit ip source 10.22.50.66 0 destination 10.22.100.0 0.0.0.255 
+ rule 27 permit ip source 172.21.8.12 0 destination 10.22.100.0 0.0.0.255 
+ rule 28 permit ip source 10.22.51.67 0 destination 10.22.100.0 0.0.0.255 
+ rule 29 permit ip source 172.18.0.105 0 destination 10.22.100.0 0.0.0.255 
+ rule 30 permit tcp destination 10.22.100.13 0 destination-port eq 443 
+ rule 31 permit tcp destination 10.22.100.213 0 destination-port eq 443 
+ rule 32 permit tcp destination 10.22.100.200 0 destination-port eq 8088 
+ rule 33 permit tcp destination 10.22.100.10 0 destination-port eq 8443 
+ rule 34 permit tcp destination 10.22.100.235 0 destination-port eq 8443 
+ rule 35 permit ip source 10.18.10.22 0 destination 10.22.100.0 0.0.0.255 
+ rule 36 permit ip source 172.21.8.8 0 destination 10.22.100.0 0.0.0.255 
+ rule 199 deny ip destination 10.22.100.0 0.0.0.255 
+acl number 3101  
+acl number 3102  
+acl number 3106  
+acl number 3110  
+ description HW-VDESKTOP-VM PTYFZX 10.22.110.0 outbound
+ rule 1 permit ip source 10.18.252.5 0 destination 10.22.0.0 0.0.255.255 
+ rule 8 permit ip source 172.18.0.105 0 destination 10.22.0.0 0.0.255.255 
+ rule 9 permit ip source 10.22.50.0 0.0.0.7 destination 10.22.0.0 0.0.255.255 
+ rule 20 permit ip source 10.22.102.0 0.0.0.255 destination 10.22.110.0 0.0.0.255 
+ rule 21 permit ip source 10.22.110.0 0.0.0.255 destination 10.22.110.0 0.0.0.255 
+ rule 22 permit ip source 10.22.0.0 0.0.0.255 destination 10.22.110.0 0.0.0.255 
+ rule 24 permit ip source 10.22.1.10 0 destination 10.22.110.0 0.0.0.255 
+ rule 25 permit ip source 10.10.20.158 0 destination 10.22.110.0 0.0.0.255 
+ rule 27 permit ip source 172.29.0.0 0.0.255.255 destination 10.22.110.0 0.0.0.255 
+ rule 31 permit ip source 172.30.0.0 0.1.255.255 destination 10.22.110.0 0.0.0.255 
+ rule 32 permit ip source 10.10.20.150 0 destination 10.22.110.0 0.0.0.255 
+ rule 33 permit ip source 10.22.51.64 0 destination 10.22.110.0 0.0.0.255 
+ rule 40 permit ip source 120.79.62.103 0 destination 10.22.110.0 0.0.0.255 
+ rule 41 permit ip source 10.22.82.147 0 destination 10.22.110.0 0.0.0.255 
+ rule 50 permit ip source 10.22.1.19 0 destination 10.22.110.64 0 
+ rule 51 permit ip source 40.126.0.0 0.0.255.255 destination 10.22.110.0 0.0.0.255 
+ rule 52 permit ip source 20.190.0.0 0.0.255.255 destination 10.22.110.0 0.0.0.255 
+ rule 53 permit ip source 13.107.246.73 0 destination 10.22.110.0 0.0.0.255 
+ rule 199 deny ip destination 10.22.110.0 0.0.0.255 
+acl number 3111  
+ description HW-VDESKTOP-VM CLHD 10.22.111.0 outbound
+ rule 1 permit ip source 10.18.252.5 0 destination 10.22.0.0 0.0.255.255 
+ rule 8 permit ip source 172.18.0.105 0 destination 10.22.0.0 0.0.255.255 
+ rule 9 permit ip source 10.22.50.0 0.0.0.7 destination 10.22.0.0 0.0.255.255 
+ rule 11 permit ip source 10.18.88.135 0 destination 10.22.111.0 0.0.0.255 
+ rule 12 permit ip source 10.22.0.0 0.0.0.255 destination 10.22.111.0 0.0.0.255 
+ rule 14 permit ip source 10.22.1.10 0 destination 10.22.111.0 0.0.0.255 
+ rule 15 permit ip source 172.18.0.192 0 destination 10.22.111.50 0 
+ rule 16 permit ip source 10.22.1.90 0 destination 10.22.111.0 0.0.0.255 
+ rule 17 permit ip source 10.22.50.0 0.0.0.255 destination 10.22.111.37 0 
+ rule 18 permit ip source 10.22.50.0 0.0.0.255 destination 10.22.111.35 0 
+ rule 19 permit ip source 10.22.50.0 0.0.0.255 destination 10.22.111.50 0 
+ rule 20 permit ip source 10.22.102.0 0.0.0.255 destination 10.22.111.0 0.0.0.255 
+ rule 21 permit ip source 10.22.111.0 0.0.0.255 destination 10.22.111.0 0.0.0.255 
+ rule 22 permit ip source 10.22.20.0 0.0.0.255 destination 10.22.111.0 0.0.0.255 
+ rule 23 permit ip source 10.22.80.0 0.0.0.255 destination 10.22.111.0 0.0.0.255 
+ rule 24 permit ip source 10.22.51.64 0 destination 10.22.111.0 0.0.0.255 
+ rule 38 permit ip source 10.22.51.100 0 destination 10.22.111.0 0.0.0.255 
+ rule 39 permit ip source 10.22.51.184 0 destination 10.22.111.0 0.0.0.255 
+ rule 43 permit ip source 10.22.21.99 0 destination 10.22.111.0 0.0.0.255 
+ rule 44 permit ip source 10.22.21.120 0 destination 10.22.111.0 0.0.0.255 
+ rule 45 permit ip source 10.22.21.17 0 destination 10.22.111.0 0.0.0.255 
+ rule 46 permit ip source 10.22.21.143 0 destination 10.22.111.0 0.0.0.255 
+ rule 47 permit ip source 47.118.63.57 0 destination 10.22.111.0 0.0.0.255 
+ rule 48 permit ip source 116.62.203.189 0 destination 10.22.111.0 0.0.0.255 
+ rule 49 permit ip source 120.79.62.103 0 destination 10.22.111.0 0.0.0.255 
+ rule 50 deny ip 
+acl number 3112  
+ description HW-VDESKTOP-VM CLZN 10.22.112.0 outbound
+ rule 1 permit ip source 10.18.252.5 0 destination 10.22.0.0 0.0.255.255 
+ rule 9 permit ip source 10.22.50.0 0.0.0.7 destination 10.22.0.0 0.0.255.255 
+ rule 11 permit ip source 10.18.88.135 0 destination 10.22.112.0 0.0.0.255 
+ rule 12 permit ip source 10.22.0.52 0 destination 10.22.112.0 0.0.0.255 
+ rule 13 permit ip source 10.22.0.30 0 destination 10.22.112.0 0.0.0.255 
+ rule 14 permit ip source 10.22.1.10 0 destination 10.22.112.0 0.0.0.255 
+ rule 15 permit ip source 10.22.0.51 0 destination 10.22.112.0 0.0.0.255 
+ rule 16 permit ip source 10.22.1.90 0 destination 10.22.112.0 0.0.0.255 
+ rule 20 permit ip source 10.22.102.0 0.0.0.255 destination 10.22.112.0 0.0.0.255 
+ rule 21 permit ip source 10.22.112.0 0.0.0.255 destination 10.22.112.0 0.0.0.255 
+ rule 22 permit ip source 10.22.85.0 0.0.0.255 destination 10.22.112.0 0.0.0.255 
+ rule 199 deny ip destination 10.22.112.0 0.0.0.255 
+acl number 3113  
+ description HW-VDESKTOP-VM CLHT 10.22.113.0 outbound
+ rule 1 permit ip source 10.18.252.5 0 destination 10.22.0.0 0.0.255.255 
+ rule 2 permit ip source 10.18.88.135 0 destination 10.22.0.0 0.0.255.255 
+ rule 8 permit ip source 172.18.0.105 0 destination 10.22.0.0 0.0.255.255 
+ rule 9 permit ip source 10.22.50.0 0.0.0.7 destination 10.22.0.0 0.0.255.255 
+ rule 14 permit ip source 10.22.1.10 0 destination 10.22.113.0 0.0.0.255 
+ rule 16 permit ip source 10.22.1.90 0 destination 10.22.113.0 0.0.0.255 
+ rule 18 permit ip source 10.22.0.0 0.0.0.255 destination 10.22.113.0 0.0.0.255 
+ rule 20 permit ip source 10.22.102.0 0.0.0.255 destination 10.22.113.0 0.0.0.255 
+ rule 21 permit ip source 10.22.60.20 0 destination 10.22.113.0 0.0.0.255 
+ rule 22 permit ip source 10.22.65.0 0.0.0.255 destination 10.22.113.0 0.0.0.255 
+ rule 23 permit ip source 10.22.60.192 0.0.0.31 destination 10.22.113.0 0.0.0.255 
+ rule 24 permit ip source 10.22.113.0 0.0.0.255 destination 10.22.113.0 0.0.0.255 
+ rule 25 permit ip source 120.79.62.103 0 destination 10.22.113.0 0.0.0.255 
+ rule 999 deny ip destination 10.22.113.0 0.0.0.255 
+acl number 3114  
+ description HW-VDESKTOP-VM CLSJ 10.22.114.0 outbound
+ rule 1 permit ip source 10.18.252.5 0 destination 10.22.0.0 0.0.255.255 
+ rule 2 permit ip source 10.18.88.135 0 destination 10.22.0.0 0.0.255.255 
+ rule 8 permit ip source 172.18.0.105 0 destination 10.22.0.0 0.0.255.255 
+ rule 9 permit ip source 10.22.50.0 0.0.0.7 destination 10.22.0.0 0.0.255.255 
+ rule 12 permit ip source 10.22.0.0 0.0.7.255 destination 10.22.114.0 0.0.0.255 
+ rule 20 permit ip source 10.22.102.0 0.0.0.255 destination 10.22.114.0 0.0.0.255 
+ rule 21 permit ip source 10.22.114.0 0.0.0.255 destination 10.22.114.0 0.0.0.255 
+ rule 27 permit ip source 172.29.0.0 0.0.255.255 destination 10.22.114.0 0.0.0.255 
+ rule 28 permit ip source 172.30.0.0 0.1.255.255 destination 10.22.114.0 0.0.0.255 
+ rule 32 permit ip source 10.22.86.0 0.0.0.255 destination 10.22.114.0 0.0.0.255 
+ rule 33 permit ip source 10.22.82.0 0.0.0.255 destination 10.22.114.0 0.0.0.255 
+ rule 34 permit ip source 10.10.20.85 0 destination 10.22.114.0 0.0.0.255 
+ rule 51 permit ip source 10.30.200.0 0.0.1.255 destination 10.22.114.0 0.0.0.255 
+ rule 199 deny ip destination 10.22.114.0 0.0.0.255 
+acl number 3115  
+ description temp 10.22.115.0 inbound
+ rule 1 permit ip source 10.22.115.0 0.0.0.255 destination 10.22.50.0 0.0.0.7 
+ rule 12 permit ip source 10.22.0.0 0.0.255.255 destination 10.22.102.0 0.0.0.255 
+ rule 20 permit ip source 10.22.115.0 0.0.0.255 destination 10.22.115.0 0.0.0.255 
+ rule 21 deny ip 
+acl number 3116  
+ description HW-VDESKTOP-VM TSXM 10.22.116.0 outbound
+ rule 1 permit ip source 10.18.252.5 0 destination 10.22.0.0 0.0.255.255 
+ rule 9 permit ip source 10.22.50.0 0.0.0.7 destination 10.22.0.0 0.0.255.255 
+ rule 12 permit ip source 10.22.102.0 0.0.0.255 destination 10.22.0.0 0.0.255.255 
+ rule 20 permit ip source 10.22.116.0 0.0.0.255 destination 10.22.116.0 0.0.0.255 
+ rule 21 permit ip source 10.22.9.0 0.0.0.255 destination 10.22.116.0 0.0.0.255 
+ rule 50 deny ip 
+acl number 3117  
+ description HW-VDESKTOP-VM TEMP 10.22.117.0 outbound
+ rule 1 permit ip source 10.18.252.5 0 destination 10.22.0.0 0.0.255.255 
+ rule 9 permit ip source 10.22.50.0 0.0.0.7 destination 10.22.0.0 0.0.255.255 
+ rule 12 permit ip source 10.22.102.0 0.0.0.255 destination 10.22.0.0 0.0.255.255 
+ rule 20 permit ip source 10.22.117.0 0.0.0.255 destination 10.22.117.0 0.0.0.255 
+ rule 21 permit ip source 10.10.20.19 0 destination 10.22.117.0 0.0.0.255 
+ rule 22 permit ip source 10.10.20.150 0 destination 10.22.117.0 0.0.0.255 
+ rule 23 permit ip source 10.22.1.10 0 destination 10.22.117.0 0.0.0.255 
+ rule 24 permit ip source 10.22.50.122 0 destination 10.22.117.0 0.0.0.255 
+ rule 25 permit ip source 10.22.50.121 0 destination 10.22.117.0 0.0.0.255 
+ rule 26 permit ip source 10.22.0.0 0.0.0.255 destination 10.22.117.31 0 
+ rule 27 permit ip source 10.22.50.135 0 destination 10.22.117.0 0.0.0.255 
+ rule 28 permit ip source 10.22.50.70 0 destination 10.22.117.0 0.0.0.255 
+ rule 29 permit ip source 10.22.50.73 0 destination 10.22.117.0 0.0.0.255 
+ rule 30 permit tcp source 10.10.20.171 0 source-port eq 8090 destination 10.22.117.0 0.0.0.255 
+ rule 31 permit tcp source 10.10.20.124 0 source-port eq 12080 destination 10.22.117.0 0.0.0.255 
+ rule 50 deny ip 
+acl number 3119  
+acl number 3182  
+acl number 3185  
+acl number 3186  
+acl number 3205  
+acl number 3206  
+acl number 3220  
+acl number 3221  
+acl number 3222  
+acl number 3224  
+acl number 3244  
+acl number 3250  
+acl number 3285  
+acl number 3306  
+acl number 3406  
+acl number 3506  
+ description aliyun 506 inbound
+ rule 1 permit ip source 10.22.6.0 0.0.1.255 destination 10.22.50.5 0 
+ rule 2 permit ip source 10.22.6.0 0.0.1.255 destination 10.18.252.5 0 
+ rule 3 permit ip source 10.22.6.0 0.0.1.255 destination 10.22.6.0 0.0.1.255 
+ rule 5 permit ip source 10.22.6.0 0.0.1.255 destination 10.22.0.0 0.0.0.255 
+ rule 7 permit ip source 10.22.6.0 0.0.1.255 destination 172.0.0.0 0.31.255.255 
+ rule 8 permit tcp source 10.22.6.0 0.0.1.255 destination 10.22.1.10 0 destination-port eq www 
+ rule 9 permit ip source 10.22.6.0 0.0.1.255 destination 10.22.0.0 0.0.255.255 
+ rule 10 permit ip source 10.22.6.0 0.0.1.255 destination 172.20.8.0 0.0.7.255 
+ rule 11 permit ip source 10.22.6.0 0.0.1.255 destination 10.18.88.135 0 
+acl number 3507  
+acl number 3509  
+ description TSXM Server 10.22.9.0 outbound
+ rule 1 permit ip source 10.18.252.5 0 destination 10.22.0.0 0.0.255.255 
+ rule 2 permit ip source 10.22.50.5 0 destination 10.22.0.0 0.0.255.255 
+ rule 20 permit ip source 10.22.9.0 0.0.0.255 destination 10.22.9.0 0.0.0.255 
+ rule 21 permit ip source 10.22.116.0 0.0.0.255 destination 10.22.9.0 0.0.0.255 
+ rule 22 permit ip source 10.22.1.6 0 destination 10.22.9.0 0.0.0.255 
+ rule 23 permit ip source 10.22.1.7 0 destination 10.22.9.0 0.0.0.255 
+ rule 24 permit ip source 10.22.0.36 0 destination 10.22.9.0 0.0.0.255 
+ rule 25 permit ip source 10.22.1.99 0 destination 10.22.9.0 0.0.0.255 
+ rule 26 permit ip source 172.18.0.23 0 destination 10.22.9.0 0.0.0.255 
+ rule 50 deny ip destination 10.22.9.0 0.0.0.255 
+acl number 3901  
+acl number 3999  
+#
+acl number 4500  
+ rule 10 permit vlan-id 710
+ rule 11 permit vlan-id 711
+ rule 12 permit vlan-id 712
+ rule 13 permit vlan-id 713
+ rule 14 permit vlan-id 714
+ rule 15 permit vlan-id 715
+ rule 16 permit vlan-id 716
+ rule 17 permit vlan-id 717
+ rule 18 permit vlan-id 718
+ rule 19 permit vlan-id 719
+ rule 20 permit vlan-id 720
+ rule 21 permit vlan-id 721
+ rule 22 permit vlan-id 722
+ rule 23 permit vlan-id 723
+ rule 24 permit vlan-id 724
+ rule 25 permit vlan-id 725
+ rule 26 permit vlan-id 726
+ rule 27 permit vlan-id 727
+ rule 28 permit vlan-id 728
+ rule 29 permit vlan-id 729
+ rule 30 permit vlan-id 730
+ rule 31 permit vlan-id 731
+ rule 32 permit vlan-id 732
+ rule 33 permit vlan-id 733
+ rule 34 permit vlan-id 734
+ rule 35 permit vlan-id 735
+ rule 36 permit vlan-id 736
+ rule 37 permit vlan-id 737
+ rule 38 permit vlan-id 738
+ rule 39 permit vlan-id 739
+ rule 40 permit vlan-id 740
+ rule 41 permit vlan-id 741
+ rule 42 permit vlan-id 742
+ rule 43 permit vlan-id 743
+ rule 44 permit vlan-id 744
+ rule 45 permit vlan-id 745
+ rule 46 permit vlan-id 746
+ rule 47 permit vlan-id 747
+ rule 48 permit vlan-id 748
+ rule 49 permit vlan-id 749
+ rule 50 permit vlan-id 750
+ rule 51 permit vlan-id 751
+ rule 52 permit vlan-id 752
+ rule 53 permit vlan-id 753
+ rule 54 permit vlan-id 754
+ rule 55 permit vlan-id 755
+ rule 56 permit vlan-id 756
+ rule 57 permit vlan-id 757
+ rule 58 permit vlan-id 758
+ rule 59 permit vlan-id 759
+ rule 60 permit vlan-id 760
+ rule 61 permit vlan-id 761
+ rule 62 permit vlan-id 762
+ rule 63 permit vlan-id 763
+ rule 64 permit vlan-id 764
+ rule 65 permit vlan-id 765
+ rule 66 permit vlan-id 766
+ rule 67 permit vlan-id 767
+ rule 68 permit vlan-id 768
+ rule 69 permit vlan-id 769
+#
+acl number 8086  
+acl number 8114  
+#
+traffic classifier 1 operator or precedence 10
+ if-match acl 3070
+traffic classifier infogo operator or precedence 15
+ if-match acl 4500
+traffic classifier lan-to-fw operator or precedence 30
+ if-match acl 3001
+traffic classifier net-18250 operator or precedence 60
+ if-match acl 3005
+traffic classifier net-18252 operator or precedence 65
+ if-match acl 3006
+traffic classifier net-220 operator or precedence 50
+ if-match acl 3008
+traffic classifier net-222 operator or precedence 75
+ if-match acl 3011
+traffic classifier net-2220 operator or precedence 90
+ if-match acl 3020
+traffic classifier net-2250 operator or precedence 70
+ if-match acl 3021
+traffic classifier net-2252 operator or precedence 25
+ if-match acl 3052
+traffic classifier net-226 operator or precedence 95
+ if-match acl 3506
+traffic classifier net-2260 operator or precedence 45
+ if-match acl 3060
+traffic classifier net-2282 operator or precedence 55
+ if-match acl 3082
+traffic classifier net-2283 operator or precedence 85
+ if-match acl 3083
+traffic classifier net-2286 operator or precedence 105
+ if-match acl 3086
+traffic classifier net-229 operator or precedence 100
+ if-match acl 3509
+traffic classifier net-2290 operator or precedence 80
+ if-match acl 3090
+traffic classifier net-2291 operator or precedence 110
+ if-match acl 3091
+traffic classifier net-2292 operator or precedence 115
+ if-match acl 3092
+traffic classifier net-241 operator or precedence 120
+ if-match acl 3009
+traffic classifier net-office-line operator or precedence 35
+ if-match acl 3007
+traffic classifier sty-wifi-sunline operator or precedence 20
+ if-match acl 3007
+traffic classifier vdi-110 operator or precedence 130
+ if-match acl 3110
+traffic classifier vdi-111 operator or precedence 135
+ if-match acl 3111
+traffic classifier vdi-112 operator or precedence 140
+ if-match acl 3112
+traffic classifier vdi-113 operator or precedence 145
+ if-match acl 3113
+traffic classifier vdi-114 operator or precedence 165
+ if-match acl 3114
+traffic classifier vdi-115 operator or precedence 125
+ if-match acl 3115
+traffic classifier vdi-116 operator or precedence 150
+ if-match acl 3116
+traffic classifier vdi-117 operator or precedence 155
+ if-match acl 3117
+traffic classifier vdim-100 operator or precedence 160
+ if-match acl 3100
+traffic classifier wifi-sunlineguest operator or precedence 40
+ if-match acl 3002
+#
+traffic behavior 1
+ redirect ip-nexthop 10.22.51.211
+traffic behavior action-permit
+ permit
+traffic behavior infogo
+ permit
+ mirroring to observe-port 5 
+traffic behavior lan-to-fw
+ permit
+traffic behavior sty-wifi-sunline
+ permit
+traffic behavior wifi-sunlineguest
+ permit
+#
+traffic policy 1 match-order config
+ classifier 1 behavior 1
+traffic policy infogo match-order config
+ classifier infogo behavior infogo
+traffic policy lan-to-fw match-order config
+ classifier lan-to-fw behavior lan-to-fw
+traffic policy net-18250 match-order config
+ classifier net-18250 behavior action-permit
+traffic policy net-18252 match-order config
+ classifier net-18252 behavior action-permit
+traffic policy net-220 match-order config
+ classifier net-220 behavior action-permit
+traffic policy net-222 match-order config
+ classifier net-222 behavior action-permit
+traffic policy net-2220 match-order config
+ classifier net-2220 behavior action-permit
+traffic policy net-2250 match-order config
+ classifier net-2250 behavior action-permit
+traffic policy net-2252 match-order config
+ classifier net-2252 behavior action-permit
+traffic policy net-226 match-order config
+ classifier net-226 behavior action-permit
+traffic policy net-2260 match-order config
+ classifier net-2260 behavior action-permit
+traffic policy net-2282 match-order config
+ classifier net-2282 behavior action-permit
+traffic policy net-2283 match-order config
+ classifier net-2283 behavior action-permit
+traffic policy net-2286 match-order config
+ classifier net-2286 behavior action-permit
+traffic policy net-229 match-order config
+ classifier net-229 behavior action-permit
+traffic policy net-2290 match-order config
+ classifier net-2290 behavior action-permit
+traffic policy net-2291 match-order config
+ classifier net-2291 behavior action-permit
+traffic policy net-2292 match-order config
+ classifier net-2292 behavior action-permit
+traffic policy net-241 match-order config
+ classifier net-241 behavior action-permit
+traffic policy net-office-line match-order config
+ classifier net-office-line behavior action-permit
+traffic policy sty-wifi-sunline match-order config
+ classifier sty-wifi-sunline behavior sty-wifi-sunline
+traffic policy vdi-110 match-order config
+ classifier vdi-110 behavior action-permit
+traffic policy vdi-111 match-order config
+ classifier vdi-111 behavior action-permit
+traffic policy vdi-112 match-order config
+ classifier vdi-112 behavior action-permit
+traffic policy vdi-113 match-order config
+ classifier vdi-113 behavior action-permit
+traffic policy vdi-114 match-order config
+ classifier vdi-114 behavior action-permit
+traffic policy vdi-115 match-order config
+ classifier vdi-115 behavior action-permit
+traffic policy vdi-116 match-order config
+ classifier vdi-116 behavior action-permit
+traffic policy vdi-117 match-order config
+ classifier vdi-117 behavior action-permit
+traffic policy vdim-100 match-order config
+ classifier vdim-100 behavior action-permit
+traffic policy wifi-sunlineguest match-order config
+ classifier wifi-sunlineguest behavior wifi-sunlineguest
+#
+drop-profile default
+#
+vlan 10
+ description office-line-10
+ traffic-policy net-office-line inbound
+vlan 11
+ description office-line-11
+ traffic-policy net-office-line inbound
+vlan 12
+ description office-line-12
+ traffic-policy net-office-line inbound
+vlan 13
+ description office-line-13
+ traffic-policy net-office-line inbound
+vlan 18
+ description office-line-18
+ traffic-policy net-office-line inbound
+vlan 20
+ description office-line-20
+ traffic-policy net-office-line inbound
+vlan 21
+ description office-line-21
+ traffic-policy net-office-line inbound
+vlan 22
+ description office-line-22
+ traffic-policy net-office-line inbound
+vlan 30
+ description office-line-30
+ traffic-policy net-office-line inbound
+vlan 31
+ description office-line-31
+ traffic-policy net-office-line inbound
+vlan 32
+ description office-line-32
+ traffic-policy net-office-line inbound
+vlan 50
+ description office-line-50
+ traffic-policy net-office-line inbound
+vlan 51
+ description office-line-51
+ traffic-policy net-office-line inbound
+vlan 60
+ description rjy-line-60
+ traffic-policy net-office-line inbound
+vlan 61
+ description rjy-line-61
+ traffic-policy net-office-line inbound
+vlan 192
+ description LT-ADSL
+vlan 220
+ description YFZX Server 10.22.0.0/24
+ traffic-policy net-220 outbound
+vlan 222
+ description clhd server  10.22.20.0/24
+ traffic-policy net-2220 outbound
+vlan 225
+ description XXGLB Server 10.22.50.0/24
+ traffic-policy net-2250 outbound
+vlan 226
+ description CLHT Server 10.22.60.0/24
+ traffic-policy net-2260 outbound
+vlan 230
+ description CLSJ Server 10.22.82.0/24
+ traffic-policy net-2282 inbound
+vlan 233
+ description 10.22.90.0/24
+ traffic-policy net-2290 inbound
+vlan 241
+ description 10.24.0.0/23
+ traffic-policy net-241 outbound
+vlan 245
+ description 10.22.52.0/24
+ traffic-policy net-2252 outbound
+vlan 250
+ description net device 10.18.250.0/24
+ traffic-policy net-18250 outbound
+vlan 252
+ description manager net 10.18.252.0/24
+ traffic-policy net-18252 inbound
+vlan 283
+ description yht server 10.22.83.0/24
+ traffic-policy net-2283 outbound
+vlan 286
+ description clsj server 10.22.86.0/24
+ traffic-policy net-2286 outbound
+vlan 291
+ description HTDEV CTX VDI 10.22.91.0/24
+ traffic-policy net-2291 outbound
+vlan 292
+ description XMFWB CTX VDI 10.22.92.0/24
+ traffic-policy net-2292 outbound
+vlan 410
+ description wifi-sunline_guest 10.22.80.0/23
+ traffic-policy wifi-sunlineguest inbound
+vlan 430
+ description sty-wifi-sunline 10.18.88.1/21
+ traffic-policy sty-wifi-sunline inbound
+vlan 440
+ description rjy-wifi-sunline 10.18.100.0/23
+ traffic-policy net-office-line inbound
+vlan 502
+ description ctx desktop manager 10.22.2.0/24
+ traffic-policy net-222 outbound
+vlan 506
+ description 10.22.6.0/24
+ traffic-policy net-226 inbound
+vlan 507
+ description 10.22.7.0/24
+ traffic-policy net-226 inbound
+vlan 509
+ description tsxm server 10.22.9.0/24
+ traffic-policy net-229 outbound
+vlan 605
+ description SW-Core to FW 100.100.100.2
+ traffic-policy lan-to-fw outbound
+vlan 1100
+ description 10.22.100.0/24
+ traffic-policy vdim-100 outbound
+vlan 1110
+ description vdi 10.22.110.0/24
+ traffic-policy vdi-110 outbound
+vlan 1111
+ description vdi 10.22.111.0/24
+ traffic-policy vdi-111 outbound
+vlan 1112
+ description vdi 10.22.112.0/24
+ traffic-policy vdi-112 outbound
+vlan 1113
+ description vdi 10.22.113.0/24
+ traffic-policy vdi-113 outbound
+vlan 1114
+ description vdi 10.22.114.0/24
+ traffic-policy vdi-114 outbound
+vlan 1115
+ description vdi 10.22.115.0/24
+ traffic-policy vdi-115 inbound
+vlan 1116
+ description vdi 10.22.116.0/24
+ traffic-policy vdi-116 outbound
+vlan 1117
+ description vdi 10.22.117.0/24
+ traffic-policy vdi-117 outbound
+#
+dhcp server group sundhcp 
+ dhcp-server 10.22.50.1 0
+#
+ip pool vlan10
+ gateway-list 10.18.10.254 
+ network 10.18.10.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=310 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=310 
+#
+ip pool VLAN410
+ gateway-list 10.18.81.254 
+ network 10.18.80.0 mask 255.255.254.0 
+ dns-list 10.22.50.5 114.114.114.114 
+#
+ip pool VLAN420
+ gateway-list 10.18.82.254 
+ network 10.18.82.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+#
+ip pool VLAN430
+ gateway-list 10.18.89.254 
+ network 10.18.88.0 mask 255.255.248.0 
+ dns-list 10.22.50.5 114.114.114.114 
+#
+ip pool vlan310
+ gateway-list 10.19.10.254 
+ network 10.19.10.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+#
+ip pool vlan18
+ gateway-list 10.18.18.254 
+ network 10.18.18.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=318 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=318 
+#
+ip pool vlan318
+ gateway-list 10.19.18.254 
+ network 10.19.18.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+#
+ip pool vlan11
+ gateway-list 10.18.11.254 
+ network 10.18.11.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=311 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=311 
+#
+ip pool vlan311
+ gateway-list 10.19.11.254 
+ network 10.19.11.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+#
+ip pool vlan12
+ gateway-list 10.18.12.254 
+ network 10.18.12.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=312 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=312 
+#
+ip pool vlan312
+ gateway-list 10.19.12.254 
+ network 10.19.12.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+#
+ip pool vlan20
+ gateway-list 10.18.20.254 
+ network 10.18.20.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=320 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=320 
+#
+ip pool vlan320
+ gateway-list 10.19.20.254 
+ network 10.19.20.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+#
+ip pool vlan21
+ gateway-list 10.18.21.254 
+ network 10.18.21.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=321 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=321 
+#
+ip pool vlan321
+ gateway-list 10.19.21.254 
+ network 10.19.21.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+#
+ip pool vlan22
+ gateway-list 10.18.22.254 
+ network 10.18.22.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=322 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=322 
+#
+ip pool vlan322
+ gateway-list 10.19.22.254 
+ network 10.19.22.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+#
+ip pool vlan30
+ gateway-list 10.18.30.254 
+ network 10.18.30.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=330 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=330 
+#
+ip pool vlan330
+ gateway-list 10.19.30.254 
+ network 10.19.30.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+#
+ip pool vlan31
+ gateway-list 10.18.31.254 
+ network 10.18.31.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=331 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=331 
+#
+ip pool vlan331
+ gateway-list 10.19.31.254 
+ network 10.19.31.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+#
+ip pool vlan50
+ gateway-list 10.18.50.254 
+ network 10.18.50.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=350 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=350 
+#
+ip pool vlan350
+ gateway-list 10.19.50.254 
+ network 10.19.50.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+#
+ip pool vlan32
+ gateway-list 10.18.32.254 
+ network 10.18.32.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=332 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101,L2QVLAN=332 
+#
+ip pool vlan332
+ gateway-list 10.19.32.254 
+ network 10.19.32.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+ option 60 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+ option 242 ascii MCIPADD=10.22.50.101,MCPORT=1719,HTTPSRVR= 10.22.50.101 
+#
+ip pool sundhcp
+#
+ip pool vlan450
+ gateway-list 10.18.83.254 
+#
+ip pool VLAN440
+#
+ip pool vlan100
+ gateway-list 10.18.100.1 
+ network 10.18.100.0 mask 255.255.254.0 
+ lease day 2 hour 0 minute 0 
+ dns-list 10.22.50.5 114.114.114.114 
+#
+ip pool vlan421
+ gateway-list 10.18.83.254 
+ network 10.18.83.0 mask 255.255.255.0 
+ dns-list 10.22.50.5 114.114.114.114 
+#
+aaa
+ authentication-scheme default
+ authorization-scheme default
+ accounting-scheme default
+ domain default
+ domain default_admin
+ local-user nac password irreversible-cipher %^%#-b(cHR>K7/qx}m"#4/W6K#PT5^S{`OVNb&+>LrxD,TU3=r[0HT(a"xDpELWB%^%#
+ local-user nac privilege level 3
+ local-user nac service-type ssh
+ local-user admin password irreversible-cipher %^%#P`@!"ya=&/X1}\2sM\e&p[1U1zZxg4|pp4={6`3T^N3mTwcB5OY0+*KFH',8%^%#
+ local-user admin privilege level 3
+ local-user admin service-type http
+ local-user liuhw password irreversible-cipher %^%#FXi;PP|A6#M$Si8dq&QJ\yd74>s_")>(_7B4\NiN6J0=1G*OC3P<my<-=K'&%^%#
+ local-user liuhw privilege level 3
+ local-user liuhw service-type ssh http
+ local-user shenzhen password irreversible-cipher %^%#Y-%N%\GZw=U-fe6Bk@,D{k&vGBJV/(l/D,.@U8eWcnwm)9`%^4<jK'9~!:U=%^%#
+ local-user shenzhen privilege level 3
+ local-user shenzhen service-type ssh
+ local-user changliang password irreversible-cipher %^%#:FA=:OLd37-:^O1+|MpTxGC+7N:)uT!!;=!=_iP@;d"y1>f^)H^%So=K'!1U%^%#
+ local-user changliang privilege level 3
+ local-user changliang service-type http
+#
+ntp-service ipv6 server disable
+ntp-service source-interface Vlanif250
+ntp-service refclock-master
+ntp-service unicast-server 172.18.0.17
+ntp-service unicast-server 172.18.0.18
+#
+interface Vlanif1
+ shutdown
+#
+interface Vlanif7
+#
+interface Vlanif10
+ description office-line-10
+ ip address 10.18.10.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif11
+ ip address 10.18.11.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif12
+ ip address 10.18.12.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif13
+ ip address 10.18.13.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif14
+ ip address 10.18.14.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif15
+ ip address 10.18.15.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif16
+ ipv6 enable
+ ip address 10.18.16.254 255.255.255.0
+ ipv6 address FEC0:FEC0:FEC0:1010::1/64
+ ipv6 address auto link-local
+ undo ipv6 nd ra halt
+ ipv6 nd autoconfig managed-address-flag
+ ipv6 nd autoconfig other-flag
+#
+interface Vlanif17
+ ip address 10.18.17.254 255.255.255.0
+#
+interface Vlanif18
+ ip address 10.18.18.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif19
+ ip address 10.18.19.254 255.255.255.0
+#
+interface Vlanif20
+ ip address 10.18.20.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif21
+ ip address 10.18.21.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif22
+ ip address 10.18.22.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif23
+ ip address 10.18.23.254 255.255.255.0
+#
+interface Vlanif24
+ ip address 10.18.24.254 255.255.255.0
+#
+interface Vlanif25
+ ip address 10.18.25.254 255.255.255.0
+#
+interface Vlanif26
+ ip address 10.18.26.254 255.255.255.0
+#
+interface Vlanif27
+ ip address 10.18.27.254 255.255.255.0
+#
+interface Vlanif28
+ ip address 10.18.28.254 255.255.255.0
+#
+interface Vlanif29
+ ip address 10.18.29.254 255.255.255.0
+#
+interface Vlanif30
+ ip address 10.18.30.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif31
+ ip address 10.18.31.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif32
+ ip address 10.18.32.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif33
+ ip address 10.18.33.254 255.255.255.0
+#
+interface Vlanif34
+ ip address 10.18.34.254 255.255.255.0
+#
+interface Vlanif35
+ ip address 10.18.35.254 255.255.255.0
+#
+interface Vlanif36
+ ip address 10.18.36.254 255.255.255.0
+#
+interface Vlanif37
+ ip address 10.18.37.254 255.255.255.0
+#
+interface Vlanif38
+ ip address 10.18.38.254 255.255.255.0
+#
+interface Vlanif39
+ ip address 10.18.39.254 255.255.255.0
+#
+interface Vlanif43
+#
+interface Vlanif50
+ ip address 10.18.50.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif51
+ ip address 10.18.51.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif52
+ ip address 10.18.52.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif53
+ ip address 10.18.53.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif54
+ ip address 10.18.54.254 255.255.255.0
+#
+interface Vlanif55
+ ip address 10.18.55.254 255.255.255.0
+#
+interface Vlanif56
+ ip address 10.18.56.254 255.255.255.0
+#
+interface Vlanif57
+ ip address 10.18.57.254 255.255.255.0
+#
+interface Vlanif58
+ ip address 10.18.58.254 255.255.255.0
+#
+interface Vlanif59
+ ip address 10.18.59.254 255.255.255.0
+#
+interface Vlanif60
+ description rjy-line-60
+ ip address 10.18.60.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif61
+ description rjy-line-61
+ ip address 10.18.61.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif62
+ ip address 10.18.62.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif70
+ description STY-2C-9F
+ ip address 10.18.70.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif71
+ description STY-2C-9F
+ ip address 10.18.71.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif82
+#
+interface Vlanif100
+#
+interface Vlanif102
+#
+interface Vlanif110
+#
+interface Vlanif111
+#
+interface Vlanif113
+#
+interface Vlanif114
+#
+interface Vlanif115
+#
+interface Vlanif172
+ ip address 172.18.0.254 255.255.255.0
+#
+interface Vlanif173
+ description yht hwcloud
+ ip address 172.16.3.254 255.255.255.0
+#
+interface Vlanif205
+ ip address 10.22.5.254 255.255.255.0
+#
+interface Vlanif218
+#
+interface Vlanif220
+ description YFZX Server
+ ip address 10.22.0.254 255.255.255.0
+#
+interface Vlanif221
+ description CLWJ Server
+ ip address 10.22.10.254 255.255.255.0
+#
+interface Vlanif222
+ description CLHD Server
+ ip address 10.22.20.254 255.255.255.0
+#
+interface Vlanif223
+ ip address 10.22.30.254 255.255.255.0
+#
+interface Vlanif224
+ description CLHT Server
+ ip address 10.22.62.254 255.255.255.0
+#
+interface Vlanif225
+ description XXGLB Server
+ ip address 10.22.50.254 255.255.255.0
+#
+interface Vlanif226
+ description CLHT Server
+ ip address 10.22.60.254 255.255.255.0
+#
+interface Vlanif227
+ description CLHT Server
+ ip address 10.22.61.254 255.255.255.0
+#
+interface Vlanif228
+ ip address 10.22.80.1 255.255.255.224
+#
+interface Vlanif229
+ description CLGRX Server
+ ip address 10.22.80.33 255.255.255.224
+#
+interface Vlanif230
+ description CLSJ Server
+ ip address 10.22.82.254 255.255.255.0
+#
+interface Vlanif231
+ description CLHT Server
+ ip address 10.22.63.254 255.255.255.0
+#
+interface Vlanif232
+ description CLHT Server
+ ip address 10.22.64.254 255.255.255.0
+#
+interface Vlanif233
+ ip address 10.22.90.254 255.255.255.0
+#
+interface Vlanif235
+ description clwj server lan
+ ip address 10.22.12.254 255.255.255.0
+#
+interface Vlanif236
+#
+interface Vlanif240
+ description RJY SERVER
+ ip address 10.22.81.254 255.255.255.0
+#
+interface Vlanif241
+ ip address 10.24.1.3 255.255.254.0
+#
+interface Vlanif242
+ description YFZX Server
+ ip address 10.22.1.254 255.255.255.0
+#
+interface Vlanif243
+ description YFZX Server
+ ip address 10.22.4.254 255.255.255.0
+#
+interface Vlanif244
+ description xxglb server
+ ip address 10.22.51.254 255.255.255.0
+#
+interface Vlanif245
+ description Server BMC/IMM/IDRAC/Backup
+ ip address 10.22.52.254 255.255.255.0
+#
+interface Vlanif246
+ description CLHD Server
+ ip address 10.22.21.254 255.255.255.0
+#
+interface Vlanif247
+#
+interface Vlanif248
+#
+interface Vlanif250
+ ip address 10.18.250.254 255.255.255.0
+#
+interface Vlanif251
+ ip address 10.18.251.254 255.255.255.0
+#
+interface Vlanif252
+ description Manager
+ ip address 10.18.252.1 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif260
+#
+interface Vlanif265
+ description CLHT Server for Vdesktop HW
+ ip address 10.22.65.254 255.255.255.0
+#
+interface Vlanif266
+#
+interface Vlanif269
+ ip address 10.22.69.254 255.255.255.0
+#
+interface Vlanif281
+#
+interface Vlanif282
+#
+interface Vlanif283
+ description yht server
+ ip address 10.22.83.254 255.255.255.0
+#
+interface Vlanif284
+ description CLHX Server
+ ip address 10.22.84.254 255.255.255.0
+#
+interface Vlanif285
+ description CLZN Server
+ ip address 10.22.85.254 255.255.255.0
+#
+interface Vlanif286
+ description CLSJ Server GELI
+ ip address 10.22.86.254 255.255.255.0
+#
+interface Vlanif291
+ description HTDEV CTX VDI
+ ip address 10.22.91.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif292
+ description XMFWB CTX VDI
+ ip address 10.22.92.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif310
+ ip address 10.19.10.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif311
+ ip address 10.19.11.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif312
+ ip address 10.19.12.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif313
+ ip address 10.19.13.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif314
+ ip address 10.19.14.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif315
+ ip address 10.19.15.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif316
+ ip address 10.19.16.254 255.255.255.0
+#
+interface Vlanif317
+ ip address 10.19.17.254 255.255.255.0
+#
+interface Vlanif318
+ ip address 10.19.18.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif319
+ ip address 10.19.19.254 255.255.255.0
+#
+interface Vlanif320
+ ip address 10.19.20.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif321
+ ip address 10.19.21.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif322
+ ip address 10.19.22.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif323
+ ip address 10.19.23.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif324
+ ip address 10.19.24.254 255.255.255.0
+#
+interface Vlanif325
+ ip address 10.19.25.254 255.255.255.0
+#
+interface Vlanif326
+ ip address 10.19.26.254 255.255.255.0
+#
+interface Vlanif327
+ ip address 10.19.27.254 255.255.255.0
+#
+interface Vlanif328
+ ip address 10.19.28.254 255.255.255.0
+#
+interface Vlanif329
+ ip address 10.19.29.254 255.255.255.0
+#
+interface Vlanif330
+ ip address 10.19.30.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif331
+ ip address 10.19.31.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif332
+ ip address 10.19.32.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif333
+#
+interface Vlanif334
+ ip address 10.19.34.254 255.255.255.0
+#
+interface Vlanif335
+ ip address 10.19.35.254 255.255.255.0
+#
+interface Vlanif336
+ ip address 10.19.36.254 255.255.255.0
+#
+interface Vlanif337
+ ip address 10.19.37.254 255.255.255.0
+#
+interface Vlanif338
+ ip address 10.19.38.254 255.255.255.0
+#
+interface Vlanif339
+ ip address 10.19.39.254 255.255.255.0
+#
+interface Vlanif350
+ ip address 10.19.50.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif351
+ ip address 10.19.51.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif352
+ ip address 10.19.52.254 255.255.255.0
+#
+interface Vlanif353
+ ip address 10.19.53.254 255.255.255.0
+#
+interface Vlanif354
+ ip address 10.19.54.254 255.255.255.0
+#
+interface Vlanif355
+ ip address 10.19.55.254 255.255.255.0
+#
+interface Vlanif356
+ ip address 10.19.56.254 255.255.255.0
+#
+interface Vlanif357
+ ip address 10.19.57.254 255.255.255.0
+#
+interface Vlanif358
+ ip address 10.19.58.254 255.255.255.0
+#
+interface Vlanif359
+ ip address 10.19.59.254 255.255.255.0
+#
+interface Vlanif360
+#
+interface Vlanif361
+ ip address 10.19.61.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif370
+ description STY-2C-9F ip phone
+ ip address 10.19.70.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif401
+#
+interface Vlanif402
+#
+interface Vlanif403
+#
+interface Vlanif410
+ description wifi-sunline_guest
+ ip address 10.18.81.254 255.255.254.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif420
+ description WIFI Sunline_MG
+ ip address 10.18.82.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif421
+ description WIFI Sunline_VIP
+ ip address 10.18.83.1 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif422
+ description WIFI NAC TEST
+ ip address 10.18.84.1 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif430
+ description sty-wifi-sunline
+ ip address 10.18.88.1 255.255.248.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif431
+#
+interface Vlanif433
+#
+interface Vlanif440
+ description rjy-wifi-sunline
+ ip address 10.18.100.1 255.255.254.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif441
+ description STY-2C-9F WiFi for sunline
+ ip address 10.18.106.1 255.255.254.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif501
+#
+interface Vlanif502
+ description ctx desktop manager
+ ip address 10.22.2.254 255.255.255.0
+#
+interface Vlanif503
+ description YFZX CloudVM Client
+ ip address 10.22.3.1 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif506
+ description aliyun SOFA
+ ip address 10.22.6.254 255.255.255.0
+#
+interface Vlanif507
+ description aliyun
+ ip address 10.22.7.254 255.255.255.0
+#
+interface Vlanif508
+ description aliyun SOFA
+ ip address 10.22.8.254 255.255.255.0
+#
+interface Vlanif509
+ description TSXM Server
+ ip address 10.22.9.254 255.255.255.0
+#
+interface Vlanif600
+#
+interface Vlanif601
+#
+interface Vlanif602
+#
+interface Vlanif603
+#
+interface Vlanif605
+ description SW-Core to FW 100.100.100.2
+ ip address 100.100.100.1 255.255.255.0
+#
+interface Vlanif700
+#
+interface Vlanif769
+#
+interface Vlanif1100
+ description huawei cloud fusioncompute
+ ip address 10.22.100.254 255.255.255.0
+#
+interface Vlanif1101
+ description huawei cloud fusionstorage
+ ip address 10.22.101.254 255.255.255.0
+#
+interface Vlanif1102
+ description huawei desktop cloud Infrastructure flat
+ ip address 10.22.102.254 255.255.255.0
+#
+interface Vlanif1110
+ description HWCloud VDesktop PTYFZX
+ ip address 10.22.110.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif1111
+ description HWCloud VDesktop CLHD
+ ip address 10.22.111.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif1112
+ description HWCloud VDesktop CLWJ
+ ip address 10.22.112.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif1113
+ description HWCloud VDesktop CLHT
+ ip address 10.22.113.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif1114
+ description HWCloud VDesktop CLHX
+ ip address 10.22.114.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif1115
+ description HWCloud VDesktop CLSJ-GELI
+ ip address 10.22.115.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif1116
+ description HWCloud VDesktop TSXM
+ ip address 10.22.116.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif1117
+ description HWCloud VDesktop XXKFB
+ ip address 10.22.117.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif1119
+ description huawei desktop cloud thin client
+ ip address 10.22.119.254 255.255.255.0
+ dhcp select relay
+ dhcp relay server-select sundhcp
+#
+interface Vlanif2333
+#
+interface Vlanif3009
+#
+interface Vlanif3110
+#
+interface Vlanif3111
+#
+interface Vlanif3112
+#
+interface Vlanif3113
+#
+interface Vlanif3116
+#
+interface Vlanif3507
+#
+interface Eth-Trunk0
+#
+interface Eth-Trunk1
+#
+interface Eth-Trunk2
+ description to CL_A_WLC-AC6605
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk3
+ description to CL_A_S5700_2
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk4
+ description to CL_A_S5700_3
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk5
+ description to CL_A_S5700_4
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk6
+ description to CL_A_S5700_5
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk7
+ description to CL_A_S5700_6
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk8
+ description to CL_A_S5700_7
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk9
+ description to CL_A_S5700_8
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk10
+ description to CL_A_S5700_9
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk11
+ description to CL_A_S5700_10
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk12
+ description to CL_A_S5700_11
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk13
+ description to CL_A_S5700_12
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk14
+ description to CL_A_S5700_13
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ traffic-policy infogo inbound
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk15
+ description to CL_A_S5700_14
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk16
+ description to CL_A_S5700_15
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk17
+ description to CL_A_S5700_16
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk18
+ description to CL_A_S5700_1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface Eth-Trunk19
+#
+interface Eth-Trunk20
+ description to CL_A_HJ1_CE6851_20
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+#
+interface Eth-Trunk21
+ description CLHD SERVER 10.22.20.1 bond 4-8 4-20
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk22
+#
+interface Eth-Trunk23
+#
+interface Eth-Trunk24
+#
+interface Eth-Trunk25
+ description to CL_B_S5720
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 7 inbound
+ port-mirroring to observe-port 7 outbound
+#
+interface Eth-Trunk26
+ description to STY-2C-9F OFFICE Switch 90
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ mode lacp
+ port-mirroring to observe-port 7 inbound
+ port-mirroring to observe-port 7 outbound
+#
+interface Eth-Trunk27
+#
+interface Eth-Trunk28
+#
+interface Eth-Trunk29
+#
+interface Eth-Trunk30
+#
+interface Eth-Trunk31
+ description GLHD 10.24.1.33 number 7-1 7-13
+ port link-type access
+ port default vlan 241
+ mode lacp
+#
+interface Eth-Trunk32
+#
+interface Eth-Trunk33
+#
+interface Eth-Trunk35
+#
+interface Eth-Trunk40
+ description YFZX Server 10.22.0.9 bond 7-8 7-20
+ port link-type access
+ port default vlan 220
+ mode lacp
+#
+interface Eth-Trunk41
+ description CLSJ Server 10.24.1.6 bond 7-2 7-14
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk42
+ description YFZX Server 10.22.0.6 bond 7-9 7-21
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk43
+ description YFZX Server 10.24.1.60 bond 7-4 7-16
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk44
+ description YFZX Server 10.24.1.28 bond 7-5 7-17
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk45
+ description YFZX Server 10.24.1.41 bond 7-6 7-18
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk46
+ description YFZX Server 10.22.0.1 bond 7-7 7-19
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk47
+ description YFZX Server 10.22.0.4 bond 2-9 2-21
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk48
+ description YFZX VM CloudVM Server 10.22.0.5 bond 2-10 2-22
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk49
+#
+interface Eth-Trunk50
+ description Avaya Server 10.22.50.100 bond 1-1 1-13
+ port link-type access
+ port default vlan 225
+#
+interface Eth-Trunk51
+ description XXGLB Server 10.24.1.130 bond 1-2 1-14
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk54
+#
+interface Eth-Trunk55
+ description BossDB SERVER 10.22.50.232 Number 1-10 1-12
+ port link-type access
+ port default vlan 225
+#
+interface Eth-Trunk56
+ description OA SERVER 172.18.0.10 Number 1-11 1-13
+ port link-type access
+ port default vlan 172
+#
+interface Eth-Trunk57
+ description tinyserver SERVER 172.18.0.8 Number 2-8 1-20
+ port link-type access
+ port default vlan 172
+ mode lacp
+#
+interface Eth-Trunk58
+ description BOSSDB SERVER 10.22.50.231 Number 2-7 1-19
+ port link-type access
+ port default vlan 225
+ mode lacp
+#
+interface Eth-Trunk60
+ description CLGJ SERVER 10.22.60.2 bond 3-2 3-14
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk61
+ description CLGJ SERVER 10.22.60.1 bond 3-1 3-13
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk62
+ description CLGJ SERVER 10.22.60.11 bond 4-1 4-13
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk63
+ description CLGJ SERVER 10.22.60.15 bond 4-2 4-14
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk64
+ description CLGJ SERVER 10.22.60.16 bond 4-3 4-15
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk65
+ description CLGJ SERVER 10.22.60.12 bond 4-4 4-16
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk66
+ description CLGJ SERVER 10.22.60.4 bond 4-5 4-17
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk67
+ description CLGJ SERVER 10.22.60.5 bond 4-6 4-18
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk68
+ description CLGJ SERVER 10.22.60.3 bond 4-10 4-22
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk69
+ description CLGJ SERVER 10.22.60.27 bond 4-11 4-23
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk70
+ description CLGJ SERVER 10.22.60.28 bond 4-12 4-24
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk71
+ description CLWJ Server 10.22.10.2 bond 2-2 2-14
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk72
+ description XXFWB Server 10.22.50.106 bond 2-6 2-18
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk73
+ description XJRYWBB Server 10.24.1.180 bond 2-4 2-16
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk74
+ description CLWJ Server 10.22.10.3 bond 4-9 4-21
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk75
+#
+interface Eth-Trunk76
+#
+interface Eth-Trunk78
+#
+interface Eth-Trunk80
+ description CLHD SERVER 10.22.80.2 bond 3-3 3-15
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk81
+ description CLHD SERVER 10.22.80.4 bond 4-7 4-19
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk82
+#
+interface Eth-Trunk83
+#
+interface Eth-Trunk84
+ description CLGRX 10.22.80.35 Server Number 3-4 3-16
+ port link-type access
+ port default vlan 229
+ mode lacp
+#
+interface Eth-Trunk85
+ description CLSJ Server 10.22.82.1 Number 3-8 3-18
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk86
+#
+interface Eth-Trunk90
+ description Public test server 10.22.90.1 number 1-8 1-20
+ port link-type access
+ port default vlan 172
+#
+interface Eth-Trunk91
+#
+interface Eth-Trunk94
+#
+interface Eth-Trunk100
+ description port number 5-3 5-15 to HWCloud30 eth0 eth1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk101
+ description port number x1-2 x2-2 to HWCloud21 SLOT3-0  SLOT4-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk102
+ description port number x1-14 x2-14 to HWCloud26 SLOT3-0  SLOT4-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk103
+ description port number x1-12 x2-12 to HWCloud27 SLOT3-0  SLOT4-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk104
+ description port number x1-4 x2-4 to HWCloud22 SLOT3-0  SLOT4-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk105
+ description port number x1-5 x2-5 to HWCloud22 SLOT3-1  SLOT4-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk107
+ description port number x1-6 x2-6 to HWCloud23 SLOT3-0  SLOT4-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk108
+ description port number x1-7 x2-7 to HWCloud23 SLOT3-1  SLOT4-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk109
+ description port number x1-20 x2-20 to HWCloud24 SLOT5-0  SLOT6-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk110
+ description port number x1-21 x2-21 to HWCloud24 SLOT5-1  SLOT6-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk111
+ description port number x1-22 x2-22 to HWCloud25 SLOT5-0  SLOT6-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface Eth-Trunk120
+#
+interface Eth-Trunk121
+#
+interface Eth-Trunk122
+#
+interface Eth-Trunk123
+#
+interface Eth-Trunk124
+#
+interface Eth-Trunk125
+#
+interface Eth-Trunk126
+#
+interface Eth-Trunk127
+#
+interface Ethernet0/0/0/0
+#
+interface GigabitEthernet1/3/0/0
+ description Number W1-2 CL_A_S5700_1
+ eth-trunk 18
+#
+interface GigabitEthernet1/3/0/1
+ description Number W1-4
+ eth-trunk 2
+#
+interface GigabitEthernet1/3/0/2
+ description Number W1-6
+ eth-trunk 3
+#
+interface GigabitEthernet1/3/0/3
+ description Number W1-8
+ eth-trunk 4
+#
+interface GigabitEthernet1/3/0/4
+ description Number W1-10
+ eth-trunk 5
+#
+interface GigabitEthernet1/3/0/5
+ description Number W2-2
+ eth-trunk 6
+#
+interface GigabitEthernet1/3/0/6
+ description Number W2-4
+ eth-trunk 7
+#
+interface GigabitEthernet1/3/0/7
+ description Number W2-6
+ eth-trunk 8
+#
+interface GigabitEthernet1/3/0/8
+ description Number W2-8
+ eth-trunk 9
+#
+interface GigabitEthernet1/3/0/9
+ description Number W2-10
+ eth-trunk 10
+#
+interface GigabitEthernet1/3/0/10
+ description Number W2-12
+ eth-trunk 11
+#
+interface GigabitEthernet1/3/0/11
+ description Number W3-2
+ eth-trunk 12
+#
+interface GigabitEthernet1/3/0/12
+ description Number W3-4
+ eth-trunk 13
+#
+interface GigabitEthernet1/3/0/13
+ description Number W3-6
+ eth-trunk 14
+#
+interface GigabitEthernet1/3/0/14
+ description Number W3-8
+ eth-trunk 15
+#
+interface GigabitEthernet1/3/0/15
+ description Number W3-10
+ eth-trunk 16
+#
+interface GigabitEthernet1/3/0/16
+ description Number W3-12
+ eth-trunk 17
+#
+interface GigabitEthernet1/3/0/17
+ description Number W1-21
+ port link-type access
+ port default vlan 251
+#
+interface GigabitEthernet1/3/0/18
+ description Number W1-22 shentaiyuan to ruanjianyuan LAN
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+ port-mirroring to observe-port 7 inbound
+ port-mirroring to observe-port 7 outbound
+#
+interface GigabitEthernet1/3/0/19
+#
+interface GigabitEthernet1/3/0/20
+#
+interface GigabitEthernet1/3/0/21
+#
+interface GigabitEthernet1/3/0/22
+#
+interface GigabitEthernet1/3/0/23
+#
+interface GigabitEthernet1/3/0/24
+#
+interface GigabitEthernet1/3/0/25
+#
+interface GigabitEthernet1/3/0/26
+ port link-type trunk
+ port trunk pvid vlan 244
+ port trunk allow-pass vlan 2 to 4094
+#
+interface GigabitEthernet1/3/0/27
+ port link-type access
+ port default vlan 244
+#
+interface GigabitEthernet1/3/0/28
+#
+interface GigabitEthernet1/3/0/29
+#
+interface GigabitEthernet1/3/0/30
+#
+interface GigabitEthernet1/3/0/31
+#
+interface GigabitEthernet1/3/0/32
+#
+interface GigabitEthernet1/3/0/33
+#
+interface GigabitEthernet1/3/0/34
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet1/3/0/35
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet1/3/0/36
+ description w1-13/D312
+#
+interface GigabitEthernet1/3/0/37
+ description w1-14 to WAN DX 80M
+ port link-type access
+ port default vlan 601
+#
+interface GigabitEthernet1/3/0/38
+ description w1-15/yd024
+#
+interface GigabitEthernet1/3/0/39
+ description w1-16/yd018
+#
+interface GigabitEthernet1/3/0/40
+ description w1-17 to M-FW eth11 DX 40M
+ port link-type access
+ port default vlan 601
+#
+interface GigabitEthernet1/3/0/41
+ description w1-18 to M-FW eth14 LT 20M
+ port link-type access
+ port default vlan 602
+#
+interface GigabitEthernet1/3/0/42
+ description jf d003
+ port link-type access
+ port default vlan 192
+#
+interface GigabitEthernet1/3/0/43
+ description EOF 10.24.1.106  D003
+ port link-type access
+ port default vlan 241
+#
+interface GigabitEthernet1/3/0/44
+#
+interface GigabitEthernet1/3/0/45
+#
+interface GigabitEthernet1/3/0/46
+#
+interface GigabitEthernet1/3/0/47
+ description W1-24 to RAG-GE1
+ port link-type access
+ port default vlan 605
+#
+interface GigabitEthernet1/4/0/0
+ description ARM-10.22.51.100 ibmc 5-1
+ port link-type access
+ port default vlan 244
+#
+interface GigabitEthernet1/4/0/1
+ description ARM-10.22.51.101 eth0 5-2
+ port link-type access
+ port default vlan 244
+#
+interface GigabitEthernet1/4/0/2
+ description clzn 172.18.0.11 port number 5-3
+ port link-type access
+ port default vlan 172
+#
+interface GigabitEthernet1/4/0/3
+ description port number 5-16 HWCloudCNA35 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/4/0/4
+ description port number 5-4 HWCloudCNA36 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/4/0/5
+ description port number 5-6 HWCloud23 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/4/0/6
+ description ARM-10.22.51.11 eth0 5-7
+ port link-type access
+ port default vlan 244
+#
+interface GigabitEthernet1/4/0/7
+ description ARM-10.22.51.102 eth0 5-8
+ port link-type access
+ port default vlan 244
+#
+interface GigabitEthernet1/4/0/8
+ description port number 5-9 HWCloudCNA46 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/4/0/9
+ description ARM-10.22.51.102 ibmc 5-10
+ port link-type access
+ port default vlan 244
+#
+interface GigabitEthernet1/4/0/10
+ description ARM-10.22.51.100 eth0 5-11
+ port link-type access
+ port default vlan 244
+#
+interface GigabitEthernet1/4/0/11
+ description HT Server Eth0 60.26
+ port link-type access
+ port default vlan 226
+#
+interface GigabitEthernet1/4/0/12
+ description server 6.22 6-1
+ port default vlan 1100
+#
+interface GigabitEthernet1/4/0/13
+ description server 6.23 6-2
+ port link-type trunk
+ port trunk allow-pass vlan 506 to 508
+#
+interface GigabitEthernet1/4/0/14
+ description server 6.24 6-3
+ port link-type access
+ port default vlan 172
+#
+interface GigabitEthernet1/4/0/15
+ description server 6.21 6-4
+ port link-type trunk
+ port trunk allow-pass vlan 506 to 508
+#
+interface GigabitEthernet1/4/0/16
+ description YHThwcloud server 10.22.83.19 6-5
+ port link-type access
+ port default vlan 283
+#
+interface GigabitEthernet1/4/0/17
+ description BOSS Tiny 172.18.0.8 eth0
+ port link-type access
+ port default vlan 172
+#
+interface GigabitEthernet1/4/0/18
+ description port number 6-7 HWCloudCNA48 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/4/0/19
+ description port number 6-8
+ port link-type access
+ port default vlan 172
+#
+interface GigabitEthernet1/4/0/20
+ description server 6.20 6-9
+ port link-type trunk
+ port trunk allow-pass vlan 506 to 508
+#
+interface GigabitEthernet1/4/0/21
+ description server 6.27 6-10
+ port link-type trunk
+ port trunk allow-pass vlan 506 to 508
+#
+interface GigabitEthernet1/4/0/22
+ description port number 6-11 HWCloud22 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/4/0/23
+ description 6-12 to TOPSEC-VPN-ETH5 100.100.100.7
+ port link-type access
+ port default vlan 605
+#
+interface GigabitEthernet1/4/0/24
+ description SERVER 10.22.0.88 Number 7-1
+ port link-type access
+ port default vlan 220
+#
+interface GigabitEthernet1/4/0/25
+ description GLYWBB Server 10.24.1.6 Number 7-2
+ eth-trunk 41
+#
+interface GigabitEthernet1/4/0/26
+ description P710 SERVER HMC 10.24.1.107 Number 7-3
+ port link-type access
+ port default vlan 220
+#
+interface GigabitEthernet1/4/0/27
+ description port number 7-4 HWCloudCNA34 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/4/0/28
+ description YFZX Server 10.22.0.87 Number 7-5
+ port link-type access
+ port default vlan 220
+#
+interface GigabitEthernet1/4/0/29
+ description YFZX Server 10.22.0.86 Number 7-6
+ port link-type access
+ port default vlan 220
+#
+interface GigabitEthernet1/4/0/30
+ description port number 7-7 HWCloudCNA39 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/4/0/31
+ description port number 1-8
+ eth-trunk 40
+#
+interface GigabitEthernet1/4/0/32
+ description port number 7-9 HWCloudCNA40 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/4/0/33
+ description port number 7-10 HWCloud21 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/4/0/34
+ description SERVER 10.22.9.36 iBMC 10.22.52.128 Number 7-11
+ port link-type access
+ port default vlan 245
+#
+interface GigabitEthernet1/4/0/35
+ description port number 7-12 10.22.0.9 iDRAC
+ port link-type access
+ port default vlan 245
+#
+interface GigabitEthernet1/4/0/36
+#
+interface GigabitEthernet1/4/0/37
+#
+interface GigabitEthernet1/4/0/38
+#
+interface GigabitEthernet1/4/0/39
+#
+interface GigabitEthernet1/4/0/40
+#
+interface GigabitEthernet1/4/0/41
+#
+interface GigabitEthernet1/4/0/42
+#
+interface GigabitEthernet1/4/0/43
+#
+interface GigabitEthernet1/4/0/44
+#
+interface GigabitEthernet1/4/0/45
+#
+interface GigabitEthernet1/4/0/46
+#
+interface GigabitEthernet1/4/0/47
+#
+interface GigabitEthernet1/5/0/0
+ description Avaya Server 10.22.50.100 Number 1-1
+ eth-trunk 50
+#
+interface GigabitEthernet1/5/0/1
+ description XXGLB Server 10.24.1.130 Number 1-2
+ eth-trunk 51
+#
+interface GigabitEthernet1/5/0/2
+ description EAS Server 10.24.1.109 Number 1-3
+ port link-type access
+ port default vlan 241
+#
+interface GigabitEthernet1/5/0/3
+ description port number 1-4 HWCloud27 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/4
+ description K/3 Server 10.24.1.108 Number 1-5
+ port link-type access
+ port default vlan 241
+#
+interface GigabitEthernet1/5/0/5
+ description AVAYA Server 10.22.50.100 Number 1-6
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet1/5/0/6
+ description XXGLB Server 10.24.1.130 Number 1-7
+ port link-type access
+ port default vlan 244
+#
+interface GigabitEthernet1/5/0/7
+ description description Public test server number 1-8
+ eth-trunk 90
+#
+interface GigabitEthernet1/5/0/8
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet1/5/0/9
+ description BossDB 1-10
+ eth-trunk 55
+#
+interface GigabitEthernet1/5/0/10
+ description port number 1-11 HWCloud27 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/11
+ description HT 60.184  1-12
+ port link-type access
+ port default vlan 226
+#
+interface GigabitEthernet1/5/0/12
+ description server 10.22.50.26 2-1
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet1/5/0/13
+ description port number 2-2 HWCloud26 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/14
+ description 10.24.1.27
+ port link-type access
+ port default vlan 241
+#
+interface GigabitEthernet1/5/0/15
+ description XJRYWBB Server 10.24.1.180 Number 2-4
+ eth-trunk 73
+#
+interface GigabitEthernet1/5/0/16
+ description 10.24.1.32
+ port link-type access
+ port default vlan 241
+#
+interface GigabitEthernet1/5/0/17
+ description ht server 60.188
+ port link-type access
+ port default vlan 226
+#
+interface GigabitEthernet1/5/0/18
+ description XXGLB Mail2 Server 172.18.0.21 Number 2-7
+ eth-trunk 58
+#
+interface GigabitEthernet1/5/0/19
+ description XXGLB Server 10.22.50.231 Number 2-8
+ eth-trunk 57
+#
+interface GigabitEthernet1/5/0/20
+ description yfzx Server 10.22.0.4 Number 2-9
+ eth-trunk 47
+#
+interface GigabitEthernet1/5/0/21
+ description yfzx Server 10.22.0.5 Number 2-10
+ eth-trunk 48
+#
+interface GigabitEthernet1/5/0/22
+ port link-type access
+ port default vlan 241
+#
+interface GigabitEthernet1/5/0/23
+ description Storage 10.22.50.150 Number 2-12
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet1/5/0/24
+ description port number 3-1 HWCloudCNA44 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/25
+ description port number 3-2 HWCloudCNA38 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/26
+ description port number 3-3 HWCloudCNA31 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/27
+ description port number 3-4
+ port link-type access
+ port default vlan 241
+#
+interface GigabitEthernet1/5/0/28
+ description port number 3-5 HWCloudCNA45 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/29
+ description port number 3-6
+#
+interface GigabitEthernet1/5/0/30
+ description to CL_A_S5700_17
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface GigabitEthernet1/5/0/31
+ description CLSJ Server 10.22.82.1 port number 3-8
+ eth-trunk 85
+#
+interface GigabitEthernet1/5/0/32
+ description port number 3-9 to FW ETH15 HK Line
+ port link-type access
+ port default vlan 603
+#
+interface GigabitEthernet1/5/0/33
+ description YFZX Server 10.22.0.85 number 3-10
+ port link-type access
+ port default vlan 220
+#
+interface GigabitEthernet1/5/0/34
+ description 3-11 to FW-MASTER-ETH11-DX-WAN
+ port link-type access
+ port default vlan 601
+#
+interface GigabitEthernet1/5/0/35
+ description description 3-14 to FW-MASTER-ETH14-WAN
+ port link-type access
+ port default vlan 602
+#
+interface GigabitEthernet1/5/0/36
+ description port number 4-6 HWCloudCNA41 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/37
+ description port number 4-2 HWCloud24 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/38
+ description port number 4-3 HWCloud25 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/39
+ description port number 4-4 HWCloudCNA30 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/40
+ description Number 4-5
+ eth-trunk 66
+#
+interface GigabitEthernet1/5/0/41
+ description port number 4-6 HWCloudCNA41 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/42
+ description port number 4-7 HWCloudCNA32 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/43
+ description port number 4-8 HWCloudCNA33 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/44
+ description port number 4-21 HWCloudCNA47 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/45
+ description port number 4-10 HWCloudCNA43 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/46
+ description port number 4-11 HWCloudCNA37 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet1/5/0/47
+ description port number 4-12 HWCloudCNA42 eth0
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/3/0/0
+ description Number W1-1 CL_A_S5700_1
+ eth-trunk 18
+#
+interface GigabitEthernet2/3/0/1
+ description Number W1-3
+ eth-trunk 2
+#
+interface GigabitEthernet2/3/0/2
+ description Number W1-5
+ eth-trunk 3
+#
+interface GigabitEthernet2/3/0/3
+ description Number W1-7
+ eth-trunk 4
+#
+interface GigabitEthernet2/3/0/4
+ description Number W1-9
+ eth-trunk 5
+#
+interface GigabitEthernet2/3/0/5
+ description Number W2-1
+ eth-trunk 6
+#
+interface GigabitEthernet2/3/0/6
+ description Number W2-3
+ eth-trunk 7
+#
+interface GigabitEthernet2/3/0/7
+ description Number W2-5
+ eth-trunk 8
+#
+interface GigabitEthernet2/3/0/8
+ description Number W2-77
+ eth-trunk 9
+#
+interface GigabitEthernet2/3/0/9
+ description Number W2-9
+ eth-trunk 10
+#
+interface GigabitEthernet2/3/0/10
+ description Number W2-11
+ eth-trunk 11
+#
+interface GigabitEthernet2/3/0/11
+ description Number W3-1
+ eth-trunk 12
+#
+interface GigabitEthernet2/3/0/12
+ description Number W3-3
+ eth-trunk 13
+#
+interface GigabitEthernet2/3/0/13
+ description Number W3-5
+ eth-trunk 14
+#
+interface GigabitEthernet2/3/0/14
+ description Number W3-7
+ eth-trunk 15
+#
+interface GigabitEthernet2/3/0/15
+ description Number W3-9
+ eth-trunk 16
+#
+interface GigabitEthernet2/3/0/16
+ description Number W3-11
+ eth-trunk 17
+#
+interface GigabitEthernet2/3/0/17
+ description Number W1-11
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet2/3/0/18
+ description Number W1-12
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet2/3/0/19
+ description yfzx mac os server 10.22.1.17
+ port link-type access
+ port default vlan 242
+#
+interface GigabitEthernet2/3/0/20
+#
+interface GigabitEthernet2/3/0/21
+#
+interface GigabitEthernet2/3/0/22
+#
+interface GigabitEthernet2/3/0/23
+#
+interface GigabitEthernet2/3/0/24
+ description cw print number T072
+ port link-type access
+ port default vlan 18
+ stp edged-port enable
+ broadcast-suppression 30
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/25
+ description port number T096
+ port link-type access
+ port default vlan 50
+ stp edged-port enable
+ broadcast-suppression 30
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/26
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/27
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/28
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/29
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/30
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/31
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/32
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/33
+ description port number T288
+ port link-type access
+ port default vlan 10
+ stp edged-port enable
+ broadcast-suppression 30
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/34
+ description port Number D024
+ port link-type access
+ port default vlan 10
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/35
+ description port Number D048
+ port link-type access
+ port default vlan 10
+ stp edged-port enable
+ broadcast-suppression 30
+ dhcp snooping enable
+#
+interface GigabitEthernet2/3/0/36
+ port link-type access
+ port default vlan 10
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/37
+ description port number D096
+ port link-type access
+ port default vlan 18
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/38
+ port link-type access
+ port default vlan 50
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/39
+ port link-type access
+ port default vlan 50
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/40
+ description Port Number D168
+ port link-type access
+ port default vlan 51
+ stp edged-port enable
+ trust 8021p inner 
+ broadcast-suppression 30
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/41
+ port link-type access
+ port default vlan 50
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/42
+ port link-type access
+ port default vlan 31
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/43
+ port link-type access
+ port default vlan 31
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/44
+ port link-type access
+ port default vlan 31
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/45
+ port link-type access
+ port default vlan 31
+ port-mirroring to observe-port 6 inbound
+ port-mirroring to observe-port 6 outbound
+#
+interface GigabitEthernet2/3/0/46
+#
+interface GigabitEthernet2/3/0/47
+ description W1-23 to RAG-GE5
+ port link-type access
+ port default vlan 605
+#
+interface GigabitEthernet2/4/0/0
+ description 51.11 ibmc
+ port link-type access
+ port default vlan 244
+#
+interface GigabitEthernet2/4/0/1
+ description port number 5-14 HWCloudCNA46 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/4/0/2
+ description ocr 172.18.0.11 port number 5-15
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface GigabitEthernet2/4/0/3
+ description port number 5-16 HWCloudCNA35 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/4/0/4
+ description port number 5-17 HWCloudCNA36 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/4/0/5
+ description port number 5-18 HWCloud23 eth2
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/4/0/6
+ description 10.22.51.11 5-19
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface GigabitEthernet2/4/0/7
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface GigabitEthernet2/4/0/8
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface GigabitEthernet2/4/0/9
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet2/4/0/10
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet2/4/0/11
+ description port number 5-24 to NAC infogo eth2
+ port link-type access
+ port default vlan 172
+#
+interface GigabitEthernet2/4/0/12
+ port link-type access
+ port default vlan 244
+#
+interface GigabitEthernet2/4/0/13
+ description server 6.23 ibmc 52.134 6-14
+ port link-type access
+ port default vlan 245
+#
+interface GigabitEthernet2/4/0/14
+ description server 6.22 ibmc 52.133 6-15
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/4/0/15
+ description server 6.21 ibmc 52.132 6-16
+ port link-type access
+ port default vlan 245
+#
+interface GigabitEthernet2/4/0/16
+ description server 6.20 ibmc 52.131 6-17
+ port link-type access
+ port default vlan 245
+#
+interface GigabitEthernet2/4/0/17
+ description BOSS Tiny 172.18.0.8 IBMC 52.126
+ port link-type access
+ port default vlan 245
+#
+interface GigabitEthernet2/4/0/18
+ description port number 6-19 HWCloudCNA48 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/4/0/19
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet2/4/0/20
+ description server 6.24 ibmc 52.135
+ port link-type access
+ port default vlan 245
+#
+interface GigabitEthernet2/4/0/21
+ port link-type access
+ port default vlan 283
+#
+interface GigabitEthernet2/4/0/22
+ description YHThwcloud server 10.22.83.19 6-22
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/4/0/23
+ description hwcloud22 server mgmt 10.22.52.12 6-24
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/4/0/24
+ description SERVER 10.22.9.38 iBMC 10.22.52.130 Number 7-13
+ port link-type access
+ port default vlan 245
+#
+interface GigabitEthernet2/4/0/25
+ description GLYWBB Server 10.24.1.6 Number 7-14
+ eth-trunk 41
+#
+interface GigabitEthernet2/4/0/26
+ description P710 SERVER VIO  Number 7-15
+ port link-type access
+ port default vlan 241
+#
+interface GigabitEthernet2/4/0/27
+ description port number 7-16 HWCloudCNA34 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/4/0/28
+ description SERVER 10.22.9.37 iBMC 10.22.52.129 Number 7-17
+ port link-type access
+ port default vlan 245
+#
+interface GigabitEthernet2/4/0/29
+ description HWCloudCNA34 IMM Number 7-18
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/4/0/30
+ description port number 7-19 HWCloudCNA39 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/4/0/31
+ description port number 7-20
+ eth-trunk 40
+#
+interface GigabitEthernet2/4/0/32
+ description port number 7-21 HWCloudCNA40 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/4/0/33
+ description port number 7-22 HWCloud21 eth2
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/4/0/34
+ description hwcloud21 server mgmt 10.22.52.11 7-23
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/4/0/35
+ description p710 VIO eth1
+ port link-type access
+ port default vlan 241
+#
+interface GigabitEthernet2/4/0/36
+ port link-type access
+ port default vlan 244
+#
+interface GigabitEthernet2/4/0/37
+#
+interface GigabitEthernet2/4/0/38
+#
+interface GigabitEthernet2/4/0/39
+#
+interface GigabitEthernet2/4/0/40
+#
+interface GigabitEthernet2/4/0/41
+#
+interface GigabitEthernet2/4/0/42
+#
+interface GigabitEthernet2/4/0/43
+#
+interface GigabitEthernet2/4/0/44
+#
+interface GigabitEthernet2/4/0/45
+#
+interface GigabitEthernet2/4/0/46
+#
+interface GigabitEthernet2/4/0/47
+#
+interface GigabitEthernet2/5/0/0
+ description Avaya Server 10.22.50.100 Number 1-13
+ port link-type access
+ port default vlan 172
+#
+interface GigabitEthernet2/5/0/1
+ description XXGLB Server 10.24.1.130 Number 1-14
+ eth-trunk 51
+#
+interface GigabitEthernet2/5/0/2
+ description EAS Server 10.24.1.109 Number 1-15
+ port link-type access
+ port default vlan 241
+#
+interface GigabitEthernet2/5/0/3
+ description port number 1-16 HWCloud27 eth2
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/5/0/4
+ description K/3 Server 10.24.1.108 Number 1-17
+ port link-type access
+ port default vlan 241
+#
+interface GigabitEthernet2/5/0/5
+ description AVAYA Server 10.22.50.100 Number 1-18
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet2/5/0/6
+ description Mail-SMTP-172.18.0.22 port 1-19
+ port link-type access
+ port default vlan 172
+#
+interface GigabitEthernet2/5/0/7
+ description Public test server number 1-20
+ port link-type access
+ port default vlan 500
+#
+interface GigabitEthernet2/5/0/8
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet2/5/0/9
+ description HT 60.184 ibmc 1-22
+ port link-type access
+ port default vlan 245
+#
+interface GigabitEthernet2/5/0/10
+ description oa 1-23
+ eth-trunk 56
+#
+interface GigabitEthernet2/5/0/11
+ description JF DVR 10.18.251.50 Number 1-24
+ port link-type access
+ port default vlan 251
+#
+interface GigabitEthernet2/5/0/12
+ description server 10.22.50.26 ibmc 10.22.50.136 2-13
+ port link-type access
+ port default vlan 245
+#
+interface GigabitEthernet2/5/0/13
+ description port number 2-16 HWCloud26 eth2
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/5/0/14
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet2/5/0/15
+ description XJRYWBB Server 10.24.1.180 Number 2-16
+ eth-trunk 73
+#
+interface GigabitEthernet2/5/0/16
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet2/5/0/17
+ description ht server 64.36 ibmc
+ port link-type access
+ port default vlan 245
+#
+interface GigabitEthernet2/5/0/18
+ description XXGLB Mail2 Server 172.18.0.21 Number 2-19
+ eth-trunk 58
+#
+interface GigabitEthernet2/5/0/19
+ description XXGLB Server 10.22.50.231 Number 2-20
+ eth-trunk 57
+#
+interface GigabitEthernet2/5/0/20
+ description yfzx Server 10.22.0.4 Number 2-21
+ eth-trunk 47
+#
+interface GigabitEthernet2/5/0/21
+ description yfzx Server 10.22.0.5 Number 2-22
+ eth-trunk 48
+#
+interface GigabitEthernet2/5/0/22
+ port link-type access
+ port default vlan 172
+#
+interface GigabitEthernet2/5/0/23
+ description Storage 10.22.50.150 Number 2-24
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet2/5/0/24
+ description port number 3-13 HWCloudCNA44 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/5/0/25
+ description port number 3-14 HWCloudCNA38 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/5/0/26
+ description port number 3-15 HWCloudCNA31 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/5/0/27
+ description SERVER 172.18.0.252 Number 3-16
+ port link-type access
+ port default vlan 172
+#
+interface GigabitEthernet2/5/0/28
+ description port number 3-17 HWCloudCNA45 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/5/0/29
+ description CLSJ Server 10.22.82.1 port number 3-18
+ eth-trunk 85
+#
+interface GigabitEthernet2/5/0/30
+ description 3-19 to FW-MASTER-ETH13-GXW-WAN
+ port link-type access
+ port default vlan 600
+#
+interface GigabitEthernet2/5/0/31
+ description port number 3-20
+ shutdown
+#
+interface GigabitEthernet2/5/0/32
+ description port number 3-20
+ shutdown
+#
+interface GigabitEthernet2/5/0/33
+ description Master and Slave FW HA S1-12 to S3-22
+#
+interface GigabitEthernet2/5/0/34
+ description KVM HOST 10.22.50.250 Nubmer 3-24
+ port link-type access
+ port default vlan 225
+#
+interface GigabitEthernet2/5/0/35
+ description NVR Host 10.18.251.10 Number 3-24
+ port link-type access
+ port default vlan 251
+#
+interface GigabitEthernet2/5/0/36
+ description port number 4-13 HWCloudCNA41 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/5/0/37
+ description port number 4-14 HWCloud24 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/5/0/38
+ description port number 4-15 HWCloud25 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/5/0/39
+ description port number 4-4 HWCloudCNA30 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/5/0/40
+ description Number 4-17
+ eth-trunk 66
+#
+interface GigabitEthernet2/5/0/41
+ description port number 4-18 HWCloudCNA41 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/5/0/42
+ description port number 4-19 HWCloudCNA32 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/5/0/43
+ description port number 4-20 HWCloudCNA33 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/5/0/44
+ description port number 4-21 HWCloudCNA47 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/5/0/45
+ description port number 4-22 HWCloudCNA43 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/5/0/46
+ description port number 3-14 HWCloudCNA38 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface GigabitEthernet2/5/0/47
+ description port number 4-24 HWCloudCNA42 eth1
+ port link-type access
+ port default vlan 1100
+#
+interface XGigabitEthernet1/6/0/0
+ description to CL_B_S5720
+ eth-trunk 25
+#
+interface XGigabitEthernet1/6/0/1
+ description to CL_B_S5720
+ eth-trunk 25
+#
+interface XGigabitEthernet1/6/0/2
+ description port number x1-2 HWCloud21 slot3-0
+ eth-trunk 101
+#
+interface XGigabitEthernet1/6/0/3
+ description port number x1-3 HWCloud21 slot3-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/4
+ description port number x1-4 HWCloud22 slot3-0
+ eth-trunk 104
+#
+interface XGigabitEthernet1/6/0/5
+ description port number x1-5 HWCloud22 slot3-1
+ eth-trunk 105
+#
+interface XGigabitEthernet1/6/0/6
+ description port number x1-6 HWCloud23 slot3-0
+ eth-trunk 107
+#
+interface XGigabitEthernet1/6/0/7
+ description port number x1-7 HWCloud23 slot3-1
+ eth-trunk 108
+#
+interface XGigabitEthernet1/6/0/8
+ description port number x1-8 HWCloudCNA35 slot6-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/9
+ description port number x1-8 HWCloudCNA36 slot6-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/10
+ description port number x1-10 HWCloudCNA46 slot6-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/11
+ description port number x1-11 HWCloudCNA46 slot5-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/12
+ description port number x1-12 HWCloud27 slot3-0
+ eth-trunk 103
+#
+interface XGigabitEthernet1/6/0/13
+ description port number x1-13 to HWCloud27 SLOT3-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/14
+ description port number x1-14 HWCloud26 slot3-0
+ eth-trunk 102
+#
+interface XGigabitEthernet1/6/0/15
+ description port number x1-15 to HWCloud26 SLOT3-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/16
+ description port number x1-16 HWCloudCNA34 slot6-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/17
+ description port number x1-17 HWCloudCNA39 slot6-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/18
+ description port number x1-18 HWCloudCNA40 slot6-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/19
+ description port number x1-19 HWCloudCNA37 slot6-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/20
+ description port number x1-20 HWCloud24 slot6-0
+ eth-trunk 109
+#
+interface XGigabitEthernet1/6/0/21
+ description port number x2-21 HWCloud24 slot6-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/22
+ description port number x1-22 HWCloud25 slot5-0
+ eth-trunk 111
+#
+interface XGigabitEthernet1/6/0/23
+ description port number x2-23 HWCloud25 slot6-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/24
+ description port number x2-24 HWCloudCNA30 slot6-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/25
+ description port number x1-25 HWCloudCNA31 slot6-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/26
+ description port number x1-26 HWCloudCNA32 slot6-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/27
+ description port number x1-26 HWCloudCNA32 slot6-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/28
+ description port number x1-28 HWCloudCNA33 slot6-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/29
+ description port number x1-29 HWCloudCNA41 slot6-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/30
+ description port number x1-30 HWCloudCNA42 slot6-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/31
+ description port number x1-31 HWCloudCNA43 slot6-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/32
+ description port number x1-32 HWCloudCNA44 slot6-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/33
+ description port number x1-33 HWCloudCNA47 slot6-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/34
+ description port number x2-34 HWCloudCNA45 slot6-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/35
+ description to CL_A_HJ1_CE6851_20
+ eth-trunk 20
+#
+interface XGigabitEthernet1/6/0/36
+ description port number x1-37 HWCloudCNA48 slot1-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/37
+ description port deny
+#
+interface XGigabitEthernet1/6/0/38
+ description port number x1-38 HWCloudCNA38 slot6-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet1/6/0/39
+ description to STY-2C-9F-Swtich90A
+ eth-trunk 26
+#
+interface XGigabitEthernet2/6/0/0
+ description to CL_B_S5720
+ eth-trunk 25
+#
+interface XGigabitEthernet2/6/0/1
+ description to CL_B_S5720
+ eth-trunk 25
+#
+interface XGigabitEthernet2/6/0/2
+ description port number x2-2 HWCloud21 slot4-0
+ eth-trunk 101
+#
+interface XGigabitEthernet2/6/0/3
+ description port number x2-3 HWCloud21 slot4-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/4
+ description port number x2-4 HWCloud22 slot4-0
+ eth-trunk 104
+#
+interface XGigabitEthernet2/6/0/5
+ description port number x2-5 HWCloud22 slot4-1
+ eth-trunk 105
+#
+interface XGigabitEthernet2/6/0/6
+ description port number x2-6 HWCloud23 slot4-0
+ eth-trunk 107
+#
+interface XGigabitEthernet2/6/0/7
+ description port number x2-7 HWCloud23 slot4-1
+ eth-trunk 108
+#
+interface XGigabitEthernet2/6/0/8
+ description port number x2-8 HWCloudCNA35 slot5-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/9
+ description port number x2-9 HWCloudCNA36 slot5-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/10
+#
+interface XGigabitEthernet2/6/0/11
+ description port number x2-11 HWCloudCNA30
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/12
+ description port number x1-12 HWCloud27 slot4-0
+ eth-trunk 103
+#
+interface XGigabitEthernet2/6/0/13
+ description port number x2-13 to HWCloud27 SLOT4-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/14
+ description port number x2-14 HWCloud26 slot4-0
+ eth-trunk 102
+#
+interface XGigabitEthernet2/6/0/15
+ description port number x2-15 to HWCloud26 SLOT4-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/16
+ description port number x2-16 HWCloudCNA34 slot5-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/17
+ description port number x2-17 HWCloudCNA39 slot5-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/18
+ description port number x2-18 HWCloudCNA40 slot5-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/19
+ description port number x2-19 HWCloudCNA37 slot5-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/20
+ description port number x2-20 HWCloud24 slot6-0
+ eth-trunk 109
+#
+interface XGigabitEthernet2/6/0/21
+ description port number x2-21 HWCloud24 slot5-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/22
+ description port number x2-22 HWCloud25 slot6-0
+ shutdown
+ eth-trunk 111
+#
+interface XGigabitEthernet2/6/0/23
+ description port number x2-23 HWCloud25 slot5-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/24
+ description port number x2-24 HWCloudCNA30 slot5-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/25
+ description port number x2-25 HWCloudCNA31 slot5-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/26
+ description port number x2-26 HWCloudCNA32 slot5-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/27
+#
+interface XGigabitEthernet2/6/0/28
+ description port number x2-28 HWCloudCNA33 slot5-1
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/29
+ description port number x2-29 HWCloudCNA41 slot5-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/30
+ description port number x2-30 HWCloudCNA42 slot5-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/31
+ description port number x2-31 HWCloudCNA43 slot5-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/32
+ description port number x2-32 HWCloudCNA44 slot5-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+#
+interface XGigabitEthernet2/6/0
+#
+interface XGigabitEthernet2/6/0/35dCNA45 slot5-0
+#
+interface XGigabit
+#
+interface XGigabitEthernet2/6/0/35
+#
+#
+interface XGigabitEthernet2/6/0
+#
+interface XGigabitEthernet2/6/0/35dCNA45 slot5-0
+#
+interface XGigabit
+#
+interface XGigabitEthernet2/6/0/35
+#
+interface XGigabitEthernet2/6/0/35
+ description to CL_A_HJ1_CE6851_20
+ eth-trunk 20
+#
+interface XGigabitEthernet2/6/0/36
+#
+interface XGigabitEthernet2/6/0/37
+ description port number x2-37 HWCloudCNA48 slot2-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/38
+ description port number x2-38 HWCloudCNA38 slot5-0
+ port link-type trunk
+ port trunk allow-pass vlan 2 to 4094
+#
+interface XGigabitEthernet2/6/0/39
+ description to STY-2C-9F-Swtich90B
+ eth-trunk 26
+#
+interface NULL0
+#
+ip route-static 0.0.0.0 0.0.0.0 100.100.100.2 description to-FW
+ip route-static 10.1.12.0 255.255.252.0 10.22.51.65 description openvpn
+ip route-static 10.22.70.0 255.255.255.224 10.22.5.66 description test1
+ip route-static 10.22.70.32 255.255.255.224 10.22.5.67 description test2
+ip route-static 10.22.70.64 255.255.255.224 10.22.5.68 description test3
+ip route-static 10.22.70.96 255.255.255.224 10.22.5.69 description test4
+ip route-static 10.22.71.0 255.255.255.0 10.22.5.66 description corella-k8s-cluster-ip
+ip route-static 10.112.0.0 255.255.0.0 172.18.0.107 description aws
+ip route-static 10.236.248.0 255.255.255.0 172.18.0.107 description aws2
+ip route-static 10.250.1.0 255.255.255.0 100.100.100.8 description openvpn
+ip route-static 10.250.2.0 255.255.255.0 10.22.51.65 description openvpn
+ip route-static 10.250.3.0 255.255.255.0 10.22.51.66 description openvpn
+ip route-static 172.21.8.0 255.255.248.0 100.100.100.7 description topsec-vpn
+ip route-static 172.27.0.0 255.255.252.0 10.22.51.145 description n1-prod-kunpeng
+ip route-static 172.27.128.0 255.255.254.0 10.22.51.145 description n1-cluster-kunpeng
+ip route-static 172.29.0.0 255.255.0.0 10.22.0.81 description ts-k8s-ip
+ip route-static 172.30.0.0 255.255.0.0 10.22.0.100 description sgrdc-t2-n1-ip
+ip route-static 172.31.0.0 255.255.0.0 10.22.0.200 description sgrdc-t2-n2-ip
+ip route-static 172.31.100.196 255.255.255.255 10.22.51.66 description openvpn
+ip route-static 172.31.245.0 255.255.255.0 100.100.100.2 description chengfeng-bank
+ip route-static 172.31.251.0 255.255.255.0 100.100.100.2 description chengfeng-bank
+ip route-static 172.31.253.0 255.255.255.0 100.100.100.2 description chengfeng-bank2
+#
+route recursive-lookup tunnel
+#
+snmp-agent
+snmp-agent local-engineid 800007DB0308C02164F930
+snmp-agent community read cipher %^%##ZK*N)t7}L=(4RNwCO)+]/|'(@;`FT_lUR4t#lR")7@>-CQ#wRj@\P5y=mW%W=qFE-74P:>Z5z0/EF^N%^%# mib-view iso-view
+snmp-agent community write cipher %^%#&NKuR+&.=O:ZF>-..'3.gpA@6-6)}%o7voMoX%J1UZF$E6i)/W<_\.N|+'7/"*gF:K^y)*x{|fTf7eQJ%^%#
+snmp-agent sys-info version v2c v3
+snmp-agent mib-view included iso-view iso
+snmp-agent extend error-code enable
+snmp-agent trap enable
+undo snmp-agent trap enable feature-name LINE
+#
+stelnet server enable
+ssh user nac
+ssh user nac authentication-type password
+ssh user nac service-type stelnet
+ssh user shenzhen
+ssh user shenzhen authentication-type password
+ssh user shenzhen service-type stelnet
+#
+user-interface con 0
+ authentication-mode password
+ set authentication password cipher $1a$&Y.#CDYeFO$pvXVKSXAT54IU6HK;5{4Xz$jY-ogFOuU0L"30'(H$
+user-interface vty 0 4
+ acl 2001 inbound
+ authentication-mode aaa
+ idle-timeout 0 0
+ screen-length 0
+ protocol inbound all
+user-interface vty 16 20
+#
+l2-multicast-channel
+#
+port-group s1
+ group-member GigabitEthernet2/3/0/24
+ group-member GigabitEthernet2/3/0/25
+ group-member GigabitEthernet2/3/0/26
+ group-member GigabitEthernet2/3/0/27
+ group-member GigabitEthernet2/3/0/28
+ group-member GigabitEthernet2/3/0/29
+ group-member GigabitEthernet2/3/0/30
+ group-member GigabitEthernet2/3/0/31
+ group-member GigabitEthernet2/3/0/32
+ group-member GigabitEthernet2/3/0/33
+ group-member GigabitEthernet2/3/0/34
+ group-member GigabitEthernet2/3/0/35
+ group-member GigabitEthernet2/3/0/36
+ group-member GigabitEthernet2/3/0/37
+ group-member GigabitEthernet2/3/0/38
+ group-member GigabitEthernet2/3/0/39
+ group-member GigabitEthernet2/3/0/40
+ group-member GigabitEthernet2/3/0/41
+ group-member GigabitEthernet2/3/0/42
+ group-member GigabitEthernet2/3/0/43
+ group-member GigabitEthernet2/3/0/44
+#
+wlan
+ ap data-collection enable
+ wlan ap lldp enable
+ wlan work-group default
+#
+return
