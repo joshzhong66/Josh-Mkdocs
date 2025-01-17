@@ -67,6 +67,7 @@ add_tc_rule() {
     while read IP; do
         # 为每个IP地址添加独立的子分类，假设每个IP限制3 Mbps
         tc class add dev $IFACE parent 1:1 classid 1:$CLASS_ID htb rate 3mbit ceil 3mbit
+        echo_log_info "已添加tc规则: tc class add dev $IFACE parent 1:1 classid 1:$CLASS_ID htb rate 3mbit ceil 3mbit"
         # 为每个IP地址添加过滤规则，将流量导向对应的子分类
         tc filter add dev $IFACE protocol ip parent 1:0 prio 1 u32 match ip dst $IP flowid 1:$CLASS_ID
         echo_log_info "已添加tc规则: tc filter add dev $IFACE protocol ip parent 1:0 prio 1 u32 match ip dst $IP flowid 1:$CLASS_ID"

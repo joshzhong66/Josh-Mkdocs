@@ -1,0 +1,217 @@
+{
+    "log": {
+      "access": "",
+      "error": "none",
+      "loglevel": "info"
+    },
+    "inbounds": [
+      {
+        "port": 20170,
+        "protocol": "socks",
+        "listen": "127.0.0.1",
+        "sniffing": {
+          "enabled": false,
+          "destOverride": ["http", "tls"],
+          "metadataOnly": false
+        },
+        "settings": {
+          "auth": "noauth",
+          "udp": true
+        },
+        "streamSettings": null,
+        "tag": "socks_ipv4"
+      },
+      {
+        "port": 20171,
+        "protocol": "http",
+        "listen": "127.0.0.1",
+        "sniffing": {
+          "enabled": false,
+          "destOverride": ["http", "tls"],
+          "metadataOnly": false
+        },
+        "streamSettings": null,
+        "tag": "http_ipv4"
+      },
+      {
+        "port": 20172,
+        "protocol": "http",
+        "listen": "127.0.0.1",
+        "sniffing": {
+          "enabled": false,
+          "destOverride": ["http", "tls"],
+          "metadataOnly": false
+        },
+        "streamSettings": null,
+        "tag": "rule-http_ipv4"
+      },
+      {
+        "port": 36026,
+        "protocol": "dokodemo-door",
+        "listen": "127.0.0.1",
+        "sniffing": {
+          "enabled": false,
+          "metadataOnly": false
+        },
+        "settings": {
+          "address": "127.0.0.1"
+        },
+        "streamSettings": null,
+        "tag": "api-in_ipv4"
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "proxy",
+        "protocol": "shadowsocks",
+        "settings": {
+          "servers": [
+            {
+              "address": "hk01.51feitu.com",
+              "method": "chacha20-ietf-poly1305",
+              "password": "32921f6b-510d-431a-a7db-df180a31fc8d",
+              "port": 10001
+            }
+          ]
+        },
+        "streamSettings": {
+          "sockopt": {}
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIP"
+        },
+        "streamSettings": {
+          "sockopt": {}
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole",
+        "settings": {}
+      },
+      {
+        "tag": "dns-out",
+        "protocol": "dns",
+        "settings": {
+          "port": 53,
+          "address": "119.29.29.29",
+          "network": "udp"
+        },
+        "streamSettings": {
+          "sockopt": {}
+        }
+      }
+    ],
+    "routing": {
+      "domainStrategy": "IPOnDemand",
+      "domainMatcher": "mph",
+      "rules": [
+        {
+          "type": "field",
+          "outboundTag": "direct",
+          "domain": ["hk01.51feitu.com"],
+          "port": "10001"
+        },
+        {
+          "type": "field",
+          "outboundTag": "direct",
+          "inboundTag": ["dns"],
+          "ip": ["208.67.220.220"],
+          "port": "5353"
+        },
+        {
+          "type": "field",
+          "outboundTag": "direct",
+          "inboundTag": ["dns"],
+          "ip": ["119.29.29.29"],
+          "port": "53"
+        },
+        {
+          "type": "field",
+          "outboundTag": "direct",
+          "inboundTag": ["dns"]
+        },
+        {
+          "type": "field",
+          "outboundTag": "direct",
+          "inboundTag": ["rule-http_ipv4", "rule-socks"],
+          "domain": [
+            "domain:push-apple.com.akadns.net",
+            "domain:push.apple.com"
+          ]
+        },
+        {
+          "type": "field",
+          "outboundTag": "proxy",
+          "inboundTag": ["rule-http_ipv4", "rule-socks"],
+          "domain": ["ext:LoyalsoldierSite.dat:geolocation-!cn"]
+        },
+        {
+          "type": "field",
+          "outboundTag": "proxy",
+          "inboundTag": ["rule-http_ipv4", "rule-socks"],
+          "domain": ["geosite:google"]
+        },
+        {
+          "type": "field",
+          "outboundTag": "direct",
+          "inboundTag": ["rule-http_ipv4", "rule-socks"],
+          "domain": ["geosite:cn"]
+        },
+        {
+          "type": "field",
+          "outboundTag": "proxy",
+          "inboundTag": ["rule-http_ipv4", "rule-socks"],
+          "ip": ["geoip:hk", "geoip:mo"]
+        },
+        {
+          "type": "field",
+          "outboundTag": "direct",
+          "inboundTag": ["rule-http_ipv4", "rule-socks"],
+          "ip": [
+            "geoip:private",
+            "geoip:cn",
+            "127.0.0.1/8",
+            "192.168.110.3/24",
+            "::1/128"
+          ]
+        },
+        {
+          "type": "field",
+          "outboundTag": "api-out",
+          "inboundTag": ["api-in_ipv4"]
+        },
+        {
+          "type": "field",
+          "outboundTag": "proxy",
+          "port": "0-65535"
+        }
+      ]
+    },
+    "dns": {
+      "hosts": {
+        "courier.push.apple.com": ["1-courier.push.apple.com"]
+      },
+      "servers": [
+        "localhost",
+        {
+          "address": "tcp://208.67.220.220:5353",
+          "domains": ["hk01.51feitu.com"]
+        },
+        {
+          "address": "tcp://119.29.29.29:53",
+          "domains": ["hk01.51feitu.com"]
+        }
+      ],
+      "tag": "dns"
+    },
+    "api": {
+      "tag": "api-out",
+      "services": ["LoggerService"]
+    }
+  }
+  
