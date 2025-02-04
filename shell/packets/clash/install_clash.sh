@@ -13,7 +13,7 @@ echo_log() {
     echo -e "$(date +'%F %T') -[${color}\033[0m] $*"
 }
 echo_log_info() {
-    echo_log "\033[32INFO" "$*"
+    echo_log "\033[32mINFO" "$*"
 }
 echo_log_warn() {
     echo_log "\033[33mWARN" "$*"
@@ -88,6 +88,98 @@ uninstall_clash() {
     echo_log_info "clash has been uninstalled."
 }
 
+create_docker_network() {
+    local network_name="clash"
+    local subnet="172.19.199.0/24"
+
+    # 检查网络是否已存在
+    if docker network inspect "$network_name" >/dev/null 2>&1; then
+        echo_log_info "Docker network '$network_name' already exists."
+        return 0
+    fi
+
+    # 创建网络
+    if docker network create --subnet="$subnet" "$network_name" >/dev/null 2>&1; then
+        echo_log_info "Docker network '$network_name' created successfully!"
+        return 0
+    else
+        echo_log_error "Failed to create Docker network '$network_name'."
+        return 1
+    fi
+}
+
+
+# start_clash_ui() {
+#     local container_name="yacd"
+#     local network_name="clash"
+#     local subnet="172.19.199.0/24"
+#     local host_port=8234
+#     local container_port=80
+#     local image_name="ghcr.io/haishanh/yacd:master"
+#     local volume_path="/usr/local/clash/ui"
+
+#     # 检查网络是否存在
+#     if ! docker network inspect "$network_name" >/dev/null 2>&1; then
+#         echo_log_info "Docker network '$network_name' does not exist. Creating it..."
+#         docker network create --subnet="$subnet" "$network_name" || {
+#             echo_log_error "Failed to create Docker network '$network_name'."
+#             return 1
+#         }
+#     fi
+
+#     # 检查端口是否被占用
+#     if netstat -tuln | grep -q ":$host_port "; then
+#         echo_log_error "Port $host_port is already in use."
+#         return 1
+#     fi
+
+#     # 检查挂载目录是否存在
+#     if [ ! -d "$volume_path" ]; then
+#         echo_log_info "Directory $volume_path does not exist. Creating it..."
+#         mkdir -p "$volume_path" || {
+#             echo_log_error "Failed to create directory $volume_path."
+#             return 1
+#         }
+#     fi
+
+#     # 检查镜像是否存在
+#     if ! docker images | grep -q "$image_name"; then
+#         echo_log_info "Pulling image $image_name..."
+#         docker pull "$image_name" || {
+#             echo_log_error "Failed to pull image $image_name."
+#             return 1
+#         }
+#     fi
+
+#     # 检查容器名称冲突
+#     if docker ps -a --format '{{.Names}}' | grep -q "^$container_name$"; then
+#         echo_log_info "Container '$container_name' already exists. Removing it..."
+#         docker rm -f "$container_name" || {
+#             echo_log_error "Failed to remove existing container '$container_name'."
+#             return 1
+#         }
+#     fi
+
+#     # 启动容器
+#     echo_log_info "Starting container '$container_name'..."
+#     docker run -p "$host_port:$container_port" \
+#         -d \
+#         --name "$container_name" \
+#         --restart unless-stopped \
+#         --net "$network_name" \
+#         -v "$volume_path:/data" \
+#         "$image_name" >/dev/null 2>&1
+
+#     if [ $? -eq 0 ]; then
+#         echo_log_info "Clash UI started successfully."
+#     else
+#         echo_log_error "Clash UI failed to start. Check container logs for details."
+#         docker logs "$container_name"
+#         return 1
+#     fi
+# }
+
+
 
 install_clash_ui() {
     which docker >/dev/null 2>&1 || echo_log_error "Docker is not installed."
@@ -99,7 +191,9 @@ install_clash_ui() {
     
     echo_log_info "Start the Docker container."
     mkdir -p /usr/local/clash/ui
-    docker network create --subnet=172.19.199.0/24 clash >/dev/null 2&>1
+    echo_log_info "mkdir /usr/local/clash/ui Successfully!"
+
+    create_docker_network
     docker run -p 8234:80 \
 -d \
 --name yacd \
