@@ -187,3 +187,14 @@ docker run -d --name chatgpt-next-web3 \
  -e CUSTOM_MODELS=-all,deepseek-r1:14b \
  -e CODE=123456789 \
  yidadaa/chatgpt-next-web
+
+
+
+ # ollama 自带的 api
+docker run -d --name chatgpt-next-web \
+  -p 10130:3000 \
+  --restart=always \
+  -e OPENAI_API_KEY=ollama-dummy-key \
+  -e BASE_URL=http://192.168.1.8:8000 \
+  -e CUSTOM_MODELS="-all,deepseek-r1:14b" \
+  yidadaa/chatgpt-next-web

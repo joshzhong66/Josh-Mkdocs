@@ -1,0 +1,66 @@
+{
+  "music.joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/usr/local/nginx/cert/music.joshzhong.top/music.joshzhong.top.pem",
+    "key_file": "/usr/local/nginx/cert/music.joshzhong.top/music.joshzhong.top.key",
+    "app_type": "docker"
+  },
+  "upload.joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/usr/local/nginx/cert/upload.joshzhong.top/upload.joshzhong.top.pem",
+    "key_file": "/usr/local/nginx/cert/upload.joshzhong.top/upload.joshzhong.top.key",
+    "app_type": "docker"
+  },
+  "reader.joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/usr/local/nginx/cert/reader.joshzhong.top/reader.joshzhong.top.pem",
+    "key_file": "/usr/local/nginx/cert/reader.joshzhong.top/reader.joshzhong.top.key",
+    "app_type": "docker"
+  },
+  "domain.joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/usr/local/nginx/cert/domain.joshzhong.top/domain.joshzhong.top.pem",
+    "key_file": "/usr/local/nginx/cert/domain.joshzhong.top/domain.joshzhong.top.key",
+    "app_type": "docker"
+  },
+  "joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/usr/local/nginx/cert/joshzhong.top/joshzhong.top.pem",
+    "key_file": "/usr/local/nginx/cert/joshzhong.top/joshzhong.top.key",
+    "app_type": "docker"
+  },
+  "nginx.joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/usr/local/nginx/cert/nginx.joshzhong.top/nginx.joshzhong.top.pem",
+    "key_file": "/usr/local/nginx/cert/nginx.joshzhong.top/nginx.joshzhong.top.key",
+    "app_type": "docker"
+  },
+  "wiki.joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/usr/local/nginx/cert/wiki.joshzhong.top/wiki.joshzhong.top.pem",
+    "key_file": "/usr/local/nginx/cert/wiki.joshzhong.top/wiki.joshzhong.top.key",
+    "app_type": "docker"
+  },
+  "pic.joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/usr/local/nginx/cert/pic.joshzhong.top/pic.joshzhong.top.pem",
+    "key_file": "/usr/local/nginx/cert/pic.joshzhong.top/pic.joshzhong.top.key",
+    "app_type": "docker"
+  },
+  "chat.joshzhong.top": {
+    "host": "159.75.238.93",
+    "port": 443,
+    "cert_file": "/usr/local/nginx/cert/chat.joshzhong.top/chat.joshzhong.top.pem",
+    "key_file": "/usr/local/nginx/cert/chat.joshzhong.top/chat.joshzhong.top.key",
+    "app_type": "docker"
+  }
+}
+
