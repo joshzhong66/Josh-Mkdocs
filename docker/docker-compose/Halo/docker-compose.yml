@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+  halo:
+    image: halohub/halo:2.14
+    container_name: halo2
+    restart: on-failure:3
+    depends_on:
+      halodb:
+        condition: service_healthy
+    volumes:
+      - /data/Halo/halo2:/root/.halo2
+    ports:
+      - "10190:8090"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8090/actuator/health/readiness || exit 1"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 1m
+    command:
+      - --spring.r2dbc.url=r2dbc:pool:postgresql://halodb/halo
+      - --spring.r2dbc.username=halo
+      - --spring.r2dbc.password=mjMJ@2024
+      - --spring.sql.init.platform=postgresql
+      - --halo.external-url=https://blog.joshzhong.top/
+      - --halo.security.initializer.superadminusername=admin
+      - --halo.security.initializer.superadminpassword=mjMJ@2024
+  halodb:
+    image: postgres:15.4
+    container_name: halodb2
+    restart: on-failure:3
+    volumes:
+      - /data/Halo/db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U halo -d halo -h localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    environment:
+      - POSTGRES_PASSWORD=mjMJ@2024
+      - POSTGRES_USER=halo
+      - POSTGRES_DB=halo
+      - PGUSER=halo

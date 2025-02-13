@@ -1,0 +1,37 @@
+version: '3.8'
+# 一个简约的音乐播放器，支持逐字歌词，下载歌曲，展示评论区，音乐云盘及歌单管理，音乐频谱，移动端基础适配 | 网易云音乐 | A minimalist music player
+# https://github.com/imsyy/SPlayer
+services:
+  splayer:
+    image: imsyy/splayer:1.0.0  # 使用具体版本
+    container_name: SPlayer
+    ports:
+      - "25884:25884"
+    volumes:
+      - ${DATA_PATH:-/data/SPlayer}:/data/SPlayer
+    restart: always
+    networks:
+      - splayer-network
+    resources:
+      limits:
+        memory: 512M
+        cpus: "0.5"
+      reservations:
+        memory: 256M
+        cpus: "0.2"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:25884/health"]
+      interval: 30s
+      retries: 3
+      start_period: 5s
+      timeout: 5s
+
+networks:
+  splayer-network:
+    driver: bridge
+

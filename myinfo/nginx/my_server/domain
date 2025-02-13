@@ -1,0 +1,140 @@
+# acme.sh申请新的域名证书
+# 域名是华为云平台的，添加二级域名泛解析后，并添加api创建后，直接执行以下命令
+
+acme.sh --issue --dns dns_huaweicloud -d file.joshzhong.top -d
+
+
+[root@josh ~]# acme.sh --issue --dns dns_huaweicloud -d file.joshzhong.top -d
+[Thu Feb 13 09:33:07 CST 2025] Using CA: https://acme.zerossl.com/v2/DV90
+[Thu Feb 13 09:33:07 CST 2025] Creating domain key
+[Thu Feb 13 09:33:07 CST 2025] The domain key is here: /root/.acme.sh/file.joshzhong.top_ecc/file.joshzhong.top.key
+[Thu Feb 13 09:33:07 CST 2025] Single domain='file.joshzhong.top'
+[Thu Feb 13 09:33:11 CST 2025] Getting webroot for domain='file.joshzhong.top'
+[Thu Feb 13 09:33:12 CST 2025] Adding TXT value: QYBYmpCSfWy682qWpmOiR-J_eG9tQYpMLdOaFDqwLYo for domain: _acme-challenge.file.joshzhong.top
+[Thu Feb 13 09:33:14 CST 2025] The TXT record has been successfully added.
+[Thu Feb 13 09:33:14 CST 2025] Let's check each DNS record now. Sleeping for 20 seconds first.
+[Thu Feb 13 09:33:35 CST 2025] You can use '--dnssleep' to disable public dns checks.
+[Thu Feb 13 09:33:35 CST 2025] See: https://github.com/acmesh-official/acme.sh/wiki/dnscheck
+[Thu Feb 13 09:33:35 CST 2025] Checking file.joshzhong.top for _acme-challenge.file.joshzhong.top
+[Thu Feb 13 09:33:36 CST 2025] Please refer to https://curl.haxx.se/libcurl/c/libcurl-errors.html for error code: 35
+[Thu Feb 13 09:33:45 CST 2025] Please refer to https://curl.haxx.se/libcurl/c/libcurl-errors.html for error code: 7
+[Thu Feb 13 09:33:46 CST 2025] Success for domain file.joshzhong.top '_acme-challenge.file.joshzhong.top'.
+[Thu Feb 13 09:33:46 CST 2025] All checks succeeded
+[Thu Feb 13 09:33:46 CST 2025] Verifying: file.joshzhong.top
+[Thu Feb 13 09:33:47 CST 2025] Processing. The CA is processing your order, please wait. (1/30)
+[Thu Feb 13 09:33:54 CST 2025] Success
+[Thu Feb 13 09:33:54 CST 2025] Removing DNS records.
+[Thu Feb 13 09:33:54 CST 2025] Removing txt: QYBYmpCSfWy682qWpmOiR-J_eG9tQYpMLdOaFDqwLYo for domain: _acme-challenge.file.joshzhong.top
+[Thu Feb 13 09:33:58 CST 2025] Successfully removed
+[Thu Feb 13 09:33:58 CST 2025] Verification finished, beginning signing.
+[Thu Feb 13 09:33:58 CST 2025] Let's finalize the order.
+[Thu Feb 13 09:33:58 CST 2025] Le_OrderFinalize='https://acme.zerossl.com/v2/DV90/order/km8ypdM57ipAk6Ao_9m6Hw/finalize'
+[Thu Feb 13 09:34:00 CST 2025] Order status is 'processing', let's sleep and retry.
+[Thu Feb 13 09:34:00 CST 2025] Sleeping for 15 seconds then retrying
+[Thu Feb 13 09:34:16 CST 2025] Polling order status: https://acme.zerossl.com/v2/DV90/order/km8ypdM57ipAk6Ao_9m6Hw
+[Thu Feb 13 09:34:17 CST 2025] Downloading cert.
+[Thu Feb 13 09:34:17 CST 2025] Le_LinkCert='https://acme.zerossl.com/v2/DV90/cert/v8GOCGncESEXSEHPfJNoJQ'
+[Thu Feb 13 09:34:19 CST 2025] Cert success.
+-----BEGIN CERTIFICATE-----
+MIIEBjCCA4ugAwIBAgIQSrUQlqH6Ch2wzLp90e2DITAKBggqhkjOPQQDAzBLMQsw
+CQYDVQQGEwJBVDEQMA4GA1UEChMHWmVyb1NTTDEqMCgGA1UEAxMhWmVyb1NTTCBF
+Q0MgRG9tYWluIFNlY3VyZSBTaXRlIENBMB4XDTI1MDIxMzAwMDAwMFoXDTI1MDUx
+NDIzNTk1OVowHTEbMBkGA1UEAxMSZmlsZS5qb3NoemhvbmcudG9wMFkwEwYHKoZI
+zj0CAQYIKoZIzj0DAQcDQgAEiD/5gdNuIY6QIiuGoV953fzNbDnFS89eZu40qZi9
+Gveh08E+oO9lgkfSTmvKXOCUVZi03KBy1ewNrO9yKN6oRaOCAn0wggJ5MB8GA1Ud
+IwQYMBaAFA9r5kvOOUeu9n6QHnnwMJGSyF+jMB0GA1UdDgQWBBRrf0WRbHYZD5zZ
+cpJxSWJW0c+d1TAOBgNVHQ8BAf8EBAMCB4AwDAYDVR0TAQH/BAIwADAdBgNVHSUE
+FjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwSQYDVR0gBEIwQDA0BgsrBgEEAbIxAQIC
+TjAlMCMGCCsGAQUFBwIBFhdodHRwczovL3NlY3RpZ28uY29tL0NQUzAIBgZngQwB
+AgEwgYgGCCsGAQUFBwEBBHwwejBLBggrBgEFBQcwAoY/aHR0cDovL3plcm9zc2wu
+Y3J0LnNlY3RpZ28uY29tL1plcm9TU0xFQ0NEb21haW5TZWN1cmVTaXRlQ0EuY3J0
+MCsGCCsGAQUFBzABhh9odHRwOi8vemVyb3NzbC5vY3NwLnNlY3RpZ28uY29tMIIB
+AwYKKwYBBAHWeQIEAgSB9ASB8QDvAHYAzxFW7tUufK/zh1vZaS6b6RpxZ0qwF+ys
+AdJbd87MOwgAAAGU/PEFZQAABAMARzBFAiBrXVEyVoD54VZrDqClC+WTr/JZU2Dt
+hJdjatvUKoT/hgIhAP/4oH9W2NJRcYxyvvUYqimZseEUmoosXw+sd4XvEcoqAHUA
+zPsPaoVxCWX+lZtTzumyfCLphVwNl422qX5UwP5MDbAAAAGU/PEFOQAABAMARjBE
+AiBFhq8rmjOOuVydSpMv1Y3Jij0tYqDqkXbjGcmksU/Q4AIgEkUdq94J/XR01o3t
+48NKT7l7RUbjkV25xukWnf+OEpowHQYDVR0RBBYwFIISZmlsZS5qb3Noemhvbmcu
+dG9wMAoGCCqGSM49BAMDA2kAMGYCMQCuzKztTVVIoehaREjI3oV7uop2RI7aVhKz
+Cw3Pv8Tj2BR6hWPuPeQkIZn3VHjdzF8CMQCpI9qzaof0yMeV7ioFodJ0+8MjVesc
+yGqU2vp9hJrEAw4Lu8AIw1iH5zajoUB76Hk=
+-----END CERTIFICATE-----
+[Thu Feb 13 09:34:19 CST 2025] Your cert is in: /root/.acme.sh/file.joshzhong.top_ecc/file.joshzhong.top.cer
+[Thu Feb 13 09:34:19 CST 2025] Your cert key is in: /root/.acme.sh/file.joshzhong.top_ecc/file.joshzhong.top.key
+[Thu Feb 13 09:34:19 CST 2025] The intermediate CA cert is in: /root/.acme.sh/file.joshzhong.top_ecc/ca.cer
+[Thu Feb 13 09:34:19 CST 2025] And the full-chain cert is in: /root/.acme.sh/file.joshzhong.top_ecc/fullchain.cer
+
+
+
+[root@josh ~]# mkdir -p /usr/local/nginx/cert/file.joshzhong.top
+[root@josh ~]# ll /usr/local/nginx/cert/
+total 52
+drwxr-xr-x 2 root root 4096 Feb 12 16:11 blog.joshzhong.top
+drwxr-xr-x 2 root root 4096 Feb 12 16:11 chat.joshzhong.top
+drwxr-xr-x 2 root root 4096 Feb 12 16:11 domain.joshzhong.top
+drwxr-xr-x 2 root root 4096 Feb 13 09:35 file.joshzhong.top
+drwxr-xr-x 2 root root 4096 Feb 12 16:11 joshzhong.top
+drwxr-xr-x 2 root root 4096 Feb 12 16:11 music.joshzhong.top
+drwxr-xr-x 2 root root 4096 Feb 12 16:11 musics.joshzhong.top
+drwxr-xr-x 2 root root 4096 Feb 12 16:11 nginx.joshzhong.top
+drwxr-xr-x 2 root root 4096 Feb 12 16:11 none
+drwxr-xr-x 2 root root 4096 Feb 12 16:11 pic.joshzhong.top
+drwxr-xr-x 2 root root 4096 Feb 12 16:11 reader.joshzhong.top
+drwxr-xr-x 2 root root 4096 Feb 12 16:11 upload.joshzhong.top
+drwxr-xr-x 2 root root 4096 Feb 12 16:11 wiki.joshzhong.top
+[root@josh ~]# cp /root/.acme.sh/file.joshzhong.top_ecc/fullchain.cer /usr/local/nginx/cert/file.joshzhong.top/file.joshzhong.top.pem
+[root@josh ~]# cp /root/.acme.sh/file.joshzhong.top_ecc/file.joshzhong.top.key /usr/local/nginx/cert/file.joshzhong.top/file.joshzhong.top.key
+
+[root@josh ~]# ll /usr/local/nginx/cert/file.joshzhong.top
+total 12
+-rw------- 1 root root  227 Feb 13 09:36 file.joshzhong.top.key
+-rw-r--r-- 1 root root 4124 Feb 13 09:36 file.joshzhong.top.pem
+
+
+
+
+
+
+#创建htpasswd账号密码
+echo -n "josh:" > /usr/local/nginx/conf/htpasswd
+openssl passwd Sunline2024 >> /usr/local/nginx/conf/htpasswd
+
+
+yum install -y httpd-tools
+htpasswd /usr/local/nginx/conf/htpasswd josh
+
+
+
+server {
+    server_name file.joshzhong.top;  # 改为你的文件域名
+    listen 443 ssl;
+    ssl_certificate /usr/local/nginx/cert/file.joshzhong.top/file.joshzhong.top.pem;  # 证书路径
+    ssl_certificate_key /usr/local/nginx/cert/file.joshzhong.top/file.joshzhong.top.key;  # 密钥路径
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    charset utf-8;    # 设置字符编码
+    charset_types text/html text/plain text/css application/javascript;
+
+    # 根目录为共享路径
+    location / {
+        root /data/software;
+        autoindex on;  # 开启目录列表
+        add_header Cache-Control "no-store";  # 可选：禁止缓存
+
+        # 添加基本认证
+        auth_basic "Restricted Area";
+        auth_basic_user_file /usr/local/nginx/conf/htpasswd;
+    }
+
+    # 阻止直接访问 /software 目录
+    location /software {
+        return 404;  # 强制返回 404 错误
+    }
+}
+
+# HTTP 强制跳转 HTTPS（可选但建议）
+server {
+    listen 80;
+    server_name file.joshzhong.top;
+    return 301 https://$host$request_uri;
+}

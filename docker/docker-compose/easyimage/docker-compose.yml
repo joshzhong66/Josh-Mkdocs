@@ -1,0 +1,25 @@
+version: '3.3'
+services:
+  easyimage:
+    image: ddsderek/easyimage:latest
+    container_name: easyimage
+    networks:
+      - wiki_network
+    ports:
+      - '10193:80'
+    environment:
+      - TZ=Asia/Shanghai
+      - PUID=1000
+      - PGID=1000
+      - DEBUG=false
+    volumes:
+      - /data/easyimage/config:/app/web/config
+      - /data/easyimage/image:/app/web/i
+    restart: unless-stopped
+networks:
+  wiki_network:
+    name: wiki_network
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.151.0.0/24

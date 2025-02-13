@@ -1,0 +1,46 @@
+[common]
+bind_addr = 0.0.0.0
+bind_port = 7000
+dashboard_port = 7001
+
+vhost_http_port = 10080
+vhost_https_port = 10443
+
+token = abcd1234
+
+dashboard_user = admin
+dashboard_pwd = admin
+
+[dsm]
+type = tcp
+local_ip = 192.168.31.100
+local_port = 5000
+remote_port = 5000
+
+
+[dsm1]
+type = tcp
+local_ip = 192.168.31.100
+local_port = 3000
+remote_port = 3000
+
+
+[openwrt] 
+type = tcp
+local_ip = 192.168.31.120
+local_port = 80
+remote_port = 8120
+
+
+[mi-wifi]
+type = tcp
+local_ip = 192.168.31.1
+local_port = 8080
+remote_port = 8121
+
+
+[ssh1]
+type = tcp
+local_ip = 192.168.31.223
+local_port = 22
+remote_port = 10000
