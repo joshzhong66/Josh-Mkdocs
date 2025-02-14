@@ -28,17 +28,3 @@ _calls":null}}],"created":1738994387,"model":"qwen-max-2025-01-25","object":"cha
 erprint":null,"usage":{"completion_tokens":61,"prompt_tokens":27,"total_tokens":88,"completion_tokens_details":null,"prompt_tok
 ens_details":null}}
 '''
-
-# nextchat
-
-'''
-docker run -d --name chatgpt-next-web1 \
-    -p 10100:3000 \
-    --restart=always \
-    -e ALIBABA_API_KEY=sk-21c191dd76cf4d6683d8db1109c475e9 \
-    -e ALIBABA_URL=https://dashscope.aliyuncs.com/compatible-mode \
-    -e CUSTOM_MODELS=qwen-max-2025-01-25 \
-    -e DEFAULT_MODEL=qwen-max-2025-01-25 \
-    -e CODE=dream13889 \
-    yidadaa/chatgpt-next-web
-'''

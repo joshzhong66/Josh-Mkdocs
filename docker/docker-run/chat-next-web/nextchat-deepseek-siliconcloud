@@ -1,0 +1,16 @@
+# 硅基流动
+# 参考文档链接：https://docs.siliconflow.cn/usercases/use-siliconcloud-in-nextchat
+
+
+docker pull yidadaa/chatgpt-next-web
+
+## nextchat使用硅基流动
+docker run -d --name chatgpt-next-web11 \
+    -p 10199:3000 \
+    --restart=always \
+    -e OPENAI_API_KEY=sk-gerpfoatosegxwbmgiqlhrpqrvftxoygfjuhuznzsavqjcqy \
+    -e BASE_URL=https://api.siliconflow.cn \
+    -e CUSTOM_MODELS=deepseek-ai/DeepSeek-V3 \
+    -e DEFAULT_MODEL=deepseek-ai/DeepSeek-V3 \
+    -e CODE=sunline \
+    yidadaa/chatgpt-next-web

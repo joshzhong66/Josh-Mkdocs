@@ -1,0 +1,9 @@
+## oneapi使用nextchat
+docker run -d --name chatgpt-next-web3 \
+ -p 3004:3000 \
+ --restart=always \
+ -e OPENAI_API_KEY=sk-kL4CJZTdq5efBUN24f0bFaAb09D04512B1705a72B9D8FcA1 \
+ -e BASE_URL=http://172.18.0.104:3000/ \
+ -e CUSTOM_MODELS=-all,deepseek-r1:14b \
+ -e CODE=123456789 \
+ yidadaa/chatgpt-next-web

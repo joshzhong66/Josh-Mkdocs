@@ -55,18 +55,10 @@ quit() {
 
 check_url() {
     local url=$1
-    if curl --head --silent --fail "$url" > /dev/null; then
+    if curl -f -s --connect-timeout 5 "$url" &>/dev/null; then
         return 0
     else
         return 1
-    fi
-}
-
-check_package() {
-    if [ -d "$INSTALL_PATH" ]; then
-        echo_log_error "Installation directory '$INSTALL_PATH' already exists. Please uninstall $PACKAGE_NAME before proceeding!"
-    elif which $PACKAGE_NAME &>/dev/null; then
-        echo_log_error "$PACKAGE_NAME is already installed. Please uninstall it before installing the new version!"
     fi
 }
 
@@ -75,20 +67,30 @@ download_package() {
     local DOWNLOAD_PATH=$2
     shift 2 
 
-    for url in "$@"; do
-        if check_url "$url"; then
-            echo_log_info "Downloading $PACKAGE_NAME from $url ..."
-            wget -P "$DOWNLOAD_PATH" "$url" &>/dev/null && {
-                echo_log_info "Download $PACKAGE_NAME Success"
-                return 0
-            }
-            echo_log_error "$url Download failed"
+    if check_url "$INTERNAL_URL"; then
+        echo_log_info "Downloading $PACKAGE_NAME from internal URL..."
+        if wget -P "$DOWNLOAD_PATH" "$INTERNAL_URL" &>/dev/null; then
+            echo_log_info "Download $PACKAGE_NAME Success"
+            return 0
         else
-            echo_log_warn "$url is invalid"
+            echo_log_error "Download from internal URL failed"
         fi
-    done
-    echo_log_error "All download links are invalid. Download failed!"
-    return 1
+    else
+        echo_log_warn "Internal URL is not accessible, trying external URL..."
+    fi
+
+    if check_url "$EXTERNAL_URL"; then
+        echo_log_info "Downloading $PACKAGE_NAME from external URL..."
+        if wget -P "$DOWNLOAD_PATH" "$EXTERNAL_URL" &>/dev/null; then
+            echo_log_info "Download $PACKAGE_NAME Success"
+            return 0
+        else
+            echo_log_error "Download from external URL failed"
+        fi
+    else
+        echo_log_error "External URL is also not accessible. Download failed!"
+        return 1
+    fi
 }
 
 

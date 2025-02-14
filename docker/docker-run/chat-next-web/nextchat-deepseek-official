@@ -1,0 +1,12 @@
+
+docker pull yidadaa/chatgpt-next-web
+
+docker run -d --name chatgpt-next-web \
+    -p 10130:3000 \
+    --restart=always \
+    -e OPENAI_API_KEY=sk-4d8a1dffc0284d039d20af1f6f9ad29a \
+    -e BASE_URL=https://api.deepseek.com \
+    -e CUSTOM_MODELS=deepseek-chat \
+    -e DEFAULT_MODEL=deepseek-chat \
+    -e CODE=dream13889 \
+    yidadaa/chatgpt-next-web

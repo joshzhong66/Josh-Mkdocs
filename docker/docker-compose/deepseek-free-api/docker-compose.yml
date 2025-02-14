@@ -1,0 +1,16 @@
+# 逆向api（deepseek-free-api）
+# 浏览器访问官方对话来获取token
+#{"value":"8OZJC+ow2IRpK9JIgTGZ5ygANfgzBnefL3mx0VIYJqqQtvGeQQszqTHXBRwXrCfB","__version":"0"}
+
+## deepseek-free-api 的 docker-compose.yml
+version: '3'
+
+services:
+  deepseek-free-api:
+    container_name: deepseek-free-api
+    image: vinlic/deepseek-free-api:latest
+    restart: unless-stopped
+    ports:
+      - "8127:8000"
+    environment:
+      - TZ=Asia/Shanghai

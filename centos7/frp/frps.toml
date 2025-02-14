@@ -1,0 +1,23 @@
+[common]
+bind_addr = 0.0.0.0
+bind_port = 7000
+dashboard_port = 7001
+
+vhost_http_port = 7002
+vhost_https_port = 7003
+ 
+token = joshzhong
+dashboard_user = admin
+dashboard_pwd = admin
+
+[could]
+type = tcp
+local_ip = 192.168.0.99
+local_port = 22
+remote_port = 7004
+
+[chat]
+type = tcp
+local_ip = 192.168.0.99
+local_port = 3000
+remote_port = 7005

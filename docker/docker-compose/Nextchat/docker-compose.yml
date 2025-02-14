@@ -1,0 +1,13 @@
+services:
+  chatgpt-next-web:
+    image: yidadaa/chatgpt-next-web
+    container_name: chatgpt-next-web
+    ports:
+      - "10190:3000"
+    environment:
+      - OPENAI_API_KEY=sk-4d8a1dffc0284d039d20af1f6f9ad29a
+      - CODE=joshzhong
+      - BASE_URL=https://api.deepseek.com
+      - CUSTOM_MODELS=deepseek-chat
+      - DEFAULT_MODEL=deepseek-chat
+    restart: unless-stopped

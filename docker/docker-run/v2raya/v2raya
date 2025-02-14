@@ -1,0 +1,25 @@
+mkdir -p /data/v2raya
+echo -e "nameserver 8.8.8.8\nnameserver 1.1.1.1" > /data/v2raya/resolv.conf
+
+
+docker pull mzz2017/v2raya
+docker network create --driver bridge --subnet=172.106.0.0/16 v2raya_network
+
+docker run -d --name v2raya \
+  -p 2017:2017 \
+  -p 20170-20172:20170-20172 \
+  --privileged \
+  --restart=always \
+  --network=v2raya_network \
+  --ip=172.106.0.10 \
+  --dns 8.8.8.8 \
+  --dns 1.1.1.1 \
+  -e V2RAYA_LOG_FILE=/tmp/v2raya.log \
+  -e V2RAYA_V2RAY_BIN=/usr/local/bin/v2ray \
+  -e V2RAYA_NFTABLES_SUPPORT=off \
+  -e IPTABLES_MODE=legacy \
+  -e TZ=Asia/Shanghai \
+  -v /data/v2raya/modules:/lib/modules:ro \
+  -v /data/v2raya/resolv.conf:/etc/resolv.conf \
+  -v /data/v2raya/etc:/etc/v2raya \
+  mzz2017/v2raya:latest

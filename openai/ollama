@@ -1,3 +1,5 @@
 
 
+# 添加ollama的环境变量后，通过api调用，以下是使用curl进行测试
+
 curl -v -X POST "http://192.168.1.8:8000/api/generate" -H "Content-Type: application/json" -d "{\"model\": \"deepseek-r1:14b\", \"prompt\": \"你是谁？\"}"
