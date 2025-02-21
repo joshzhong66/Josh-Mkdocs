@@ -1,0 +1,36 @@
+
+## 增加
+```
+CREATE DATABASE koel CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;      # 创建koel 数据库
+CREATE USER 'koel'@'%' IDENTIFIED BY 'Sunline2024';                         # 创建用户koel，设置密码
+GRANT ALL PRIVILEGES ON koel.* TO 'koel'@'%';                               # 配置访问权限
+FLUSH PRIVILEGES;
+
+# 授权
+GRANT ALL PRIVILEGES ON koel.* TO 'koel'@'%' IDENTIFIED BY 'Sunline2024';
+FLUSH PRIVILEGES;
+```
+
+
+## 删除
+```
+DROP USER 'koel'@'%';       # 删除koel用户，需要刷新权限生效
+```
+
+
+## 修改
+```
+ALTER USER 'koel'@'%' IDENTIFIED BY 'Sunline2024';      # 设置koel用户的密码
+FLUSH PRIVILEGES;                                       # 刷新权限
+```
+
+
+## 查询
+```
+select user,host from mysql.user;       # 查询用户列表
+```
+
+
+
+
+

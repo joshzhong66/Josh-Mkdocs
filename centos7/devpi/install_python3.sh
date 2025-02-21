@@ -45,7 +45,7 @@ check_python() {
     if [ -d "$INSTALL_PATH" ]; then
         echo_log_error "安装目录 '$INSTALL_PATH' 已存在,请先卸载 Python3 再继续！"
     elif which python3 &>/dev/null; then
-        echo_log_error "Python3 is already installed. Please uninstall it before installing the new version!"
+        echo_log_error "Python3 已经安装。请在安装新版本之前卸载它！"
     fi
     return 0
 }
@@ -53,73 +53,88 @@ check_python() {
 download_python() {
     for url in "$INTERNAL_PYTHON_URL" "$EXTERNAL_PYTHON_URL"; do
         if check_url "$url"; then
-            echo_log_info "Download PYTHON source package from $url ..."
+            echo_log_info "从 $url 下载 Python 源码包..."
             wget -P "$DOWNLOAD_PATH" "$url" &>/dev/null && {
-                echo_log_info "$PYTHON_TAR Download Success"
+                echo_log_info "$PYTHON_TAR 下载成功"
                 return 0
             }
-            echo_log_error "$url Download failed"
+            echo_log_error "$url 下载失败"
         else
-            echo_log_warn "$url invalid"
+            echo_log_warn "$url 无效"
         fi
     done
-    echo_log_error "Both download links are invalid，Download failed！"
+    echo_log_error "所有下载链接均无效，下载失败！"
     return 1
 }
 
 install_python() {
     check_python
 
-    if [ -f "$DOWNLOAD_PATH/$PYTHON_SOURCE" ]; then
-        echo_log_info "Python3 The source package already exists！"
+    if [ -f "$DOWNLOAD_PATH/$PYTHON_TAR" ]; then
+        echo_log_info "Python3 源码包已存在！"
     else
-        echo_log_info "Start downloading the Python3 source package..."
+        echo_log_info "开始下载 Python3 源码包..."
         download_python
     fi
 
     yum -y install gcc openssl-devel bzip2-devel libffi-devel zlib-devel readline-devel sqlite-devel wget >/dev/null 2>&1
-    [ $? -eq 0 ] && echo_log_info "Dependency installation successful" ||  echo_log_error "Failed to install dependencies"
+    [ $? -eq 0 ] && echo_log_info "依赖安装成功" ||  echo_log_error "依赖安装失败"
 
     tar -xzf "$DOWNLOAD_PATH/$PYTHON_TAR" -C $DOWNLOAD_PATH >/dev/null 2>&1
     cd "$DOWNLOAD_PATH/Python-${PYTHON_VERSION}"
-    ./configure --prefix=${INSTALL_PATH} --enable-optimizations >/dev/null 2>&1
-    [ $? -ne 0 ] && echo_log_error "Configure Python3 Failed" || echo_log_info "Configure Python3 Successful"
+    ./configure --prefix=${INSTALL_PATH} --with-openssl=/usr/local/openssl --enable-optimizations >/dev/null 2>&1
+    [ $? -ne 0 ] && echo_log_error "配置 Python3 失败" || echo_log_info "配置 Python3 成功"
 
     make -j$(nproc) altinstall >/dev/null 2>&1
-    [ $? -ne 0 ] && echo_log_error "Make Python3 Failed" || echo_log_info "Make python3 Successful"
+    [ $? -ne 0 ] && echo_log_error "编译 Python3 失败" || echo_log_info "编译 Python3 成功"
 
     ln -s ${INSTALL_PATH}/bin/python${PYTHON_VERSION%.*} /usr/bin/python3
     ln -s ${INSTALL_PATH}/bin/pip${PYTHON_VERSION%.*} /usr/bin/pip3
     
-    [ $? -eq 0 ] && echo_log_info "Create Python3 symlinks successfully" || echo_log_error "Failed to create Python3 symlinks"
+    [ $? -eq 0 ] && echo_log_info "创建 Python3 软链接成功" || echo_log_error "创建 Python3 软链接失败"
     rm -rf "$DOWNLOAD_PATH/Python*"
 
-    echo_log_info "Display Python3 Version $(python3 --version 2>/dev/null | awk '{print $NF}' | awk -F] '{print }')"
-    echo_log_info "Installation completed successfully"
+    echo_log_info "显示 Python3 版本 $(python3 --version 2>/dev/null | awk '{print $NF}' | awk -F] '{print }')"
+    echo_log_info "安装成功完成"
+
+    # 添加环境变量
+    echo "export PATH=${INSTALL_PATH}/bin:\$PATH" > /etc/profile.d/python3.sh
+    source /etc/profile.d/python3.sh
+
+    # 删除安装包
+    rm -rf "$DOWNLOAD_PATH/$PYTHON_TAR"
+    rm -rf "$DOWNLOAD_PATH/Python-${PYTHON_VERSION}"
+
 }
 
 uninstall_python() {
     if [ -d "${INSTALL_PATH}" ]; then
-        echo_log_info "Python3 is installed, start uninstalling..."
+        echo_log_info "Python3 已安装，开始卸载..."
         rm -rf ${INSTALL_PATH}
+        echo_log_info "删除 Python3 安装目录成功"
+        rm -rf "$DOWNLOAD_PATH/Python-${PYTHON_VERSION}"
+        echo_log_info "删除 Python3 源码包目录成功"
         rm -rf /usr/bin/python3
         rm -rf /usr/bin/pip3
-        echo_log_info "Uninstall Python3 Successfully"
+        echo_log_info "删除 Python3 软链接成功"
+        rm -f  /etc/profile.d/python3.sh
+        echo_log_info "删除 Python3 环境变量成功"
+        echo_log_info "卸载 Python3 成功"
     else
-        echo_log_warn "Python3 is not installed"
+        echo_log_warn "Python3 未安装"
     fi
 }
 
 main() {
     clear
     echo -e "———————————————————————————
-\033[32m Python${PYTHON_VERSION} Install Tool\033[0m
+\033[32m Python${PYTHON_VERSION} 安装工具\033[0m
 ———————————————————————————
-1. Install PYTHON${PYTHON_VERSION}
-2. Uninstall PYTHON${PYTHON_VERSION}
-3. Quit Scripts\n"
+1. 安装 PYTHON${PYTHON_VERSION}
+2. 卸载 PYTHON${PYTHON_VERSION}
+3. 退出脚本\n"
 
-    read -rp "Please enter the serial number and press Enter：" num
+    read -rp "请输入序号并按回车：" num
     case "$num" in
     1) (install_python) ;;
     2) (uninstall_python) ;;
@@ -127,6 +142,5 @@ main() {
     *) (main) ;;
     esac
 }
-
 
 main

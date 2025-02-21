@@ -10,3 +10,9 @@ local_ip = 192.168.0.99
 local_port = 22
 remote_port = 7004
 
+
+[chat]
+type = tcp
+local_ip = 192.168.0.99
+local_port = 3000
+remote_port = 7005

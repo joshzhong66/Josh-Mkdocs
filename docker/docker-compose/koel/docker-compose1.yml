@@ -1,0 +1,54 @@
+cat > /data/koel/docker-compose.yml <<'EOF'
+version: '3'
+
+services:
+  koel:
+    image: phanan/koel
+    container_name: koel
+    networks:
+      - koel_network
+    ports:
+      - 80:80
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=database
+      - DB_PORT=3306
+      - DB_DATABASE=koel
+      - DB_USERNAME=koel
+      - DB_PASSWORD=Sunline2024
+    volumes:
+      - /data/software/8_Music/:/music
+      - /data/koel/.env:/var/www/html/.env
+      - /data/koel/koel/covers:/var/www/html/public/img/covers
+      - /data/koel/koel/search_index:/var/www/html/storage/search-indexes
+    depends_on:
+      - database
+
+  database:
+    image: mariadb:10.11
+    container_name: database
+    networks:
+      - koel_network
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=Sunline2024
+      - MYSQL_DATABASE=koel
+      - MYSQL_USER=koel
+      - MYSQL_PASSWORD=Sunline2024
+    volumes:
+      - /data/koel/mysql/conf:/etc/mysql/conf.d
+      - /data/koel/mysql/data:/var/lib/mysql
+      - /data/koel/mysql/log:/var/log/mysql
+
+volumes:
+  mysql_data:
+
+networks:
+  koel_network:
+    name: koel_network
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.160.0.0/24
+EOF

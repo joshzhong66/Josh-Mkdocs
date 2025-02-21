@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  koel:
+    image: phanan/koel
+    container_name: koel
+    ports:
+      - 10280:80
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql  # 指向现有的 mysql 容器名称
+      - DB_USERNAME=koel
+      - DB_PASSWORD=Sunline2024
+      - DB_DATABASE=koel
+    volumes:
+      - /data/software/8_Music/:/music
+      - /data/koel/.env:/var/www/html/.env
+      - /data/koel/covers:/var/www/html/public/img/covers
+      - /data/koel/search_index:/var/www/html/storage/search-indexes
+    networks:
+      - woodwhales-music_network
+
+volumes:
+  mysql_data:
+  
+networks:
+  woodwhales-music_network:
+    name: woodwhales-music_network
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.103.0.0/16
+    external: true

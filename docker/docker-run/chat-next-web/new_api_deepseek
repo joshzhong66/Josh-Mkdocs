@@ -1,0 +1,55 @@
+# new-api
+# 参考文档链接：https://t23aw5sq11.feishu.cn/docx/V1nPdJM8MowfeZxyIt6chSpMnYc
+# 官方地址：https://tbnx.plus7.plus/token
+
+# api地址
+https://tbnx.plus7.plus                       有些软件末尾一定要去掉斜杠
+https://tbnx.plus7.plus/
+https://tbnx.plus7.plus/v1
+https://tbnx.plus7.plus/v1/chat/completions   
+
+# 地址可以挨个试试
+
+
+docker pull yidadaa/chatgpt-next-web
+
+## nextchat使用new-api
+docker run -d --name chatgpt-next-web11 \
+    -p 10130:3000 \
+    --restart=always \
+    -e OPENAI_API_KEY=sk-dBmNIIsjbMnplfOGI7cNdUGtYwIt7DJ2V1odNIQnBI4U2qen \
+    -e BASE_URL=https://tbnx.plus7.plus \
+    -e CUSTOM_MODELS=deepseek-reasoner \
+    -e DEFAULT_MODEL=deepseek-reasoner \
+    -e CODE=joshzhong \
+    yidadaa/chatgpt-next-web
+
+
+
+
+
+ # 关键修改：负号表示排除其他模型
+     -e CUSTOM_MODELS="-all,deepseek-reasoner" \
+
+docker run -d --name chatgpt-next-web11 \
+    -p 10130:3000 \
+    --restart=always \
+    -e OPENAI_API_KEY=sk-dBmNIIsjbMnplfOGI7cNdUGtYwIt7DJ2V1odNIQnBI4U2qen \
+    -e BASE_URL=https://tbnx.plus7.plus \
+     -e CUSTOM_MODELS="-all,deepseek-reasoner" \
+    -e DEFAULT_MODEL=deepseek-reasoner \
+    -e CODE=joshzhong \
+    yidadaa/chatgpt-next-web
+
+# 关键新增：数据持久化映射
+docker run -d --name chatgpt-next-web \
+    -p 10130:3000 \
+    --restart=always \
+    -v /data/nextchat:/home/next-web/data \
+    -e OPENAI_API_KEY=sk-dBmNIIsjbMnplfOGI7cNdUGtYwIt7DJ2V1odNIQnBI4U2qen \
+    -e BASE_URL=https://tbnx.plus7.plus \
+    -e CUSTOM_MODELS="-all,deepseek-reasoner" \
+    -e DEFAULT_MODEL=deepseek-reasoner \
+    -e CODE=joshzhong \
+    yidadaa/chatgpt-next-web
+

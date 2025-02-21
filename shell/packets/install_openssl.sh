@@ -7,7 +7,7 @@ DOWNLOAD_PATH="/usr/local/src"
 INSTALL_PATH="/usr/local/openssl"
 CONF_FILE="/etc/ld.so.conf.d/openssl.conf"
 OPENSSL_LIB_PATH="$INSTALL_PATH/lib"
-INTERNAL_URL="http://10.24.1.133/Linux/$OPENSSL_TAR"
+INSTALL_URL="https://mirrors.sunline.cn/source/$OPENSSL_TAR"
 EXTERNAL_URL="https://www.openssl.org/source/$OPENSSL_TAR"
 
 echo_log() {

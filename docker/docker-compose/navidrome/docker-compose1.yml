@@ -1,0 +1,36 @@
+version: "3"
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome1
+    ports:
+      - "10633:4533"
+    restart: unless-stopped
+    environment:
+      ND_ENABLETRANSCODINGCONFIG: true
+      ND_TRANSCODINGCACHESIZE: 0
+      ND_SCANSCHEDULE: 1h
+      ND_LOGLEVEL: info  
+      ND_SESSIONTIMEOUT: 24h
+      ND_BASEURL: ""
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+    volumes:
+      - "/data/navidrome1/data:/data"
+      - "/data/navidrome1/music:/music:ro"
+
+  miniserve:
+    image: svenstaro/miniserve:latest
+    container_name: svenstaro1
+    depends_on:
+      - navidrome
+    ports:
+      - "10634:8080"
+    environment:
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+    volumes:
+      - "/data/navidrome1/music:/downloads"
+    command: "-r -z -u -q -p 8080 -a admin:Sunline2024 /downloads"
+    restart: unless-stopped
+
