@@ -1,0 +1,11 @@
+
+# # 操作会永久删除所有未提交的本地修改，请确保你确实需要放弃这些更改
+git fetch origin                # 获取远程最新数据（不自动合并）
+git reset --hard origin/main    # 强制重置本地分支到远程分支
+git clean -df                   # 清理未跟踪的文件/目录
+
+
+# 执行后使用 git status 查看，应该显示
+On branch main
+Your branch is up to date with 'origin/main'.
+nothing to commit, working tree clean

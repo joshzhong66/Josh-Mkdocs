@@ -6,6 +6,7 @@
 #
 #
 #
+PACKAGE_NAME="ansible"
 ANSIBLE_VERSION="2.14.4"
 ANSIBLE_TAR="ansible-${ANSIBLE_VERSION}.tar.gz"
 DOWNLOAD_PATH="/usr/local/src"
@@ -31,7 +32,7 @@ echo_log_error() {
 }
 
 quit() {
-    echo_log_info "Exit Script!"
+    echo_log_info "退出脚本!"
 }
 
 check_url() {
@@ -43,18 +44,20 @@ check_url() {
     fi
 }
 
-check_ansible() {
+check_package() {
     if [ -d "$INSTALL_PATH" ]; then
-        echo_log_error "Installation directory '$INSTALL_PATH' already exists. Please uninstall Ansible before proceeding!"
-    elif which ansible &>/dev/null; then
-        echo_log_error "Ansible is already installed. Please uninstall it before installing the new version!"
+        echo_log_error "安装目录 '$INSTALL_PATH' 已存在. 请先卸载 $PACKAGE_NAME 然后再继续！"
+    elif which $PACKAGE_NAME &>/dev/null; then
+        echo_log_error "$PACKAGE_NAME 已安装。请在安装新版本之前将其卸载！"
     fi
 
     if ! which python3 &>/dev/null; then
-        echo_log_error "Python 3 is not installed. Please install Python 3 first!"
+        echo_log_error "未安装 Python 3。请先安装 Python 3！"
     fi
     return 0
 }
+
+
 
 download_ansible() {
     for url in "$INTERNAL_ANSIBLE_URL" "$EXTERNAL_ANSIBLE_URL"; do

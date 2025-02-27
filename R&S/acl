@@ -1,0 +1,3 @@
+#boss
+ rule 11 permit tcp source 10.18.80.0 0.0.1.255 destination 172.18.0.8 0 destination-port eq 443  #手机端需要开放443端口（guest访问）
+ rule 12 permit tcp source 10.18.80.0 0.0.1.255 destination 172.18.0.8 0 destination-port range 8077 8080 
