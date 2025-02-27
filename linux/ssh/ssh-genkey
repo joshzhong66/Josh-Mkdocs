@@ -1,0 +1,10 @@
+
+172.18.0.105 ——> 10.22.51.64
+172.18.0.105 免密登录 10.22.51.64 需要生成密钥
+
+登录172.18.0.105
+ssh-keygen -t rsa -b 4096
+cat /root/.ssh/id_rsa.pub | ssh root@10.22.51.64 "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+
+
+ssh root@10.22.51.64    # 测试是否无密码登录成功

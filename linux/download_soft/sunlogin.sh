@@ -7,9 +7,13 @@ LOG_FILE="/data/script/sunlogin.log"
 BASE_DIR="/data/mirrors/application/sunlogin"
 CMD="curl -Ls -o"
 
+MAX_RETRY=3               # 最大重试次数
+TIMEOUT=15                # 单次请求超时（秒）
+REFERER="https://sunlogin.oray.com/"
+USER_AGENT="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+
 # 65表示windows，89表示mac_x86_64，187表示mac_arm64
 OS=("65" "89" "187")
-ARCHS=("win" "mac")
 
 FILENAMES=()
 
@@ -23,32 +27,25 @@ echo_log_err() {
   exit 1
 }
 
-# 创建基础目录
+# 判断目录是否存在
 if [ ! -d "$BASE_DIR" ]; then
-  echo_log_info "基础目录 $BASE_DIR 不存在，正在创建..."
-  mkdir -p "$BASE_DIR" || echo_log_err "无法创建基础目录 $BASE_DIR"
-  echo_log_info "基础目录 $BASE_DIR 创建成功"
-else
-  echo_log_info "基础目录 $BASE_DIR 已存在，跳过创建"
+  echo_log_info "目录 $BASE_DIR 不存在，正在创建..."
+  mkdir -p "$BASE_DIR" || echo_log_err "创建目录失败"
 fi
-
-# 创建架构子目录（x64/x86/arm64）
-for arch in "${ARCHS[@]}"; do
-  sub_dir="${BASE_DIR}/${arch}"
-  if [ ! -d "$sub_dir" ]; then
-    echo_log_info "架构目录 $sub_dir 不存在，正在创建..."
-    mkdir -p "$sub_dir" || echo_log_err "无法创建架构目录 $sub_dir"
-    echo_log_info "架构目录 $sub_dir 创建成功"
-  else
-    echo_log_info "架构目录 $sub_dir 已存在，跳过创建"
-  fi
-done
-
 
 for i in "${OS[@]}"; do
   # 获取实际下载地址
   URL="https://client-api.oray.com/softwares/${i}/download"
-  DOWNLOAD_URL=$(curl -Ls --max-time 5 --max-redirs 3 -o /dev/null -w '%{url_effective}\n' "$URL")
+  #DOWNLOAD_URL=$(curl -Ls --max-time 5 --max-redirs 3 -o /dev/null -w '%{url_effective}\n' "$URL")
+  DOWNLOAD_URL=$(curl -sL \
+    --max-time $TIMEOUT \
+    --max-redirs 3 \
+    --header "Referer: $REFERER" \
+    --user-agent "$USER_AGENT" \
+    -w '%{url_effective}' \
+    -o /dev/null \
+    "$URL")
+
   result=$?; [[ $result -ne 28 && $result -ne 0 ]] && echo_log_err "获取下载地址失败"
   
   # 获取URL文件名
@@ -65,7 +62,13 @@ for i in "${OS[@]}"; do
   LOCALFILE="$DOWNLOAD_DIR/$FILENAME"
   if [ ! -f "$LOCALFILE" ]; then
     echo_log_info "开始下载 $DOWNLOAD_URL"
-    $CMD "$LOCALFILE" "$DOWNLOAD_URL" || echo_log_err "下载失败：$DOWNLOAD_URL"
+    #$CMD "$LOCALFILE" "$DOWNLOAD_URL" || echo_log_err "下载失败：$DOWNLOAD_URL"
+      $CMD \
+      --header "Referer: $REFERER" \
+      --user-agent "$USER_AGENT" \
+      --connect-timeout $TIMEOUT \
+      --output "$TEMP_FILE" \
+      "$DOWNLOAD_URL"
   fi
 done
 
