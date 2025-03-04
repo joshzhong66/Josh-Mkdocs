@@ -1,0 +1,48 @@
+# 执行docker容器启动出现报错：
+[+] Running 1/1
+ ✘ Network joplin_default  Error                                                                                                                                           0.0s 
+failed to create network joplin_default: Error response from daemon: all predefined address pools have been fully subnetted
+exit status 1
+
+# 报错原因
+原因是 default-address-pools 的配置导致了网关分配失败
+``` failed to allocate gateway (): invalid pool id: LocalDefault/invalid Prefix```
+表明 Docker 在创建网络时，无法从 default-address-pools 中分配有效的网关地址
+
+
+# 解决办法
+## 修改/etc/docker/daemon.json
+cat > /etc/docker/daemon.json <<'EOF'
+{
+  "registry-mirrors": [
+    "https://registry.yfb.sunline.cn",
+    "https://docker.1panel.live/"
+  ],
+  "insecure-registries": [
+    "registry.yfb.sunline.cn",
+    "docker.1panel.live"
+  ],
+  "max-concurrent-downloads": 3,
+  "max-concurrent-uploads": 5,
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m",
+    "max-file": "3"
+  },
+  "data-root": "/data/docker/docker",
+  "default-address-pools": [
+    {
+      "base": "192.168.100.0/16",
+      "size": 24
+    },
+    {
+      "base": "172.16.0.0/16",
+      "size": 24
+    }
+  ]
+}
+EOF
+
+
+执行```systemctl reset-failed docker.service```
+启动systemctl start docker.service

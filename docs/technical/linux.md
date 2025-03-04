@@ -25,22 +25,27 @@ CTRL+W              # 删除光标左边的一个单词
 ALT+数字			   # 切换窗口
 ```
 
-
-
 ## 服务器管理常用命令
 
 ```
-du -h --max-depth=1 /                         # 列出 / 目录下所有文件夹的大小
-du -h --max-depth=1 / | sort -hr              # 查找系统中占用大量空间的文件和目录
-cat /dev/urandom | md5sum                     # 调高内存
+du -h --max-depth=1 /                         						# 列出 / 目录下所有文件夹的大小
+du -h --max-depth=1 / | sort -hr              						# 查找系统中占用大量空间的文件和目录
+cat /dev/urandom | md5sum                     						# 调高内存
 yum -y install dos2unix && dos2unix install-mysql-5.7.43.sh  		# 脚本格式转换
 ps aux | head -1 ; ps aux | sort -rn -k3 | head -10  				# 获取占用 CPU 最高 10 个进程
 ps aux | head -1; ps aux | sort -rn -k4 | head -10  				# 获取内存占用最高前 10 个进程
-awk '/^PRETTY_NAME=/' /etc/*-release 2>/dev/null | awk -F'=' '{gsub("\"","");print $2}'  # 获取 PRETTY_NAME
-
+awk '/^PRETTY_NAME=/' /etc/*-release 2>/dev/null | awk -F'=' '{gsub("\"","");print $2}'  		# 获取 PRETTY_NAME
+netstat -ant | grep 'ESTABLISHED' | wc -l							# 总连接数量
+netstat -ant | awk '/^tcp/ {print $4}' | cut -d: -f2 | sort | uniq -c							# 连接的端口
+iostat -x 1 2 | grep -A 1 'Device' | tail -n 1						# 磁盘 I/O 读和写
+ifstat -i eth0 1 1 | tail -n 1										# 数据流量的上传和下载
+top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}'		# CPU使用率
+top -bn1 | grep "MiB Mem" | awk '{print $8/$4 * 100"%"}'			# 内存使用率
+ps aux --sort=-%cpu | head -n 11									# CPU排名前 10 的应用
+ps aux --sort=-%mem | head -n 11									# MEM排名前 10 的应用
+netstat -ant | awk '/^tcp/ {printf "%-20s %-20s %s\n", $5, $4, $6}'	# 查看详细连接信息（IP + 端口 + 状态）
+netstat -ant | awk '$5 ~ /10.18.10.22/ {print $5}' | cut -d: -f1 | sort | uniq -c				# 筛选指定 IP 的连接
 ```
-
-
 
 ## 搜索常用
 
@@ -48,10 +53,6 @@ awk '/^PRETTY_NAME=/' /etc/*-release 2>/dev/null | awk -F'=' '{gsub("\"","");pri
 find /var/lib -type f -size +100M -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'  		# 查找 >100MB 的文件
 find / -type f -size +1G -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'  				# 查找 >1GB 的文件
 ```
-
-
-
-
 
 ## 进程管理命令
 
@@ -69,8 +70,6 @@ renice -n 10 -p 22889          	# 修改正在运行进程的优先级
 strace -p 22889                	# 跟踪进程的系统调用和信号
 vmstat                         	# 查看系统的虚拟内存、进程、I/O 等统计信息
 ```
-
-
 
 ## 文本编辑命令
 
