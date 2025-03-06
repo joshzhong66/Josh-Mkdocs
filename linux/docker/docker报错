@@ -44,5 +44,5 @@ cat > /etc/docker/daemon.json <<'EOF'
 EOF
 
 
-执行```systemctl reset-failed docker.service```
-启动systemctl start docker.service
+执行```systemctl reset-failed docker.service```重置 docker.service 的状态
+再重新启动docker```systemctl start docker.service```

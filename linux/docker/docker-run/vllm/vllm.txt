@@ -1,0 +1,25 @@
+1)docker pull vllm/vllm-openai:latest
+2) cat install.sh
+# 添加NVIDIA仓库
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+   && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
+   && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+3)sudo apt-get update
+sudo apt-get install -y nvidia-docker2
+4) sudo systemctl restart docker
+
+
+
+剩下的就是下载模型，然后运行：
+docker run -d --gpus all
+–name vllm-deepseek
+-p 8000:8000
+–shm-size=16g
+-v /data/models/deepseek-r1-70b:/model
+vllm/vllm-openai:latest
+–model /model
+–tensor-parallel-size 2
+–gpu-memory-utilization 0.9
+–max-model-len 4096
+–dtype bfloat16
+–disable-custom-all-reduce

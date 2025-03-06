@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>工位排布图</title>
+    <style>
+        /* 标题样式 */
+        h1 {
+            background: #B3E5FC; /* 浅蓝色背景 */
+            color: #000;
+            padding: 15px;
+            margin: 0;
+        }
+
+        /* 主布局容器 */
+        .layout-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 两列布局 */
+            gap: 25px;
+            padding: 20px;
+            background: #fff;
+        }
+
+        /* 部门区域 */
+        .department {
+            background: #FFF;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        /* 工位通用样式 */
+        .desk {
+            display: inline-block;
+            width: 100px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: move;
+            font-size: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* 部门配色方案 */
+        .department:nth-child(1) .desk { background: #C8E6C9; } /* 浅绿色 */
+        .department:nth-child(2) .desk { background: #B3E5FC; } /* 浅蓝色 */
+        .department:nth-child(3) .desk { background: #FFCDD2; } /* 浅粉色 */
+        .department:nth-child(4) .desk { background: #F0F4C3; } /* 浅黄色 */
+    </style>
+</head>
+<body>
+    <h1>工位排布图</h1>
+    
+    <div class="layout-container">
+        <!-- 部门1 -->
+        <div class="department">
+            <h2>技术部</h2>
+            <div class="desk">张三</div>
+            <div class="desk">李四</div>
+            <div class="desk">王五</div>
+            <div class="desk">赵六</div>
+        </div>
+
+        <!-- 部门2 -->
+        <div class="department">
+            <h2>市场部</h2>
+            <div class="desk">陈七</div>
+            <div class="desk">林八</div>
+            <div class="desk">郑九</div>
+        </div>
+
+        <!-- 部门3 -->
+        <div class="department">
+            <h2>财务部</h2>
+            <div class="desk">周十</div>
+            <div class="desk">吴十一</div>
+        </div>
+
+        <!-- 部门4 -->
+        <div class="department">
+            <h2>人事部</h2>
+            <div class="desk">徐十二</div>
+            <div class="desk">孙十三</div>
+        </div>
+    </div>
+</body>
+</html>
