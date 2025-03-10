@@ -114,8 +114,8 @@ baseurl=https://mirrors.cloud.tencent.com/centos/\$releasever/os/\$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-\$releasever
 EOF
-    yum clean all > /dev/null 2>&1
-    yum repolist > /dev/null 2>&1                                                                                               
+    yum clean all
+    yum repolist                                                                                            
     echo_log_info "Centos`version` yum 设置完成!"
 }
 
@@ -179,8 +179,8 @@ baseurl=https://mirrors.aliyun.com/centos/\$releasever/centosplus/\$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-\$releasever
 EOF
-    yum clean all > /dev/null 2>&1
-    yum repolist > /dev/null 2>&1
+    yum clean all
+    yum repolist
     echo_log_info "centos`version` yum 设置完成!"
 }
 
@@ -245,8 +245,8 @@ baseurl=https://mirrors.aliyun.com/centos/\$releasever/centosplus/\$basearch/os/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 EOF
-    dnf clean all > /dev/null 2>&1
-    dnf repolist > /dev/null 2>&1
+    dnf clean all
+    dnf repolist
     echo_log_info "centos`version` yum 设置完成!"
 }
 

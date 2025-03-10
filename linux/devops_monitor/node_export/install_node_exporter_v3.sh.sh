@@ -4,8 +4,8 @@
 # 官方下载地址：https://github.com/prometheus/node_exporter/releases/download/v1.8.1/node_exporter-1.8.1.linux-amd64.tar.gz
 # SHA256值地址获取：https://github.com/prometheus/node_exporter/releases/download/v1.8.1/sha256sums.txt
 #
-# ubuntu使用               bash ./install-node_exporter_v3.sh.sh
-# centos使用sh或bash都行   ./install-node_exporter_v3.sh.sh
+# ubuntu使用                bash ./脚本名.sh
+# centos使用sh或bash都行    ./脚本名.sh
 
 # 定义全局变量
 DEFAULT_VERSION="1.8.1"
@@ -77,22 +77,70 @@ check_package() {
     fi
 }
 
+# 检测&安装依赖函数
+check_dependencies_packages() {
+    local pkg_manager=$1  # 接收包管理器命令
+    shift                 # 移除第一个参数，剩余为包列表
+    local packages=("$@") # 所有包存入数组
+    local installed=()    # 已安装的包
+    local to_install=()   # 待安装的包
+
+    # 检测已安装的包 (RPM系)
+    for pkg in "${packages[@]}"; do
+        if rpm -q "$pkg" &>/dev/null; then
+            installed+=("$pkg")
+        else
+            to_install+=("$pkg")
+        fi
+    done
+
+    # 显示已安装信息
+    if [ ${#installed[@]} -gt 0 ]; then
+        echo_log_info "已安装的包: ${installed[*]}"
+    fi
+
+    # 安装缺失的包
+    if [ ${#to_install[@]} -gt 0 ]; then
+        echo_log_info "正在安装: ${to_install[*]}"
+        if ! $pkg_manager install -y "${to_install[@]}" >/dev/null; then
+            echo_log_error "安装失败: ${to_install[*]}"
+            return 1
+        fi
+        echo_log_info "安装完成: ${to_install[*]}"
+    else
+        echo_log_info "所有依赖已安装"
+    fi
+}
+
 # 安装系统依赖
 install_dependencies() {
-    echo_log_info "检测系统环境..."
-    source /etc/os-release
+    echo_log_info "检测系统环境，安装依赖..."
     
-    # 安装基础工具
+    # 加载系统信息
+    if ! . /etc/os-release; then
+        echo_log_error "无法获取系统信息"
+        return 1
+    fi
+
+    echo_log_info "检测到系统ID：$ID"
+
+    # 定义基础工具包
+    local base_packages=(wget tar gzip curl)
+
     case "$ID" in
         debian|ubuntu)
-            apt-get update >/dev/null
-            DEBIAN_FRONTEND=noninteractive apt-get install -y wget tar gzip curl
+            echo_log_info "更新软件源..."
+            if ! apt-get update >/dev/null; then
+                echo_log_error "软件源更新失败"
+                return 1
+            fi
+            check_dependencies_packages "DEBIAN_FRONTEND=noninteractive apt-get" "${base_packages[@]}"
             ;;
         centos|rhel|fedora|amzn)
             if command -v dnf >/dev/null; then
-                dnf install -y wget tar gzip curl
+                check_dependencies_packages "dnf" "${base_packages[@]}"
             else
-                yum install -y wget tar gzip curl
+                check_dependencies_packages "yum" "${base_packages[@]}"
             fi
             ;;
         *)
@@ -256,6 +304,9 @@ install_node_exporter() {
 
     
     echo_log_info "开始安装 ${PACKAGE_NAME} v${version}"
+
+    # 安装依赖
+    install_dependencies
 
     # 预检验证
     _precheck() {

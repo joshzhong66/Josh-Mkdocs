@@ -3,11 +3,12 @@
 : wmic process where "name='Dock_64.exe'" get ExecutablePath    # 查询进程exe文件路径
 
 chcp 65001 >nul
-:: 检查是否以管理员权限运行
-net session >nul 2>&1
-if %errorlevel% neq 0 (
-    echo 请以管理员权限运行此脚本！
-    pause
+
+:: 请求管理员权限
+whoami /groups | find "S-1-16-12288" >nul
+if %errorLevel% neq 0 (
+    echo [%date% %time%] 正在请求管理员权限... >> "%logfile%"
+    powershell -Command "Start-Process cmd -ArgumentList '/c %~dpnx0' -Verb RunAs"
     exit /b
 )
 

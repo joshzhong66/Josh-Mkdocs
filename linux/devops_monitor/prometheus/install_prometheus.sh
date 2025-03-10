@@ -1,9 +1,11 @@
 #!/bin/bash
 #
-# Prometheus 安装管理脚本
-# 功能：安装/卸载Prometheus服务
+#
 # 官方下载地址：https://github.com/prometheus/prometheus/releases
-# 兼容系统：CentOS 7+, Ubuntu 18.04+
+#
+#
+# ubuntu使用               bash ./脚本名.sh
+# centos使用sh或bash都行   ./脚本名.sh
 
 # 定义全局变量
 DEFAULT_VERSION="2.51.2"
@@ -13,20 +15,56 @@ DOWNLOAD_PATH="/usr/local/src"
 SYSTEMD_PATH="/etc/systemd/system/prometheus.service"
 ENV_FILE="/etc/profile.d/prometheus.sh"
 
-# 日志颜色配置
+
+# 通用日志函数
 echo_log() {
     local color_code="$1"
     local log_level="$2"
-    shift 2
-    local timestamp=$(date +'%F %T')
-    echo -e "${timestamp} -[\033[${color_code}m${log_level}\033[0m] $*"
+    shift 2  # 移出颜色和日志级别参数
+
+    # 组装带颜色的日志前缀
+    local timestamp
+    timestamp=$(date +'%F %T')
+    local log_prefix="${timestamp} -[\033[${color_code}m${log_level}\033[0m]"
+
+    # 输出带格式的日志
+    echo -e "${log_prefix} $*"
 }
 
-echo_log_info() { echo_log "32" "INFO" "$@"; }
-echo_log_warn() { echo_log "33" "WARN" "$@"; }
-echo_log_error() { echo_log "31" "ERROR" "$@"; exit 1; }
-echo_log_success() { echo_log "1;32" "SUCCESS" "$@"; }
-echo_log_header() { echo_log "1;34" "HEADER" "$@"; }
+# 信息日志（绿色）
+echo_log_info() {
+    echo_log "32" "INFO" "$@"
+}
+
+# 警告日志（黄色）
+echo_log_warn() {
+    echo_log "33" "WARN" "$@"
+}
+
+# 错误日志（红色）
+echo_log_error() {
+    echo_log "31" "ERROR" "$@"
+    exit 1  # 可根据需要决定是否退出
+}
+
+# 成功日志（绿色加粗）
+echo_log_success() {
+    echo_log "1;32" "SUCCESS" "$@"
+}
+
+# 标题日志（蓝色加粗）
+echo_log_header() {
+    echo_log "1;34" "HEADER" "$@"
+}
+
+check_url() {
+    local url=$1
+    if curl -f -s --connect-timeout 5 "$url" &>/dev/null; then  # 使用curl检查URL，超时5秒
+        return 0  # URL可用
+    else
+        return 1  # URL不可用
+    fi
+}
 
 # 检查安装包
 check_package() {

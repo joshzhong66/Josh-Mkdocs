@@ -62,17 +62,17 @@ check_package() {
 download_ansible() {
     for url in "$INTERNAL_ANSIBLE_URL" "$EXTERNAL_ANSIBLE_URL"; do
         if check_url "$url"; then
-            echo_log_info "Download ansible source package from $url ..."
+            echo_log_info "从 $url 下载 ansible 源包..."
             wget -P "$DOWNLOAD_PATH" "$url" &>/dev/null && {
-                echo_log_info "$ANSIBLE_TAR Download Success"
+                echo_log_info "$ANSIBLE_TAR 下载成功"
                 return 0
             }
-            echo_log_error "$url Download failed"
+            echo_log_error "$url 下载失败..."
         else
-            echo_log_warn "$url invalid"
+            echo_log_warn "$url 无效"
         fi
     done
-    echo_log_error "Both download links are invalid，Download failed！"
+    echo_log_error "两个下载链接均无效，下载失败！！"
     return 1
 }
 
@@ -80,23 +80,23 @@ install_ansible() {
     check_ansible
 
     if [ -f "$DOWNLOAD_PATH/$ANSIBLE_TAR" ]; then
-        echo_log_info "Ansible The source package already exists！"
+        echo_log_info "Ansible 源包已经存在！"
     else
-        echo_log_info "Start downloading the Ansible source package..."
+        echo_log_info "开始下载 Ansible 源包..."
         download_ansible
     fi
 
     yum install -y sshpass >/dev/null 2>&1
-    [ $? -eq 0 ] && echo_log_info "Dependency installation successful..." || echo_log_error "Failed to install dependencies..."
+    [ $? -eq 0 ] && echo_log_info "依赖项安装成功..." || echo_log_error "依赖项安装失败..."
 
     tar -xzf "$DOWNLOAD_PATH/$ANSIBLE_TAR" -C $DOWNLOAD_PATH >/dev/null 2>&1
-    [ $? -eq 0 ] && echo_log_info "Unzip the Ansible source package successfully..." || echo_log_error "Failed to unzip the Ansible source package..."
+    [ $? -eq 0 ] && echo_log_info "成功解压 Ansible 源码包……" || echo_log_error "解压 Ansible 源码包失败……"
     
     mv "$DOWNLOAD_PATH/ansible-${ANSIBLE_VERSION}"  $INSTALL_PATH
 
     cd $INSTALL_PATH
     python3 -m venv venv && source venv/bin/activate
-    [ $? -eq 0 ] && echo_log_info "Create a Python virtual environment successfully" || echo_log_error "Failed to create a Python virtual environment"
+    [ $? -eq 0 ] && echo_log_info "成功创建Python虚拟环境" || echo_log_error "无法创建 Python 虚拟环境"
 
     [ ! -d "/root/.pip" ] && mkdir -p /root/.pip
     cat > /root/.pip/pip.conf <<'EOF'
@@ -112,13 +112,14 @@ EOF
 
     unset http proxy && unset https proxy
     pip install -r requirements.txt &>/dev/null
-    [ $? -eq 0 ] && echo_log_info "Install dependencies successfully" || echo_log_error "Install dependencies failed"
+    echo_log_info "开始构建 ansible"
 
-    python setup.py build &>/dev/null && python setup.py install &>/dev/null
-    [ $? -eq 0 ] && echo_log_info "Build ansible successfully" || echo_log_error "Building ansible failed"
+    python setup.py build &>/dev/null && 
+     &>/dev/null
+    [ $? -eq 0 ] && echo_log_info "构建 ansible 成功" || echo_log_error "构建 ansible 失败"
 
-    echo_log_info "Create ansible configuration file directory $WORK_PATH/bin" && mkdir -p "$WORK_PATH/bin"
-    echo_log_info "Copy the bin directory" && cp $INSTALL_PATH/venv/bin/ansible* $WORK_PATH/bin >/dev/null 2>&1
+    echo_log_info "创建ansible配置文件目录 $WORK_PATH/bin" && mkdir -p "$WORK_PATH/bin"
+    echo_log_info "复制 bin 目录" && cp $INSTALL_PATH/venv/bin/ansible* $WORK_PATH/bin >/dev/null 2>&1
 
     cat > $WORK_PATH/ansible.cfg <<EOF
 [defaults]
@@ -140,10 +141,10 @@ become_ask_pass = False
 [inventory]
 enable_plugins = host_list, script, yaml, ini
 EOF
-    [ $? -eq 0 ] && echo_log_info "Copy ansible.cfg successfully" || echo_log_error "Failed to copy ansible.cfg"
+    [ $? -eq 0 ] && echo_log_info "复制 ansible.cfg 成功" || echo_log_error "复制 ansible.cfg 失败"
 
     if ! grep -q "ANSIBLE_HOME=" /etc/profile; then
-        echo_log_info "Configure ansible environment variables"
+        echo_log_info "配置ansible环境变量"
         cat >> /etc/profile <<EOF
 # ansible
 export ANSIBLE_HOME=${WORK_PATH}
@@ -153,21 +154,21 @@ EOF
     fi
     source /etc/profile
 
-    echo_log_info "Display Ansible Version $(ansible --version 2>/dev/null | head -n1 | awk '{print $NF}' | awk -F] '{print $1}')"
+    echo_log_info "显示 Ansible 版本 $(ansible --version 2>/dev/null | head -n1 | awk '{print $NF}' | awk -F] '{print $1}')"
 
     rm -rf $DOWNLOAD_PATH/ansible*
 }
 
 uninstall_ansible() {
     if [ -d "${INSTALL_PATH}" ]; then
-        echo_log_info "Ansible is installed, start uninstalling..."
+        echo_log_info "Ansible 安装完毕，开始卸载……"
         rm -rf ${INSTALL_PATH} && rm -rf $WORK_PATH
         rm -f /root/.pip
-        echo_log_info "Uninstall Ansible Successfully"
+        echo_log_info "成功卸载 Ansible"
         sed -i '/# ansible/,/ansible.cfg/d' /etc/profile
         source /etc/profile
     else
-        echo_log_warn "Ansible is not installed"
+        echo_log_warn "Ansible 未安装..."
     fi
 }
 

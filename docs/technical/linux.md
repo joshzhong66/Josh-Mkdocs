@@ -25,6 +25,23 @@ CTRL+W              # 删除光标左边的一个单词
 ALT+数字			   # 切换窗口
 ```
 
+
+
+## 关机重启
+
+```
+shutdown -r now		# 重启
+reboot				# 重启
+init 6				# 重启
+
+shutdown -h now		# 关机
+init 0				# 关机
+```
+
+
+
+
+
 ## 服务器管理常用命令
 
 ```

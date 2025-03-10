@@ -45,6 +45,7 @@ def convert_mac():
             format3 += '\n'
             format4 += '\n'
 
+
     # 显示并创建复制按钮
     add_result_with_copy_button("格式1: \n" + format1, format1, "red")
     add_result_with_copy_button("格式2: \n" + format2, format2, "red")
