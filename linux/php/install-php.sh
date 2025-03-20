@@ -94,10 +94,20 @@ install_php() {
     close_fw && echo_log_info "清理系统默认 php"
     rpm -qa | grep php | xargs yum remove -y >/dev/null 2>&1
 
-    depend_judge openssl-devel zlib-devel bzip2-devel libffi-devel sqlite-devel gettext-devel \
-    oniguruma-devel libsodium-devel xz-devel libxml2-devel libcurl-devel libicu-devel boost-devel \
-    libevent-devel gd-devel openjpeg-devel freetype-devel libgcrypt-devel libjpeg-devel libpng-devel \
-    libgpg-error-devel libxslt-devel libmcrypt-devel recode-devel pcre-devel readline-devel perl-devel libjpeg-turbo-devel \
+    if grep -qi "openEuler" /etc/os-release; then
+        PKGS="openssl-devel zlib-devel bzip2-devel libffi-devel sqlite-devel gettext-devel \
+        oniguruma-devel libsodium-devel xz-devel libxml2-devel libcurl-devel libicu-devel boost-devel \
+        libevent-devel gd-devel openjpeg2-devel freetype-devel libgcrypt-devel libjpeg-devel libpng-devel \
+        libgpg-error-devel libxslt-devel libmcrypt-devel recode-devel pcre-devel readline-devel perl-devel libjpeg-turbo-devel"
+    else
+        PKGS="openssl-devel zlib-devel bzip2-devel libffi-devel sqlite-devel gettext-devel \
+        oniguruma-devel libsodium-devel xz-devel libxml2-devel libcurl-devel libicu-devel boost-devel \
+        libevent-devel gd-devel openjpeg-devel freetype-devel libgcrypt-devel libjpeg-devel libpng-devel \
+        libgpg-error-devel libxslt-devel libmcrypt-devel recode-devel pcre-devel readline-devel perl-devel libjpeg-turbo-devel"
+    fi
+
+    depend_judge $PKGS
+
     && install_cmake && install_libzip
     [ $? -ne 0 ] && echo_log_error "\033[31m安装依赖失败,请检查网络连接\033[0m"
 

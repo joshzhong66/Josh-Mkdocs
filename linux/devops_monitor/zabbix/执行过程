@@ -1,0 +1,78 @@
+╔════════════════════════════════════════════════════════════════════════╗
+║           zabbix 管理脚本                                       ║
+╠════════════════════════════════════════════════════════════════════════╣
+║  1. 安装 zabbix                                                 ║
+║  2. 卸载 zabbix                                                 ║
+║  3. 退出脚本                                                           ║
+╚════════════════════════════════════════════════════════════════════════╝
+▷▷▷ 请输入操作序号 (1-3): 1
+请输入 Zabbix 版本号（回车使用默认值 6.0.4）：
+2025-03-20 16:06:46 -[INFO] 正在安装 Zabbix Server v6.0.4...
+2025-03-20 16:06:46 -[INFO] 检测系统环境，安装依赖...
+2025-03-20 16:06:46 -[INFO] 检测到系统ID：centos
+2025-03-20 16:06:47 -[INFO] 已安装的包: wget tar gzip curl openssl-devel libevent-devel libcurl-devel libxml2-devel net-snmp-devel unixODBC-devel libssh-devel OpenIPMI-devel openldap-devel fping
+2025-03-20 16:06:47 -[INFO] 所有依赖已安装
+2025-03-20 16:06:47 -[INFO] Java 已安装
+2025-03-20 16:06:47 -[INFO] MySQL 已安装
+2025-03-20 16:06:47 -[INFO] GCC 11 已安装
+2025-03-20 16:06:47 -[INFO] Go 已安装，版本满足要求：1.24.0
+2025-03-20 16:06:47 -[INFO] fping 已安装，版本满足要求：Version ,可以继续安装 Zabbix
+2025-03-20 16:06:47 -[INFO] Apache 已安装，版本满足要求：2.4.63
+2025-03-20 16:06:47 -[INFO] PHP 已安装，版本满足要求：8.3.11
+2025-03-20 16:06:47 -[HEADER] 开始安装 zabbix 6.0.4
+2025-03-20 16:06:47 -[INFO] 传递给 download_package 的版本号: 6.0.4
+2025-03-20 16:06:47 -[INFO] 正在验证版本 v6.0.4 是否存在...
+2025-03-20 16:06:48 -[INFO] 版本 v6.0.4 存在于官方仓库
+2025-03-20 16:06:49 -[INFO] SHA256 预期校验值: 5743b6cc2e29d9bd242aa88b2835f3ded0be177509000d84db74e1159c5afa75
+2025-03-20 16:06:49 -[INFO] zabbix-6.0.4.tar.gz 已存在，跳过下载
+2025-03-20 16:06:49 -[INFO] 正在验证文件 zabbix-6.0.4.tar.gz 完整性...
+2025-03-20 16:06:49 -[SUCCESS] 文件校验通过，校验值: 5743b6cc2e29d9bd242aa88b2835f3ded0be177509000d84db74e1159c5afa75
+2025-03-20 16:07:19 -[SUCCESS] ./configure 编译成功
+2025-03-20 16:08:38 -[SUCCESS] make 成功!
+2025-03-20 16:08:44 -[SUCCESS] make install 成功!
+2025-03-20 16:08:44 -[INFO] 创建 /data/zabbix/logs 和 /data/zabbix/alertscripts 目录...
+2025-03-20 16:08:44 -[SUCCESS] 目录创建成功
+2025-03-20 16:08:44 -[INFO] 正在修改 /data/zabbix 目录权限...
+2025-03-20 16:08:44 -[SUCCESS] 目录权限修改完成
+2025-03-20 16:08:44 -[INFO] 正在配置二进制文件权限...
+2025-03-20 16:08:44 -[SUCCESS] 二进制文件权限配置完成
+2025-03-20 16:08:44 -[INFO] 正在生成 PSK 共享密钥...
+2025-03-20 16:08:44 -[SUCCESS] PSK 共享密钥配置完成
+2025-03-20 16:08:44 -[INFO] 正在配置 Zabbix Server...
+2025-03-20 16:08:44 -[SUCCESS] Zabbix Server 配置完成
+2025-03-20 16:08:44 -[INFO] 正在配置 Zabbix Agent...
+2025-03-20 16:08:44 -[SUCCESS] Zabbix Agent 配置完成
+2025-03-20 16:08:44 -[INFO] 正在验证配置文件...
+2025-03-20 16:08:44 -[SUCCESS] 配置文件验证通过
+2025-03-20 16:08:44 -[INFO] 验证SQL文件完整性
+2025-03-20 16:08:44 -[INFO] 开始初始化Zabbix数据库
+2025-03-20 16:08:44 -[INFO] 数据库架构创建完成
+2025-03-20 16:08:44 -[INFO] 开始导入SQL数据
+2025-03-20 16:08:44 -[INFO] 正在导入: schema.sql
+2025-03-20 16:08:54 -[INFO] 当前数据库表数量: 173
+2025-03-20 16:08:54 -[INFO] 正在导入: images.sql
+2025-03-20 16:08:54 -[INFO] 当前数据库表数量: 173
+2025-03-20 16:08:54 -[INFO] 正在导入: data.sql
+2025-03-20 16:09:14 -[INFO] 当前数据库表数量: 173
+2025-03-20 16:09:14 -[INFO] SQL数据导入完成
+2025-03-20 16:09:14 -[INFO] 最终数据库状态验证
+2025-03-20 16:09:14 -[INFO] Zabbix数据库初始化成功完成
+2025-03-20 16:09:14 -[INFO] 配置Zabbix服务文件
+2025-03-20 16:09:14 -[INFO] 服务配置完成
+2025-03-20 16:09:14 -[INFO] 开始启动Zabbix服务
+Starting zabbix_server (via systemctl):                    [  OK  ]
+2025-03-20 16:09:15 -[INFO] zabbix_server正在运行中，尝试重启以应用最新配置
+2025-03-20 16:09:17 -[INFO] zabbix_server已成功启动并设置为开机自启
+Starting zabbix_agentd (via systemctl):                    [  OK  ]
+2025-03-20 16:09:17 -[INFO] zabbix_agentd正在运行中，尝试重启以应用最新配置
+2025-03-20 16:09:17 -[INFO] zabbix_agentd已成功启动并设置为开机自启
+2025-03-20 16:09:17 -[SUCCESS] 日志文件所有权修改成功: /data/zabbix/logs/zabbix_agentd.log
+2025-03-20 16:09:17 -[SUCCESS] 所有服务均已成功启动并设置为开机自启
+2025-03-20 16:09:18 -[SUCCESS] PHP 配置更新成功
+install_zabbix_server.sh: line 1009: log_info: command not found
+2025-03-20 16:09:18 -[SUCCESS] 修改Apache主配置文件成功
+2025-03-20 16:09:18 -[SUCCESS] 复制Zabbix UI文件到Web根目录成功
+install_zabbix_server.sh: line 1044: /usr/local/apache/conf/conf.d/zabbix.conf: No such file or directory
+2025-03-20 16:09:18 -[SUCCESS] 配置Apache虚拟主机成功
+2025-03-20 16:09:18 -[SUCCESS] Apache服务启动成功
+2025-03-20 16:09:18 -[INFO] 所有配置已完成，Apache服务已启动

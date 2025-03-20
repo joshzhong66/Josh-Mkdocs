@@ -1,41 +1,5 @@
 #!/bin/bash
 
-# cat > /etc/yum.repos.d/CentOS-SCLo-scl.repo <<'EOF'
-# [centos-sclo-sclo]
-# name=CentOS-7 - SCLo sclo
-# #baseurl=http://mirror.centos.org/centos/7/sclo/$basearch/rh/
-# #mirrorlist=http://mirrorlist.centos.org?arch=$basearch&release=7&repo=sclo-sclo
-# baseurl=http://mirrors.aliyun.com/centos/7/sclo/x86_64/rh/
-# gpgcheck=0
-# enabled=1
-# gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
-# EOF
-
-
-# yum clean all	# yum清理缓存
-# yum makecache	# 重新生成缓存
-# yum repolist	# 检查仓库是否有效（将列出所有启用的仓库，centos-sclo-sclo会出现在列表中）
-
-
-# yum install -y devtoolset-11-gcc*
-
-
-# rpm -qa | grep devtoolset-11
-
-
-# mv /usr/bin/gcc /usr/bin/gcc-4.8.5
-# ln -s /opt/rh/devtoolset-11/root/bin/gcc /usr/bin/gcc
-# mv /usr/bin/g++ /usr/bin/g++-4.8.5
-# ln -s /opt/rh/devtoolset-11/root/bin/g++ /usr/bin/g++
-
-# gcc --version
-
-
-#!/bin/bash
-
-
-
-# 初始化变量
 REPO_FILE="/etc/yum.repos.d/CentOS-SCLo-scl.repo"
 TEMP_BACKUP_DIR=$(mktemp -d)
 GCC_BACKUP_PATH="$TEMP_BACKUP_DIR/gcc-4.8.5"
@@ -54,24 +18,16 @@ echo_log() {
 
     echo -e "${log_prefix} $*"
 }
-
-# 信息日志（绿色）
 echo_log_info() {
     echo_log "32" "INFO" "$@"
 }
-
-# 警告日志（黄色）
 echo_log_warn() {
     echo_log "33" "WARN" "$@"
 }
-
-# 错误日志（红色）
 echo_log_error() {
     echo_log "31" "ERROR" "$@"
     exit 1  # 可根据需要决定是否退出
 }
-
-
 
 # 清理函数
 cleanup() {
