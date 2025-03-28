@@ -301,12 +301,22 @@ install_os_base_rely() {
     )
     centos_version=$(rpm -q --qf "%{version}" centos-release)
 
+    # for package in "${packages[@]}"; do
+    #     if rpm -q "$package" &>/dev/null || command -v "$package" &>/dev/null; then
+    #         echo_log_info "$package 已安装，跳过安装。"
+    #     else
+    #         echo_log_info -e "安装 $package..."
+    #         yum -y install "$package" >/dev/null 2>&1
+    #     fi
+    # done
     for package in "${packages[@]}"; do
-        if rpm -q "$package" &>/dev/null || command -v "$package" &>/dev/null; then
-            echo_log_info "$package 已安装，跳过安装。"
-        else
-            echo_log_info -e "安装 $package..."
-            yum -y install "$package" >/dev/null 2>&1
+        if ! rpm -q "$package" &>/dev/null || command -v "$package" &>/dev/null; then
+            if ! yum -y install "$package"; then
+                echo_log_error "安装 $package 失败，请检查网络连接或手动安装。"
+                exit 1
+            else
+                echo_log_info "安装 $package 成功！"
+            fi
         fi
     done
 
@@ -339,6 +349,7 @@ yum_settings() {
     esac
 }
 
+yum_settings
 
 
 

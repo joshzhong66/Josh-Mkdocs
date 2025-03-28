@@ -12,9 +12,6 @@ REPO_URLS=(
     "http://mirrors.coreix.net/elrepo-archive-archive/kernel/el7/x86_64/RPMS/"
 )
 
-
-
-
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'

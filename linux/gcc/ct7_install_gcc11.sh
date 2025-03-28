@@ -4,9 +4,10 @@
 # https://file.joshzhong.top/4_Install/gcc-11.4.0-bin.tar.xz
 
 PACKAGE_NAME="gcc"
-GCC_VERSION="11.4.0"
+VERSION="11.4.0"
+PKG_ARCH="gcc-11.4.0-bin.tar.xz"
 INSTALL_PATH="/usr/local"
-DOWNLOAD_PATH="/usr/local/src"
+SRC_DIR="/usr/local/src"
 
 
 RED='\033[0;31m'
@@ -32,16 +33,15 @@ check_gcc() {
             echo "GCC 11 已安装"
             exit 1
         else
-            echo "GCC 版本为 $CHECK_GCC_VERSION，继续安装 $PACKAGE_NAME-$GCC_VERSION"
+            echo "GCC 版本为 $CHECK_GCC_VERSION，继续安装 $PACKAGE_NAME-$VERSION"
             return 0
         fi
     else
-        echo "GCC 未安装，开始安装 $PACKAGE_NAME-$GCC_VERSION"
+        echo "GCC 未安装，开始安装 $PACKAGE_NAME-$VERSION"
         return 0
     fi
 }
 
-# 检查root权限
 check_root() {
     if [[ $(id -u) != 0 ]]; then
         echo -e "${RED}错误：必须使用root权限运行此脚本${NC}"
@@ -56,6 +56,10 @@ check_url() {
     else
         return 1
     fi
+}
+
+check_rpg_arch() {
+
 }
 
 # 选择可用镜像源
@@ -79,7 +83,7 @@ install_gcc() {
     )
 
     # 下载RPM包
-    cd $DOWNLOAD_PATH
+    cd $SRC_DIR
     for type in "${!RPMS[@]}"; do
         file="${RPMS[$type]}"
         url="${SELECTED_URL}${file}"
@@ -92,7 +96,7 @@ install_gcc() {
     done
 
     echo -e "${YELLOW}解压 gcc-11.4.0-bin.tar.xz ...${NC}"
-    cd $DOWNLOAD_PATH
+    cd $SRC_DIR
     if ! tar -Jxvf gcc-11.4.0-bin.tar.xz -C $INSTALL_PATH; then
         echo -e "${RED}解压失败：gcc-11.4.0-bin.tar.xz${NC}"
         exit 1
@@ -124,7 +128,7 @@ install_gcc() {
     VALIDATION_PASS=true
 
     echo -e "${YELLOW}▶ 版本检查...${NC}"
-    if ! /usr/bin/gcc --version | grep "$GCC_VERSION"; then
+    if ! /usr/bin/gcc --version | grep "$VERSION"; then
         error_exit "GCC 版本不匹配"
     fi
 
@@ -134,10 +138,10 @@ install_gcc() {
 
 
     echo -e "\n${YELLOW}▶ 清理临时文件...${NC}"
-    rm -f "$DOWNLOAD_PATH/$PACKAGE_NAME*" || error_exit "清理失败"
+    rm -f "$SRC_DIR/$PACKAGE_NAME*" || error_exit "清理失败"
     echo -e "${GREEN}√ 安装文件已清理${NC}"
 
-    echo -e "\n${GREEN}${BOLD}GCC ${GCC_VERSION} 安装成功！${NC}"
+    echo -e "\n${GREEN}${BOLD}GCC ${VERSION} 安装成功！${NC}"
     echo -e "运行以下命令查看版本："
     echo -e "  ${CYAN}gcc --version${NC}"
     echo -e "  ${CYAN}g++ --version${NC}\n"

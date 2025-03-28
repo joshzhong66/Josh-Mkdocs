@@ -1,0 +1,88 @@
+
+# 操作系统版本
+```
+[root@localhost /tmp]# cat /etc/os-release 
+NAME="Kylin Linux Advanced Server"
+VERSION="V10 (Sword)"
+ID="kylin"
+VERSION_ID="V10"
+PRETTY_NAME="Kylin Linux Advanced Server V10 (Sword)"
+ANSI_COLOR="0;31"
+```
+
+# 关闭 swap 分区
+swapoff -a              # 关闭所有 Swap 分区和 Swap 文件
+free -m | grep Swap     # 查看系统交换分区信息（为0表示没用挂载）
+swapon --show           # 如果没有输出，说明 Swap 确实被关闭
+lsblk -f                # 查看系统是否有 Swap 分区
+
+
+# 关闭透明大页
+## 临时关闭
+echo never > /sys/kernel/mm/transparent_hugepage/enabled
+echo never > /sys/kernel/mm/transparent_hugepage/defrag
+
+## 永久禁用
+编辑 /etc/rc.local 中添加以下内容，重启主机生效：
+echo never > /sys/kernel/mm/transparent_hugepage/enabled
+echo never > /sys/kernel/mm/transparent_hugepage/defrag
+
+
+# 配置足够的虚拟内存
+ulimit -a | grep virtual        # 查看和设置进程资源限制（如果输出，）
+virtual memory 表示虚拟内存的限制
+unlimited      没有虚拟内存的限制
+
+# 虚拟内存限制设置为 8GB
+ulimit -v   8388608
+
+
+# cpu不使用省电模式
+dnf install -y kernel-tools     # 安装 cpupower 工具
+
+
+# 网络溢出自动重连
+vim /etc/NetworkManager/NetworkManager.conf             # 修改 NetworkManager 主配置文件
+添加内容：
+[connection]
+autoconnect=true
+
+grep -v '^\s*#' /etc/NetworkManager/NetworkManager.conf # 查看未注释内容
+systemctl restart NetworkManager                        # 重启网络服务
+
+
+
+# 关闭防火墙
+systemctl status firewalld
+getenforce
+systemctl status iptables
+
+# 增大文件句柄数
+vim /etc/security/limits.conf   # 修改系统配置文件，控制用户的计算资源使用
+* soft nofile 1024576           # 软限制
+* hard nofile 1024576           # 硬限制
+
+# 安装ntp服务器
+## 安装ntpd
+dnf install -y ntp
+systemctl start ntpd
+systemctl enable ntpd
+systemctl status ntpd
+
+卸载 ntp
+systemctl disable ntpd  # 禁用 ntpd 服务
+systemctl stop ntpd     # 停止 ntpd 服务
+dnf remove -y ntp       # 卸载 ntp 包
+
+## 安装chronyd
+dnf -y install chrony
+systemctl start chronyd     # 启动服务
+systemctl enable chronyd    # 开机自启
+systemctl status chronyd    # 查看状态
+
+vim /etc/chrony.conf            # 编辑 `chrony`的配置文件
+# 添加NTP 服务器的地址如下：
+server ntp.ntsc.ac.cn iburst
+server ntp1.aliyun.com iburst
+
+chronyc sources                 # 检查 Chrony 服务状态和同步情况（显示 `*` 号，说明已经同步成功。）

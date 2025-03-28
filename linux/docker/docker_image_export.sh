@@ -1,11 +1,4 @@
 #!/bin/bash
-# 脚本说明： 将docker镜像列出，按镜像顺序做编号
-#           输入编号，导出镜像为tar.gz文件
-#           执行scp复制，提示输入ip地址 、用户名、密码
-#           复制到ip地址，执行docker load导入镜像
-#           执行docker tag，修改镜像名称
-#           列出镜像，确定是否成功
-
 
 docker_dir="/usr/local/src"
 
