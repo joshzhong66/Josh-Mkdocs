@@ -15,10 +15,10 @@ psk="f03a84aa7cc6ea8c13d9e01f2a704705bad15fd26a535dd8bf322c3b5c38d493"
 
 check_url() {
     local url=$1
-    if curl --head --silent --fail "$url" > /dev/null; then
-        return 0
+    if curl -f -s --connect-timeout 5 "$url" &>/dev/null; then  # 使用curl检查URL，超时5秒
+        return 0  # URL可用
     else
-        return 1
+        return 1  # URL不可用
     fi
 }
 

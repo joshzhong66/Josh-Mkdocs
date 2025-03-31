@@ -15,7 +15,8 @@ HOSTS_TO_ADD = [
     {"hostname": "test51", "ip": "10.22.51.51"}, 
     {"hostname": "test66", "ip": "10.22.51.66"}, 
     {"hostname": "test67", "ip": "10.22.51.67"}, 
-    {"hostname": "test68", "ip": "10.22.51.68"}
+    {"hostname": "test68", "ip": "10.22.51.68"},
+    {"hostname": "Zabbix Server", "ip": "127.0.0.1"}
 ]
 
 GROUP_NAMES = ["Discovered hosts", "Linux servers"]     # 主机群组

@@ -44,9 +44,6 @@ def create_user(auth_token, name, login, password, user_groups, role_id):
     response = requests.post(ZABBIX_URL, json=user_payload)
     return response.json()
 
-
-
-
 # 创建用户组
 def create_user_group(auth_token, group_name):
     group_payload = {
