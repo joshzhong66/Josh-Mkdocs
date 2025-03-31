@@ -1,2 +1,3 @@
 
 docker network inspect f3c5f0820a28     # 查看docker网络IP使用情况
+docker rmi -f 镜像名称                   # 删除镜像

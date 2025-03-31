@@ -1,0 +1,34 @@
+cat > /etc/docker/daemon.json <<EOF
+{
+    "registry-mirrors": [
+        "https://registry.yfb.sunline.cn",
+        "https://docker.1panel.live/"
+    ],
+    "insecure-registries": [
+        "registry.yfb.sunline.cn",
+        "docker.1panel.live"
+    ],
+    "max-concurrent-downloads": 3,
+    "max-concurrent-uploads": 5,
+    "log-driver": "json-file",
+    "log-opts": {
+        "max-size": "100m",
+        "max-file": "3"
+    },
+    "data-root": "/data/docker/docker",
+    "bip": "192.168.110.1/24",
+    "default-address-pools": [
+        {
+            "base": "192.168.110.0/22",
+            "size": 24
+        },
+        {
+            "base": "192.168.114.0/22",
+            "size": 24
+        }
+    ]
+}
+EOF
+
+
+systemctl restart docker

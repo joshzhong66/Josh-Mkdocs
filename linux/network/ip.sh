@@ -1,3 +1,5 @@
+#!/bin/bash
+
 function ip_to_int() {
     local ip=$1
     local a b c d
@@ -23,3 +25,6 @@ function ip_to_int() {
     # 返回转换后的整数
     echo "$(((a * 256 + b) * 256 + c) * 256 + d)"
 }
+
+
+ip_to_int

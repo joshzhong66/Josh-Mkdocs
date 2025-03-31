@@ -1,0 +1,6 @@
+pure-pw list                                                                    # 查看用户
+pure-pw useradd josh -u pure-ftp -g pure-ftp -d /data/software                  # 创建用户
+pure-pw userdel josh                                                            # 删除用户
+pure-pw mkdb                                                                    # 更新数据库
+pure-pw passwd josh                                                             # 修改密码
+pure-pw --help                                                                  # 帮助

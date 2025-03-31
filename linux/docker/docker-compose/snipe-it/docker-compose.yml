@@ -1,0 +1,57 @@
+version: "3"
+
+services:
+  app:
+    image: snipe/snipe-it:latest
+    restart: unless-stopped
+    container_name: snipe-it
+    volumes:
+      - /data/snipeit/storage:/var/lib/snipeit
+    ports:
+      - "${APP_PORT:-8080}:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - APP_LOCALE=zh_CN
+
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=snipeit
+      - DB_USERNAME=snipeit
+      - DB_PASSWORD=Sunline2024
+
+
+      - MAIL_DRIVER=smtp
+      - MAIL_HOST=smtp.qq.com
+      - MAIL_PORT=465
+      - MAIL_SECURE=ssl
+      - MAIL_USERNAME=980521387@qq.com
+      - MAIL_PASSWORD=ghplillgpihvbbjb
+      - MAIL_ENCRYPTION=null
+      - MAIL_FROM_ADDR=980521387@qq.com
+      - MAIL_FROM_NAME="资产管理中心"
+
+  db:
+    image: mariadb:11.5.2
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    volumes:
+      - /data/snipeit/db_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 1s
+      retries: 5
+
+volumes:
+  db_data: # 仅保留数据库命名卷（自动管理）

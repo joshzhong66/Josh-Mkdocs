@@ -25,22 +25,13 @@ CTRL+W              # 删除光标左边的一个单词
 ALT+数字			   # 切换窗口
 ```
 
-
-
-## 关机重启
+## 系统常用
 
 ```
-shutdown -r now		# 重启
-reboot				# 重启
-init 6				# 重启
-
-shutdown -h now		# 关机
-init 0				# 关机
+printenv			# 查看当前系统的环境变量
+shutdown -r now		# 重启（init 6、reboot）
+shutdown -h now		# 关机（init 0）
 ```
-
-
-
-
 
 ## 服务器管理常用命令
 
@@ -88,9 +79,29 @@ strace -p 22889                	# 跟踪进程的系统调用和信号
 vmstat                         	# 查看系统的虚拟内存、进程、I/O 等统计信息
 ```
 
-## 文本编辑命令
+## 服务管理命令
 
-### vim
+```
+systemctl list-units --type=service --state=running		# 列出已启动的服务
+systemctl list-units --type=service						# 列出所有服务（包含已停止的）
+systemctl list-unit-files --type=service | grep enabled		# 列出所有开机启动的服务
+```
+
+## 内核命令
+
+```
+grubby --default-kernel    		# 当前启动的内核
+```
+
+## 安全防火墙
+
+```
+sestatus						# 查看SELinux 状态
+getenforce						# 查看SELinux 状态
+firewall-cmd --state			# 查看防火墙状态
+```
+
+## 文本编辑命令
 
 ```
 vim工作模式
