@@ -1,0 +1,6 @@
+# 服务端
+echo "127.0.0.1 nexus.local docker.local" >> /etc/hosts
+
+
+# docker pull端
+echo "10.22.51.65 nexus.local docker.local" >> /etc/hosts

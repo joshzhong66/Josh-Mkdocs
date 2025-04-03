@@ -1,11 +1,26 @@
+# git命令
+git branch -r                   # 查看远程分支名称
+git status                      # 查看git状态
 
-# # 操作会永久删除所有未提交的本地修改，请确保你确实需要放弃这些更改
+# git操作
+## 放弃本地修改，
+放弃所有修改并强制与远程仓库同步（操作会永久删除所有未提交的本地修改，请确保你确实需要放弃这些更改）
 git fetch origin                # 获取远程最新数据（不自动合并）
 git reset --hard origin/main    # 强制重置本地分支到远程分支
 git clean -df                   # 清理未跟踪的文件/目录
-
-
 # 执行后使用 git status 查看，应该显示
 On branch main
 Your branch is up to date with 'origin/main'.
 nothing to commit, working tree clean
+
+## 取消本地提交 拉取远端 再次提交
+git reset --soft HEAD~1         # 撤销最近的一次提交，但保留你的修改
+git reset --hard HEAD~1         # --hard 选项会丢失所有未提交的修改
+
+git pull origin main --rebase   # 拉取远端代码（main 是主分支名称）进行拉取并重置基准，避免无意义的合并提交
+git pull origin main            # 拉取远端代码
+
+git add .                       # 添加所有更改
+git commit -m "修复冲突并提交"
+git push origin main            # 推送代码到远端
+git push origin main --force    # 强制推送（如果远端代码又更新了）
