@@ -1,0 +1,7 @@
+(Invoke-WebRequest -Uri "https://mirrors.sunline.cn/application/360zip/win/" -UseBasicParsing).Content |
+    Select-String -Pattern 'href="([^"]+\.exe)"' |
+    ForEach-Object {
+        if ($_ -match 'href="([^"]+\.exe)"') {
+            $matches[1]
+        }
+    }

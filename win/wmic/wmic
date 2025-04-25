@@ -1,0 +1,22 @@
+
+
+F:\sources\sxs\Microsoft-Windows-WMI-COMProvider-Package~31bf3856ad364e35~amd64~~.cab   # 提取wmic包
+Get-WindowsCapability -Online | Where-Object Name -like '*Wmic*'                        # 查看wmic是否安装
+dism /Online /Add-Capability /CapabilityName:Wmic~~~~                                   # 安装wmic
+DISM /Online /Remove-Capability /CapabilityName:WMIC~~~~                                # 删除wmic
+
+
+DISM /Online /Get-Packages | findstr /I wmi
+Copy-Item -Path "C:\Windows\WinSxS\amd64_microsoft-windows-wmi-comprovider_*" -Destination "D:\WMIC-Offline" -Recurse
+
+
+
+:: 安装wmic
+wmic /? >nul 2>&1
+if %errorlevel%==0 (
+    echo  wmic 已存在
+) else (
+    echo  wmic 不存在，准备安装...
+    REM 可选：调用 dism 添加 wmic
+    dism /Online /Add-Capability /CapabilityName:Wmic~~~~
+)

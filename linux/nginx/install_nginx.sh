@@ -40,7 +40,7 @@ quit() {
 
 check_url() {
     local url=$1
-    if curl --head --silent --fail "$url" > /dev/null; then
+    if curl -f -s --connect-timeout 5 "$url" &>/dev/null; then
         return 0
     else
         return 1
@@ -49,9 +49,9 @@ check_url() {
 
 check_nginx() {
     if [ -d "$INSTALL_DIR" ]; then
-        echo_log_error "Installation directory '$INSTALL_DIR' already exists. Please uninstall $PACKAGE_NAME before proceeding!"
+        echo_log_error "Nginx 已安装，请先卸载 Nginx!"
     elif which $PACKAGE_NAME &>/dev/null; then
-        echo_log_error "$PACKAGE_NAME is already installed. Please uninstall it before installing the new version!"
+        echo_log_error "$PACKAGE_NAME 已安装。 请先卸载旧版本！"
     fi
     return 0
 }
@@ -82,7 +82,7 @@ download_package() {
 install_nginx() {
     check_nginx
     echo_log_info "Start Install Rely Package..."
-    yum install -y wget make gcc gcc-c++ pcre-devel openssl-devel geoip-devel zlib-devel >/dev/null 2>&1
+    yum install -y wget make gcc gcc-c++ pcre-devel openssl-devel geoip-devel zlib-devel
     [ $? -eq 0 ] && echo_log_info "Rely Package Install Successful" || echo_log_error "Rely Package Install Failed"
 
     if [ -f "$SRC_DIR/$PKG_ARCH" ]; then

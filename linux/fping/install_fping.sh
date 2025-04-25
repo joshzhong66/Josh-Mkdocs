@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 PACKAGE_NAME="fping"
 VERSION="5.3"
 DOWNLOAD_PATH="/usr/local/src"
@@ -10,7 +9,7 @@ INSTALL_PATH="/usr/local/${PACKAGE_NAME}-${VERSION}"
 echo_log() {
     local color_code="$1"
     local log_level="$2"
-    shift 2  # 移出颜色和日志级别参数
+    shift 2
 
     local timestamp
     timestamp=$(date +"%Y-%m-%d %H:%M:%S")
@@ -18,32 +17,27 @@ echo_log() {
 
     echo -e "${log_prefix} $*"
 }
-
-# 信息日志（绿色）
 echo_log_info() {
     echo_log "32" "INFO" "$@"
 }
 
-# 警告日志（黄色）
 echo_log_warn() {
     echo_log "33" "WARN" "$@"
 }
 
-# 错误日志（红色）
 echo_log_error() {
     echo_log "31" "ERROR" "$@"
-    exit 1  # 可根据需要决定是否退出
+    exit 1
 }
 
 check_url() {
     local url=$1
-    if curl -f -s --connect-timeout 5 "$url" &>/dev/null; then  # 使用curl检查URL，超时5秒
-        return 0  # URL可用
+    if curl -f -s --connect-timeout 5 "$url" &>/dev/null; then
+        return 0
     else
-        return 1  # URL不可用
+        return 1
     fi
 }
-
 
 check_package() {
     if [ -d "$INSTALL_PATH" ]; then

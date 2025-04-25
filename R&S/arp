@@ -1,0 +1,18 @@
+[CL_A_CORE_S7706]disp arp | include 172.18.0.253
+IP ADDRESS      MAC ADDRESS     EXPIRE(M) TYPE        INTERFACE   VPN-INSTANCE 
+                                          VLAN/CEVLAN 
+------------------------------------------------------------------------------
+172.18.0.253    0835-71f8-45a0  4         D-0/0       GE2/4/0/11
+------------------------------------------------------------------------------
+Total:2892      Dynamic:2743    Static:0     Interface:149  
+
+[CL_A_CORE_S7706]interface GigabitEthernet 2/4/0/11
+
+[CL_A_CORE_S7706-GigabitEthernet2/4/0/11]disp this
+#
+interface GigabitEthernet2/4/0/11
+ description port number 5-24 to NAC infogo eth2
+ port link-type access
+ port default vlan 172
+#
+return

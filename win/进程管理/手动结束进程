@@ -1,0 +1,24 @@
+C:\Users\joshz>tasklist | findstr "Foxmail"
+Foxmail.exe                  17220 Console                    2     34,808 K
+Foxmail.exe                  10788 Console                    2     56,328 K
+Foxmail.exe                   6084 Console                    2     43,760 K
+Foxmail.exe                   4536 Console                    2     36,792 K
+Foxmail.exe                  22816 Console                    2     65,324 K
+Foxmail.exe                  17628 Console                    2     88,460 K
+Foxmail.exe                  20708 Console                    2     54,180 K
+Foxmail.exe                  24508 Console                    2     42,484 K
+
+
+C:\Users\joshz>taskkill /IM Foxmail.exe /F
+成功: 已终止进程 "Foxmail.exe"，其 PID 为 17220。
+成功: 已终止进程 "Foxmail.exe"，其 PID 为 10788。
+成功: 已终止进程 "Foxmail.exe"，其 PID 为 6084。
+成功: 已终止进程 "Foxmail.exe"，其 PID 为 4536。
+成功: 已终止进程 "Foxmail.exe"，其 PID 为 22816。
+成功: 已终止进程 "Foxmail.exe"，其 PID 为 17628。
+成功: 已终止进程 "Foxmail.exe"，其 PID 为 20708。
+成功: 已终止进程 "Foxmail.exe"，其 PID 为 24508。
+
+
+/IM Foxmail.exe：指定进程名称（不区分大小写）。
+/F：强制终止进程。

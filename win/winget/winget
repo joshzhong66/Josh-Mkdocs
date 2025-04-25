@@ -1,0 +1,2 @@
+# 安装git
+winget install Git.Git

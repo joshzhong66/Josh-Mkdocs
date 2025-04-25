@@ -25,7 +25,7 @@ echo_log_error() {
 
 check_url() {
     local url=$1
-    if curl --head --silent --fail "$url" > /dev/null; then
+    if curl -f -s --connect-timeout 5 "$url" &>/dev/null; then
         return 0
     else
         return 1
@@ -34,18 +34,23 @@ check_url() {
 
 install_clash() {
     if [ -x "$(command -v clash)" ]; then
-        echo_log_warn "Clash Already installed, no need to reinstall."
+        echo_log_warn "Clash 已经安装，无需重新安装。"
         exit 1
     fi
 
-    if check_url "$clash_url"; then
-        echo_log_info "Clash Download Success !"
-        wget "$clash_url" -P "$download_path" >/dev/null 2>&1
-    else
-        echo_log_error "Clash Download Failed!"
+    if ! wget "$clash_url" -P "$download_path";then
+        echo_log_error "Clash 下载失败！"
+        exit 1
     fi
-    tar -xzf "$download_path"/clash-linux-amd64-v1.7.1.tar.gz -C $install_path >/dev/null 2>&1
+
+    cd $download_path
+    if ! tar -zxvf clash-linux-amd64-v1.7.1.tar.gz -C $install_path;then
+        echo_log_error "Clash 解压失败！"
+        exit 1
+    fi
+
     mv $install_path/clash-linux-amd64-v1.7.1/ $install_path/clash
+    
     chmod +x $install_path/clash/clash-linux-amd64
     ln -s $install_path/clash/clash-linux-amd64 /usr/bin/clash
 

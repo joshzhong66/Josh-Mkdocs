@@ -34,7 +34,7 @@ quit() {
 
 check_url() {
     local url=$1
-    if curl --head --silent --fail "$url" > /dev/null; then
+    if curl -f -s --connect-timeout 5 "$url" &>/dev/null; then
         return 0
     else
         return 1

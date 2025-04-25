@@ -1,0 +1,28 @@
+# win
+(Invoke-WebRequest -Uri "https://mirrors.sunline.cn/application/360zip/win/" -UseBasicParsing).Content |
+    Select-String -Pattern 'href="([^"]+\.exe)"' |
+    ForEach-Object {
+        if ($_ -match 'href="([^"]+\.exe)"') {
+            $matches[1]
+        }
+    }
+
+
+# mac
+(Invoke-WebRequest -Uri "https://mirrors.sunline.cn/application/360zip/mac/" -UseBasicParsing).Content |
+    Select-String -Pattern 'href="([^"]+\.dmg)"' |
+    ForEach-Object {
+        if ($_ -match 'href="([^"]+\.dmg)"') {
+            $matches[1]
+        }
+    }
+
+
+
+(Invoke-WebRequest -Uri "https://mirrors.sunline.cn/application/360brower/" -UseBasicParsing).Content |
+    Select-String -Pattern 'href="([^"]+\.exe)"' |
+    ForEach-Object {
+        if ($_ -match 'href="([^"]+\.exe)"') {
+            $matches[1]
+        }
+    }

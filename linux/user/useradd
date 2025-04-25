@@ -1,0 +1,7 @@
+useradd josh        # 创建用户 josh
+passwd josh         # ​设置密码
+visudo              # visudo 是安全编辑 sudoers 的方式  添加以下配置：允许 josh 无密码使用 sudo
+josh    ALL=(ALL)       NOPASSWD: ALL
+
+su - josh          # 切换到 josh 用户
+sudo -i            # 应该能直接切换到 root，无需密码

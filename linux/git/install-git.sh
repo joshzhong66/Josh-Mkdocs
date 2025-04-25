@@ -10,7 +10,7 @@ GIT_TAR=$PACKAGE_NAME-$VERSION.tar.gz
 DOWNLOAD_PATH="/usr/local/src"
 INSTALL_PATH=/usr/local/$PACKAGE_NAME
 INTERNAL_URL=http://10.22.51.64/software/$GIT_TAR
-EXTERNAL_URL="https://mirrors.edge.kernel.org/pub/software/scm/git/$$GIT_TAR"
+EXTERNAL_URL="https://mirrors.edge.kernel.org/pub/software/scm/git/$GIT_TAR"
 
 
 
@@ -111,9 +111,9 @@ install_git() {
     make -j $CPUS all && \
     make install prefix=$INSTALL_PATH
     if [ $? -eq 0 ];then 
-        echo_log_info "Git 编译安装完成" 0 
+        echo_log_info "Git 编译安装完成"
     else
-        echo_log_error "Git 编译安装失败" 1
+        echo_log_error "Git 编译安装失败"
     fi
     echo PATH="$INSTALL_PATH/bin/":'$PATH' > /etc/profile.d/git.sh
     . /etc/profile.d/git.sh

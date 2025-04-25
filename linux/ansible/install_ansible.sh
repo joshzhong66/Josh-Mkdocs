@@ -178,9 +178,9 @@ main() {
     echo -e "———————————————————————————
 \033[32m Ansible${ANSIBLE_VERSION} Install Tool\033[0m
 ———————————————————————————
-1. Install Ansible${ANSIBLE_VERSION}
-2. Uninstall Ansible${ANSIBLE_VERSION}
-3. Quit Scripts\n"
+1. 安装 Ansible${ANSIBLE_VERSION}
+2. 卸载 Ansible${ANSIBLE_VERSION}
+3. 退出脚本\n"
 
     read -rp "Please enter the serial number and press Enter：" num
     case "$num" in

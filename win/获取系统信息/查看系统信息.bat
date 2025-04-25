@@ -1,4 +1,6 @@
 @echo off
+chcp 65001 >nul
+setlocal enabledelayedexpansion
 :: 检查是否具有管理员权限
 openfiles >nul 2>nul
 if '%errorlevel%' NEQ '0' (
@@ -7,8 +9,7 @@ if '%errorlevel%' NEQ '0' (
     exit /b
 )
 
-chcp 65001 >nul
-setlocal enabledelayedexpansion
+
 
 echo 获取计算机信息，请稍候...
 
