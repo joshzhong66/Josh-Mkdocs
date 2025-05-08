@@ -1,7 +1,9 @@
 title: "Hello"
 
 nav:
-    - 首页: index.md
+    - 首页: 
+	  - index.md
+	  - 励志书评.md
     - 随笔: essay
     - 阅读: readbook
     - 技术: technical
