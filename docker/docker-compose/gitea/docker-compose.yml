@@ -1,0 +1,26 @@
+version: "3"
+
+networks:
+  gitea:
+    external: false
+
+services:
+  server:
+    image: gitea/gitea
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__database__DB_TYPE=mysql      
+      - GITEA__database__HOST=10.22.51.64:3306
+      - GITEA__database__NAME=giteadb
+      - GITEA__database__USER=gitea
+      - GITEA__database__PASSWD=gitea
+    restart: always
+    networks:
+      - gitea
+    volumes:
+      - /data/gitea:/data/gitea
+    ports:
+      - "3000:3000"
+      - "2222:22"

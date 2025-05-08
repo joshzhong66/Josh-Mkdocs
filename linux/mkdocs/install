@@ -1,0 +1,32 @@
+mkdir -p /data/Mkdocs/Josh-Mkdocs
+
+cd /data/Mkdocs/Josh-Mkdocs
+git clone git@github.com:joshzhong66/Josh-Mkdocs.git
+
+cd /data/Mkdocs/Josh-Mkdocs
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install mkdocs-material mkdocs-awesome-pages-plugin mkdocs-rss-plugin mkdocs-glightbox mkdocs-git-revision-date-localized-plugin
+
+
+cat > /etc/systemd/system/mkdocs.service <<'EOF'
+[Unit]
+Description=MkDocs Server
+After=network.target
+
+[Service]
+User=root
+Type=simple
+WorkingDirectory=/data/Mkdocs/Josh-Mkdocs
+ExecStartPre=/bin/bash -c 'source /data/Mkdocs/venv/bin/activate'
+ExecStart=/data/Mkdocs/venv/bin/mkdocs serve --dev-addr 0.0.0.0:10090
+Restart=always
+Environment="PATH=/data/Mkdocs/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl start mkdocs
+

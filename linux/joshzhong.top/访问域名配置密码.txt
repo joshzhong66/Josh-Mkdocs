@@ -1,0 +1,52 @@
+1.添加访问域名需输入密码
+
+# 创建htpasswd账号密码
+echo -n "josh:" > /usr/local/nginx/conf/htpasswd
+openssl passwd Sunline2024 >> /usr/local/nginx/conf/htpasswd
+
+
+yum install -y httpd-tools
+htpasswd /usr/local/nginx/conf/htpasswd josh
+
+
+
+server {
+    server_name file.joshzhong.top;  # 改为你的文件域名
+    listen 443 ssl;
+    ssl_certificate /usr/local/nginx/cert/file.joshzhong.top/file.joshzhong.top.pem;  # 证书路径
+    ssl_certificate_key /usr/local/nginx/cert/file.joshzhong.top/file.joshzhong.top.key;  # 密钥路径
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    charset utf-8;    # 设置字符编码
+    charset_types text/html text/plain text/css application/javascript;
+
+    # 根目录为共享路径
+    location / {
+        root /data/software;
+        autoindex on;  # 开启目录列表
+        add_header Cache-Control "no-store";  # 可选：禁止缓存
+
+        # 添加基本认证
+        auth_basic "Restricted Area";
+        auth_basic_user_file /usr/local/nginx/conf/htpasswd;
+    }
+
+    # 阻止直接访问 /software 目录
+    location /software {
+        return 404;  # 强制返回 404 错误
+    }
+}
+
+# HTTP 强制跳转 HTTPS（可选但建议）
+server {
+    listen 80;
+    server_name file.joshzhong.top;
+    return 301 https://$host$request_uri;
+}
+
+2.重载nginx
+
+3.通过脚本nginx_auth_config_manager.sh控制密码访问开启或关闭
+
+
+

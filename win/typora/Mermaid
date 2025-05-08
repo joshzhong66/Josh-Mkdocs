@@ -1,0 +1,7 @@
+```mermaid
+graph LR
+A[日志数据] --> B(Fluentd收集)
+B --> C(Elasticsearch存储)
+C --> D{Grafana可视化}
+D --> E[AI异常检测]
+E --> F[自动触发Ansible修复]

@@ -1,0 +1,4 @@
+CREATE USER 'gitea'@'%' IDENTIFIED BY 'gitea';
+CREATE DATABASE giteadb CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_ci';
+GRANT ALL PRIVILEGES ON giteadb.* TO 'gitea'@'%';
+FLUSH PRIVILEGES;
