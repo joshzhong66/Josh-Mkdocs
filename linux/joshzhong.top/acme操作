@@ -1,0 +1,3 @@
+申请新域名
+cd /root/.acme.sh/
+acme.sh --issue --dns dns_huaweicloud -d file.joshzhong.top -d
