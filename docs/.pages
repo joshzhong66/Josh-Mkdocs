@@ -2,13 +2,12 @@ title: "Hello"
 
 nav:
     - 首页: index.md
+    - 阅读: readbook
+    - 技术: technical
+    - 健康: healthy
+    - 旅行: travel
     - 随笔: essay
     - 生活: life
     - 留言: message
-    - 阅读: readbook
-    - 技术: technical
-    - 旅行: travel
-    - 爱好: like
-    - 见闻: information
-    - 关于: about.md
     - 归档: archive.md
+    - 关于: about.md
