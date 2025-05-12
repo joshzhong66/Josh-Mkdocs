@@ -1,24 +1,24 @@
 {
-    "picBed": {
-        "uploader": "githubPlus",
-        "current": "githubPlus",
-        "githubPlus": {
-            "repo": "joshzhong66/Pibced",
-            "branch": "main",
-            "token": "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",
-            "path": "blog-images",
-            "customUrl": "",
-            "origin": "github"
-        }
-    },
-    "picgoPlugins": {
-        "picgo-plugin-github-plus": true,
-        "picgo-plugin-rename-file": true
-    },
-    "picgo-plugin-github-plus": {
-        "lastSync": "2025-03-21 04:50:38"
-    },
-    "picgo-plugin-rename-file": {
-        "format": "{y}/{m}/{d}/{hash}-{origin}-{rand:6}"
+  "picBed": {
+    "uploader": "githubPlus",
+    "current": "githubPlus",
+    "githubPlus": {
+      "repo": "joshzhong66/Pibced",
+      "branch": "main",
+      "token": "xxx",
+      "path": "blog-images",
+      "customUrl": "",
+      "origin": "github"
     }
+  },
+  "picgoPlugins": {
+    "picgo-plugin-github-plus": true,
+    "picgo-plugin-rename-file": true
+  },
+  "picgo-plugin-github-plus": {
+    "lastSync": "2025-05-09 02:46:12"
+  },
+  "picgo-plugin-rename-file": {
+    "format": "{y}/{m}/{d}/{hash}-{origin}-{rand:6}"
+  }
 }
