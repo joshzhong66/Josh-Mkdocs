@@ -1,6 +1,8 @@
 # Josh'Blog
 
-> 博客地址：https://joshzhong.top
+> ## 博客地址：
+>
+> ## https://joshzhong.top
 
 
 
@@ -14,19 +16,27 @@
 
 ## 部署mkdocs
 
+### 1.克隆项目
+
 ```
 mkdir -p /data/Mkdocs/Josh-Mkdocs
-
 cd /data/Mkdocs/Josh-Mkdocs
 git clone git@github.com:joshzhong66/Josh-Mkdocs.git
+```
 
+### 2.创建python虚拟环境&安装依赖
+
+```
 cd /data/Mkdocs/Josh-Mkdocs
 python3 -m venv venv
 source venv/bin/activate
 pip install --upgrade pip
 pip install mkdocs-material mkdocs-awesome-pages-plugin mkdocs-rss-plugin mkdocs-glightbox mkdocs-git-revision-date-localized-plugin
+```
 
+### 3.创建mkdocs启动服务文件
 
+```
 cat > /etc/systemd/system/mkdocs.service <<'EOF'
 [Unit]
 Description=MkDocs Server
@@ -44,8 +54,11 @@ Environment="PATH=/data/Mkdocs/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin
 [Install]
 WantedBy=multi-user.target
 EOF
+```
 
+### 4.配置反向代理
 
+```
 cat > /usr/local/nginx/conf/conf.d/joshzhong.top.conf <<'EOF'
 server {
   server_name joshzhong.top;
@@ -54,7 +67,7 @@ server {
   ssl_certificate_key /usr/local/nginx/cert/joshzhong.top/joshzhong.top.key;
   ssl_protocols TLSv1.2 TLSv1.3;
   location / {
-    proxy_pass http://159.75.238.93:10090;
+    proxy_pass http://127.0.0.1:10090;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -64,11 +77,18 @@ server {
   }
 }
 EOF
+```
 
+### 5.重载nginx
+
+```
 nginx -s reload
+```
 
-systemctl start mkdocs
+### 6.启动nginx
 
-
+```
+systemctl daemon-reload
+systemctl start mkdocs && systemctl enable mkdocs
 ```
 
