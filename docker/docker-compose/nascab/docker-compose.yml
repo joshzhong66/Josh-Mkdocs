@@ -1,0 +1,14 @@
+version: '3.9'
+services:
+    nascab:
+        image: ypptec/nascab
+        volumes:
+            - '/data/nascab/data:/root/.local/share/nascab'
+            - '/data/nascab/mydata:/mydata'
+        ports:
+            - '18021:21'
+            - '18090:90'
+            - '18443:443'
+            - '18080:80'
+        container_name: nascab
+        restart: always

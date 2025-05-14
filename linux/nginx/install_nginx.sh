@@ -49,9 +49,9 @@ check_url() {
 
 check_nginx() {
     if [ -d "$INSTALL_DIR" ]; then
-        echo_log_error "Nginx 已安装，请先卸载 Nginx!"
+        echo_log_error "Nginx Already installed, please uninstall Nginx first!"
     elif which $PACKAGE_NAME &>/dev/null; then
-        echo_log_error "$PACKAGE_NAME 已安装。 请先卸载旧版本！"
+        echo_log_error "$PACKAGE_NAME Already installed. Please uninstall the old version first!"
     fi
     return 0
 }

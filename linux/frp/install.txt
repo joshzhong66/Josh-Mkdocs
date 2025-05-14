@@ -1,0 +1,66 @@
+# frps
+```
+
+cd /usr/local/src
+wget https://github.com/fatedier/frp/releases/download/v0.61.1/frp_0.61.1_linux_amd64.tar.gz
+tar -zxvf frp_0.61.1_linux_amd64.tar.gz
+cd frp_0.61.1_linux_amd64
+mkdir /usr/local/frp
+mv frps frps.toml /usr/local/frp
+
+
+cat >/lib/systemd/system/frps.service <<EOF
+[Unit]
+Description=Frp frps Service
+After=network.target syslog.target
+Wants=network.target
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=5s
+ExecStart=/usr/local/frp/frps -c /usr/local/frp/frps.toml
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl start frps
+systemctl status frps
+```
+
+# frpc
+```
+
+cd /usr/local/src
+wget https://github.com/fatedier/frp/releases/download/v0.61.1/frp_0.61.1_linux_amd64.tar.gz
+tar -zxvf frp_0.61.1_linux_amd64.tar.gz
+cd frp_0.61.1_linux_amd64
+mkdir /usr/local/frp
+mv frpc frpc.toml /usr/local/frp
+
+
+cat >/lib/systemd/system/frpc.service <<EOF
+[Unit]
+Description=Frp frpc Service
+After=network.target syslog.target
+Wants=network.target
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=5s
+ExecStart=/usr/local/frp/frpc -c /usr/local/frp/frpc.toml
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl start frpc
+systemctl status frpc
+systemctl restart frpc
+systemctl enable frpc
+```
+

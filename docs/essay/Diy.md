@@ -23,3 +23,21 @@
 > 风扇-棱镜pro 6把
 >
 > 显示器-联想 Y27Q30
+
+
+
+黑NAS
+
+>CPU-Inter i5 8500
+>
+>内存 海盗船 DDR5 2400 16*2
+>
+>显卡-AMD 580 满血版
+
+AMD 580 满血版-GPUZ
+
+![image202505141533](https://pic.joshzhong.top/i/2025/05/14/pc9w52.png)
+
+AMD 580 满血版-3DMAX跑分
+
+![image202505141557](https://raw.githubusercontent.com/joshzhong66/Pibced/main/blog-images/2025/05/14/71dd5dabb048ac780fc2030133392d20-pq3shj-eda373.png)
