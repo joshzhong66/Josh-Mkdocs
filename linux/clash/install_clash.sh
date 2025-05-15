@@ -38,10 +38,17 @@ install_clash() {
         exit 1
     fi
 
-    if ! wget "$clash_url" -P "$download_path";then
-        echo_log_error "Clash 下载失败！"
-        exit 1
+    if [ ! -f "$download_path/$version.tar.gz" ]; then
+        echo_log_info "Clash 文件不存在，开始下载..."
+        if ! wget "$clash_url" -P "$download_path";then
+            echo_log_error "Clash 下载失败！"
+            exit 1
+        fi
+    else
+        echo_log_info "Clash 文件已存在，开始安装..."
     fi
+
+
 
     cd $download_path
     if ! tar -zxvf clash-linux-amd64-v1.7.1.tar.gz -C $install_path;then
