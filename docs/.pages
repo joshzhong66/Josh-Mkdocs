@@ -2,6 +2,7 @@ title: "Hello"
 
 nav:
     - 首页: index.md
+    - 博客: blog  
     - 阅读: readbook
     - 随笔: essay
     - 生活: life
