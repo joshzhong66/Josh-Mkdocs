@@ -73,6 +73,10 @@ template: home.html
       </font>
     </body>
   </div>
+<p align="center">
+    <img src="https://pic.joshzhong.top/i/2025/05/14/swrzis.gif" alt><br>
+</p>
+
 
 
 
@@ -101,5 +105,4 @@ template: home.html
     第六次，当它鄙夷一张丑恶的嘴脸时，却不知那正是自己面具中的一副；
     
     第七次，它侧身于生活的污泥中，虽不甘心，却又畏首畏尾。 ——《我曾七次鄙视我的灵魂》
-
 
