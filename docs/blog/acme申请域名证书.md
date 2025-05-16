@@ -6,7 +6,7 @@
 
 3.复制授权验证信息，登陆域名后台，将授权添加解析记录
 
-```
+```bash
 主机记录: _acme-challenge.upload
 
 记录类型: CNAME
