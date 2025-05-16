@@ -18,8 +18,8 @@ theme:
   palette: 
     # Palette toggle for light mode
     - scheme: default   # 默认的配色方案
-      primary: 'blue'    # 设置主色调颜色
-      accent: 'blue'   # 设置强调色
+      primary: indigo    # 设置主色调颜色
+      accent: blue   # 设置强调色
       toggle:
         icon: material/weather-night   # 切换图标设置为夜间模式的图标
         name: 切换到暗色模式
@@ -31,7 +31,7 @@ theme:
         icon: material/weather-sunny
         name: 切换到亮色模式
   font:
-    text: Roboto
+    text: Roboto # 可选字体，保持简洁
     code: Roboto Mono
   # 主题功能
   features:   # 启用了多个Material主题的增强功能，这些功能主要围绕导航、搜索和代码块的显示进行改进
