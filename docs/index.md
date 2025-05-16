@@ -74,7 +74,7 @@ template: home.html
     </body>
   </div>
 <p align="center">
-    <img src="https://pic.joshzhong.top/i/2025/05/14/swrzis.gif" alt><br>
+    <img src="https://pic.joshzhong.top/i/2025/05/14/swrzis.gif"><br>
 </p>
 
 

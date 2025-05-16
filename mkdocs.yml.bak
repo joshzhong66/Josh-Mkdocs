@@ -18,8 +18,8 @@ theme:
   palette: 
     # Palette toggle for light mode
     - scheme: default   # 默认的配色方案
-      primary: 'indigo'    # 设置主色调颜色
-      accent: 'indigo'   # 设置强调色
+      primary: 'teal'    # 设置主色调颜色
+      accent: 'pink'   # 设置强调色
       toggle:
         icon: material/weather-night   # 切换图标设置为夜间模式的图标
         name: 切换到暗色模式
