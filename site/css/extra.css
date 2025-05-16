@@ -55,3 +55,15 @@ a.md-nav__link{display:block; overflow:hidden; text-overflow:ellipsis; white-spa
   margin-right: 0.5em; /* Add some space between the SVG icon and the text */
 }
 
+/* 禁止图片点击跳转到原图 */
+.md-content a[href$=".png"],
+.md-content a[href$=".jpg"],
+.md-content a[href$=".jpeg"],
+.md-content a[href$=".gif"],
+.md-content a[href$=".webp"],
+.md-content a[href$=".bmp"],
+.md-content a[href$=".svg"] {
+  pointer-events: none;
+  cursor: default;
+  text-decoration: none;
+}
