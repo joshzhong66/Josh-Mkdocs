@@ -18,18 +18,21 @@ theme:
   palette: 
     # Palette toggle for light mode
     - scheme: default   # 默认的配色方案
-      primary: 'indigo'    # 设置主色调颜色
-      accent: 'indigo'   # 设置强调色
+      primary: 'blue'    # 设置主色调颜色
+      accent: 'blue'   # 设置强调色
       toggle:
         icon: material/weather-night   # 切换图标设置为夜间模式的图标
         name: 切换到暗色模式
     # Palette toggle for dark mode
     - scheme: slate
-      primary: teal
-      accent: deep orange
+      primary: blue
+      accent: blue
       toggle:
         icon: material/weather-sunny
         name: 切换到亮色模式
+  font:
+    text: Roboto
+    code: Roboto Mono
   # 主题功能
   features:   # 启用了多个Material主题的增强功能，这些功能主要围绕导航、搜索和代码块的显示进行改进
     - navigation.instant   # 页面不会跳转，而是像单页应用一样在当前页面内完成导航，提高页面响应速度和美观度
