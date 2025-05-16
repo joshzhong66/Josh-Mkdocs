@@ -12,7 +12,7 @@ theme:
   name: 'material'   # 使用Material主题，这是一个流行的MkDocs主题，提供了丰富的样式和功能
   custom_dir: overrides
   icon:
-    logo: 'material/github'   # 设置网站的logo图标为Material主题中的GitHub图标
+    logo: 'material/google-downasaur'   # 设置网站的logo图标为Material主题中的GitHub图标
   include_search: true   # 启用&禁用搜索
   # 增加调整亮暗模式
   palette: 

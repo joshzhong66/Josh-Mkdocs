@@ -2,33 +2,6 @@ img {
     pointer-events: none;
 }
 
-
-/* 表格边框增强 */
-.md-typeset table {
-  border-collapse: collapse; /* 合并边框 */
-  width: 100%;
-  border: 1px solid #bbb; /* 表格外框 */
-}
-
-.md-typeset table th,
-.md-typeset table td {
-  border: 1px solid #bbb;  /* 单元格边框 */
-  padding: 8px;
-  text-align: left;
-}
-
-/* 表头背景色稍深一点，更清晰 */
-.md-typeset table th {
-  background-color: #f2f2f2;
-  font-weight: bold;
-}
-
-/* 可选：悬浮时高亮行 */
-.md-typeset table tr:hover {
-  background-color: #f9f9f9;
-}
-
-
 /* Github风格代码块背景和边框 */
 .md-typeset pre {
   background-color: #f6f8fa;
