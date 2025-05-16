@@ -1,15 +1,16 @@
 # Josh'Blog
 
-> ## 博客地址：
+> ## 博客地址：https://joshzhong.top
 >
-> ## https://joshzhong.top
 
 
 
 ## 记录工作  && 生活 && 日常
 
+- 自律生活
+
 - 早睡早起
-- 健身 & 锻炼
+- 健身锻炼
 - 阅读书籍
 
 
