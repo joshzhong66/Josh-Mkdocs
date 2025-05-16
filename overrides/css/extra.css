@@ -4,10 +4,11 @@ img {
 
 /* 背景和字体颜色仿照博客园 */
 :root {
-  --md-default-bg-color: #ffffff;
-  --md-default-fg-color: #333333;
-  --md-typeset-a-color: #007acc;
+  --md-default-bg-color: #ffffff !important;
+  --md-default-fg-color: #333333 !important;
+  --md-typeset-a-color: #007acc !important;
 }
+
 
 /* 去掉 Material 风格下边框/阴影，干净风格 */
 .md-header, .md-footer, .md-tabs {
