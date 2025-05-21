@@ -3,7 +3,6 @@ title: "Hello"
 nav:
     - 首页: index.md
     - 博客: blog
-    - 容器: container
     - 服务器: server
     - 网络: route_switch
     - 阅读: readbook

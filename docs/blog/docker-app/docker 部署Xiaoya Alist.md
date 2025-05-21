@@ -345,9 +345,9 @@ mkdir -p /data/xiaoya1/{xiaoya,media,config,cache,meta}
 
 ```
 cat > /data/xiaoya1/env <<'EOF'
-ALIYUN_TOKEN=29faf032b49f491fb0fc4e1ca2e22c0e
-ALIYUN_OPEN_TOKEN=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJiYzc2NjQ3YzI3ZmU0OTI5YjYzZTJmN2RiNDcxODBmMSIsImF1ZCI6Ijc2OTE3Y2NjY2Q0NDQxYzM5NDU3YTA0ZjYwODRmYjJmIiwiZXhwIjoxNzU1MjUyNTEwLCJpYXQiOjE3NDc0NzY1MTAsImp0aSI6ImI4N2U4YTRjMjBlMjQ4YWRhNTNmNTIzNDE2YWYyYjRmIn0.ebzD-Gcp9H51Q9x4_AyXhHh_qAvFlWc17lk3DiGkzoPuzmKrUVMXbZVlL65pGsxVyRm1EtssyVBS58WUgeoGsQ
-ALIYUN_FOLDER_ID=682861d4d0ef70118ef94e5d90a246583840a406
+ALIYUN_TOKEN=29faf032b49f491fbxxxxxxxxxxx
+ALIYUN_OPEN_TOKEN=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJiYzc2NjQ3YzI3ZmU0OTI5YjYzZTJmN2RiNDcxODBmMSIsImF1ZCI6Ijc2OTE3Y2NjY2Q0NDQxYzM5NDU3YTA0ZjYwxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ALIYUN_FOLDER_ID=682861d4d0ef701xxxxxxxxxxxxxxxxxxx
 EOF
 ```
 
@@ -476,13 +476,13 @@ docker compose up -d
 >
 >```
 
-#### 5.访问xiaoya
+#### 5.访问Xiaoya
 
 打开浏览器输入服务器ip+5678端口，即可访问（如：http://10.22.51.65:5678/）
 
 
 
-## 六、docker部署alist
+## 六、docker部署Alist
 
 >挂载阿里云网盘参考：https://blog.csdn.net/2301_79855962/article/details/139559104
 >
@@ -584,7 +584,7 @@ EOF
 >
 >> select value from x_setting_items where key = "token";
 >> EOF
->> alist-09ceb38a-f143-47f7-b255-c3eec819cd7bqpNRNmu47GiM9XVAh3NBQ3LEiFRqoETIrcnkkCkoWDmAT7TdX5o0Gbs3we_l7fOT
+>> alist-09ceb38a-f143-47f7-b255-c3eec819cd7bqpNRXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 **保存好上述token，下一步骤需使用**
 
@@ -602,7 +602,7 @@ Alist后台-找到【存储】——点击【添加】——驱动选择【Alist
 
 【链接】（填写小雅服务器IP和端口）：**http://10.22.51.65:5678** 
 
-【令牌】（生成的token）：**alist-09ceb38a-f143-47f7-b255-c3eec819cd7bqpNRNmu47GiM9XVAh3NBQ3LEiFRqoETIrcnkkCkoWDmAT7TdX5o0Gbs3we_l7fOT**
+【令牌】（生成的token）：**alist-09ceb38a-f143-47f7-b255-c3eec819cd7bqpNRNmu47GiM9XVAh3NBQxxxxxxxx**
 
 **其他未说明的选项，默认即可。**
 
@@ -762,8 +762,6 @@ start "" ""C:\Software\PotPlayer64\PotPlayer64\PotPlayerMini64.exe"" "%URL%"
 
 
 
-
-
 ### 4.网易云爆米花APP
 
 下载【网易云爆米花APP】，安装后打开APP，先点击【资源库】，再点击右上角【+】
@@ -804,27 +802,10 @@ start "" ""C:\Software\PotPlayer64\PotPlayer64\PotPlayerMini64.exe"" "%URL%"
 version: '3.8'
 
 networks:
-  xiaoya:
+  emby:
     driver: bridge
 
-services:
-  alist:
-    image: ghcr.io/monlor/xiaoya-alist:latest
-    container_name: xiaoya_alist
-    volumes:
-      - /data/xiaoya/xiaoya:/data
-    ports:
-      - "5678:5678"
-      - "2345:2345"
-      - "2346:2346"
-    environment:
-      - AUTO_UPDATE_MEDIA_ADDR=true
-    env_file:
-      - /data/xiaoya/env
-    restart: unless-stopped
-    networks:
-      - xiaoya
-      
+services:   
   emby:
     image: ghcr.io/monlor/xiaoya-embyserver:latest
     container_name: xiaoya_emby
@@ -835,13 +816,11 @@ services:
       - alist
     volumes:
       - /data/xiaoya/media:/media
-      - /data/xiaoya/config:/config
-      - /data/xiaoya/cache:/cache
     ports:
       - "6908:6908"
     restart: unless-stopped
     networks:
-      - xiaoya
+      - emby
 
 ```
 
