@@ -1,4 +1,4 @@
-# docker 部署Xiaoya Alist
+# 6 docker部署Xiaoya Alist
 
 >Github官方开源地址：https://github.com/xiaoyaDev/xiaoya-alist
 >

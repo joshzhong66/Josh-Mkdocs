@@ -126,7 +126,7 @@ plugins:  # 配置MkDocs的插件
           - blog/archive/*  # 排除博客归档文件
           - blog/category/*  # 排除博客分类文件
   - awesome-pages:  # 启用Awesome Pages插件
-      order: asc  # 设置页面的默认排序方式为降序
+      order: asc  # 设置页面的默认排序方式为升序
       sort_type: natural  # 使用自然排序
       order_by: filename  # 按文件名排序
 
