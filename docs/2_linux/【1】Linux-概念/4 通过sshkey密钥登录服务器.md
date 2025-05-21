@@ -196,11 +196,11 @@ ssh -p 2222 root@192.168.31.162
 
 - 设置公钥优先级再前，密码验证再后：
 
-![image-20240528172148510](https://raw.githubusercontent.com/zyx3721/Picbed/main/blog-images/2024/05/28/80fe1d24a20b48abb03489ca386b3cc8-image-20240528172148510-eae5a9.png)
+![image-20240528172148510](https://raw.githubusercontent.com/joshzhong66/Pibced/main/blog-images/2025/05/21/80fe1d24a20b48abb03489ca386b3cc8-80fe1d24a20b48abb03489ca386b3cc8-image-20240528172148510-eae5a9-e9e386.png)
 
 - 添加公钥（点击-属性，选择公钥在本机的路径）：
 
-![image-20240528172219195](https://raw.githubusercontent.com/zyx3721/Picbed/main/blog-images/2024/05/28/db9d8f2907b644bacb8168e12036d3c5-image-20240528172219195-43f707.png)
+![image-20240528172219195](https://raw.githubusercontent.com/joshzhong66/Pibced/main/blog-images/2025/05/21/db9d8f2907b644bacb8168e12036d3c5-db9d8f2907b644bacb8168e12036d3c5-image-20240528172219195-43f707-ca6a5a.png)
 
 
 
@@ -208,4 +208,4 @@ ssh -p 2222 root@192.168.31.162
 
 使用electerm软件，输入服务器IP，用户名，复制私钥
 
-![image-20241129153710904](https://raw.githubusercontent.com/joshzhong66/Pibced/main/blog-images/2024/11/29/46c4246ac2e428503500ae03f0cd8c5d-image-20241129153710904-8cc470.png)
+![image-20250521174029955](https://raw.githubusercontent.com/joshzhong66/Pibced/main/blog-images/2025/05/21/e1ed1d3933ad12536ec0f73cff927f8b-image-20250521174029955-be291e.png)
