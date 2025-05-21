@@ -1,4 +1,4 @@
-# 《每天一个Linux命令》 -- (20) ntttcp命令
+# 15 ntttcp命令
 
 
 

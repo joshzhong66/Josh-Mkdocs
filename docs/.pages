@@ -3,7 +3,7 @@ title: "Hello"
 nav:
     - 首页: index.md
     - 博客: blog
-    - 服务器: server
+    - Linux note: linux
     - 网络: route_switch
     - 阅读: readbook
     - 随笔: essay

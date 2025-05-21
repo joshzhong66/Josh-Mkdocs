@@ -1,4 +1,4 @@
-# 《每天一个Linux命令》 -- (29) journalctl命令
+# 2 journalctl命令
 
 
 
