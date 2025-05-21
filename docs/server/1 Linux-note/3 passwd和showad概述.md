@@ -1,4 +1,4 @@
-# (3)passwd和shadow概述
+# 3 passwd和shadow概述
 
 
 
