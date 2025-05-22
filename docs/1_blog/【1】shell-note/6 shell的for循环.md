@@ -1,4 +1,4 @@
-## shell 的 for 循环
+# shell 的 for 循环
 
 ### 概述
 
