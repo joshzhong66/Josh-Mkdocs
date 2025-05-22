@@ -1,4 +1,4 @@
-# 14 dirname命令
+# dirname命令
 
 > 欢迎阅读《每天一个Linux命令》系列！在本篇文章中，将说明 dirname 命令的用法。
 

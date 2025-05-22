@@ -1,4 +1,4 @@
-# 4 mkdir命令
+# mkdir命令
 
 
 

@@ -1,4 +1,4 @@
-# 15 rsync命令
+# rsync命令
 
 
 
