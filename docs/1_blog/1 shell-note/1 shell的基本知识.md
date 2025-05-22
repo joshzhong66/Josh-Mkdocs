@@ -1,4 +1,4 @@
-# 1 shell的基本知识
+# shell的基本知识
 
 **Linux 系统中 shell 的基本知识**
 
