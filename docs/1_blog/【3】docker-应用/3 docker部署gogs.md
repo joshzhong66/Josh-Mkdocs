@@ -1,4 +1,4 @@
-# 3 docker部署gogs
+# docker部署gogs
 
 
 

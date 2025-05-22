@@ -1,6 +1,6 @@
 
 
-# 6 Registry搭建docker私仓
+# Registry搭建docker私仓
 
 
 

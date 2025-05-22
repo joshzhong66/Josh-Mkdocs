@@ -1,4 +1,4 @@
-# 1 docker部署mysql
+# docker部署mysql
 
 
 
