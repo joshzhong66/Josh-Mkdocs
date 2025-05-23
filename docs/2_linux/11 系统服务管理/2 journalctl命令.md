@@ -1,4 +1,4 @@
-# 2 journalctl命令
+# journalctl命令
 
 
 
