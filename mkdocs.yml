@@ -138,10 +138,9 @@ extra_javascript:
   - javascripts/mathjax.js #Latex支持
   - https://polyfill.io/v3/polyfill.min.js?features=es6 #Latex支持
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js #Latex支持
-  # - ckplayer/js/ckplayer.js #播放器配置
   # - https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js  #gitalk支持
+  - https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js  #不蒜子统计更新
   - https://cdn.jsdelivr.net/npm/mermaid@10.0.2/dist/add-html-label-6e56ed67.min.js #忘了
-
 
 extra_css:
   - css/extra.css  # 引用自定义的CSS文件
