@@ -78,7 +78,19 @@ systemctl is-active iptables
 -A INPUT -s 10.0.0.44/32 -p tcp -m state --state NEW -m tcp --dport 445 -j ACCEPT
 ```
 
-#### 3.3 禁用所有源流量
+#### 3.3 查询规则22端口
+
+```bash
+grep "tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT" /etc/sysconfig/iptables
+```
+
+#### 3.4 查询规则IP和端口
+
+```bash
+grep "10.22.51.65/32 -p tcp -m state --state NEW -m tcp --dport 8083 -j ACCEPT" /etc/sysconfig/iptables
+```
+
+#### 3.5 禁用所有源流量
 
 规则在它之下，所有从源出来的流量都会被禁止访问：
 
@@ -86,16 +98,17 @@ systemctl is-active iptables
 -A INPUT -j REJECT --reject-with icmp-host-prohibited
 ```
 
-#### 3.4 查询规则22端口
+#### 3.6 禁用IP连接
 
 ```bash
-grep "tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT" /etc/sysconfig/iptables
+-I INPUT -s 10.18.51.22 -j DROP
 ```
 
-#### 3.5 查询规则IP和端口
+#### 3.7 禁止IP连接端口
 
 ```bash
-grep "10.22.51.65/32 -p tcp -m state --state NEW -m tcp --dport 8083 -j ACCEPT" /etc/sysconfig/iptables
+iptables -I INPUT -s 10.18.10.22 -p tcp --dport 22 -j DROP			# 22端口
+iptables -I INPUT -s 10.18.10.22 -p tcp --dport 7890 -j DROP		# 7890端口
 ```
 
 ### 4.centos6启动
