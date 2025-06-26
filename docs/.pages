@@ -3,7 +3,7 @@ title: "Hello"
 nav:
     - 首页: index.md
     - 博客: 1_blog
-	- AI: 2_AI
+    - AI: 2_AI
     - Linux: 3_linux
     - 网络: 4_route_switch
     - 阅读: 5_readbook
