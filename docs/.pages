@@ -3,10 +3,11 @@ title: "Hello"
 nav:
     - 首页: index.md
     - 博客: 1_blog
-    - Linux: 2_linux
-    - 网络: 3_route_switch
-    - 阅读: 4_readbook
-    - 随笔: 5_essay
-    - 生活: 6_life
+	- AI: 2_AI
+    - Linux: 3_linux
+    - 网络: 4_route_switch
+    - 阅读: 5_readbook
+    - 随笔: 6_essay
+    - 生活: 7_life
     - 归档: archive.md
     - 关于: about.md

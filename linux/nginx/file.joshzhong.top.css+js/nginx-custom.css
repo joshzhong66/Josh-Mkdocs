@@ -1,0 +1,117 @@
+/* 页面基本字体和背景 */
+body {
+    font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+    margin: 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 头部标题 */
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #3498db;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+/* 目录列表容器 */
+#directory-listing {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    overflow-x: auto;
+    margin-bottom: 2rem;
+}
+
+/* 表头样式 */
+#directory-header {
+    display: grid;
+    grid-template-columns: 40px 3fr 180px 120px;
+    gap: 12px;
+    padding: 12px;
+    background: #3498db;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px 4px 0 0;
+}
+
+/* 目录行样式 */
+.directory-row {
+    display: grid;
+    grid-template-columns: 40px 3fr 180px 120px;
+    gap: 12px;
+    padding: 8px 12px;
+    border-bottom: 1px solid #eaeef5;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.directory-row:hover {
+    background-color: #f8f9fa;
+}
+
+/* 链接样式 */
+a {
+    color: #2980b9;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+}
+a:hover {
+    color: #e74c3c;
+    transform: translateX(3px);
+}
+
+/* 文件名列特殊处理 */
+.filename {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 日期和大小列 */
+.date, .size {
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+    color: #555;
+}
+
+/* 页脚 */
+.footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    padding: 1rem;
+    border-top: 1px solid #e1e4e8;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+    #directory-listing {
+        padding: 1rem;
+    }
+    #directory-header,
+    .directory-row {
+        grid-template-columns: 30px minmax(120px, 2fr) 140px 90px;
+        gap: 8px;
+        padding: 6px 8px;
+    }
+    .date, .size {
+        font-size: 0.85em;
+    }
+}
+
+/* 隐藏原始目录列表 */
+pre {
+    display: none !important;
+}

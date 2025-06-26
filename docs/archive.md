@@ -7,6 +7,7 @@
 - [（五）：Git文档](archive/1_服务器归档/Git文档.md)
 - [（六）：Ansible-playbook规范](archive/1_服务器归档/Ansible-playbook规范.md)
 - [（七）：Linux下jq如何使用](archive/1_服务器归档/Linux下jq如何使用.md)
+- [（七）：华为服务器oid](archive/1_服务器归档/华为服务器oid.md)
 
 # <2>docker归档
 

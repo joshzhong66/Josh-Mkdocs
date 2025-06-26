@@ -5,11 +5,11 @@
 # 公司资源：http://mirrors.sunline.cn/python/linux/${PYTHON_TAR}
 #
 
-PYTHON_VERSION="3.9.7"
+PYTHON_VERSION="3.8.20"
 INSTALL_PATH="/usr/local/python3"
 DOWNLOAD_PATH="/usr/local/src"
 PYTHON_TAR="Python-${PYTHON_VERSION}.tgz"
-INTERNAL_PYTHON_URL="http://mirrors.sunline.cn/python/linux/${PYTHON_TAR}"
+INTERNAL_PYTHON_URL="http://mirrors.sunline.cn/source/python/${PYTHON_TAR}"
 EXTERNAL_PYTHON_URL="https://www.python.org/ftp/python/${PYTHON_VERSION}/${PYTHON_TAR}"
 
 echo_log() {

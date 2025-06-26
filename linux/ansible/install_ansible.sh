@@ -9,9 +9,9 @@
 PACKAGE_NAME="ansible"
 ANSIBLE_VERSION="2.14.4"
 ANSIBLE_TAR="ansible-${ANSIBLE_VERSION}.tar.gz"
-DOWNLOAD_PATH="/usr/local/src"
-INSTALL_PATH="/usr/local/ansible"
-WORK_PATH="/data/ansible"
+DOWN_DIR="/usr/local/src"
+INSTALL_DIR="/usr/local/ansible"
+WORK_DIR="/data/ansible"
 INTERNAL_ANSIBLE_URL="http://mirrors.sunline.cn/source/ansible/${ANSIBLE_TAR}"
 EXTERNAL_ANSIBLE_URL="https://github.com/ansible/ansible/archive/refs/tags/v${ANSIBLE_TAR}"
 
@@ -45,8 +45,8 @@ check_url() {
 }
 
 check_package() {
-    if [ -d "$INSTALL_PATH" ]; then
-        echo_log_error "安装目录 '$INSTALL_PATH' 已存在. 请先卸载 $PACKAGE_NAME 然后再继续！"
+    if [ -d "$INSTALL_DIR" ]; then
+        echo_log_error "安装目录 '$INSTALL_DIR' 已存在. 请先卸载 $PACKAGE_NAME 然后再继续！"
     elif which $PACKAGE_NAME &>/dev/null; then
         echo_log_error "$PACKAGE_NAME 已安装。请在安装新版本之前将其卸载！"
     fi
@@ -63,7 +63,7 @@ download_ansible() {
     for url in "$INTERNAL_ANSIBLE_URL" "$EXTERNAL_ANSIBLE_URL"; do
         if check_url "$url"; then
             echo_log_info "从 $url 下载 ansible 源包..."
-            wget -P "$DOWNLOAD_PATH" "$url" &>/dev/null && {
+            wget -P "$DOWN_DIR" "$url" &>/dev/null && {
                 echo_log_info "$ANSIBLE_TAR 下载成功"
                 return 0
             }
@@ -77,9 +77,9 @@ download_ansible() {
 }
 
 install_ansible() {
-    check_ansible
+    check_package
 
-    if [ -f "$DOWNLOAD_PATH/$ANSIBLE_TAR" ]; then
+    if [ -f "$DOWN_DIR/$ANSIBLE_TAR" ]; then
         echo_log_info "Ansible 源包已经存在！"
     else
         echo_log_info "开始下载 Ansible 源包..."
@@ -89,12 +89,12 @@ install_ansible() {
     yum install -y sshpass >/dev/null 2>&1
     [ $? -eq 0 ] && echo_log_info "依赖项安装成功..." || echo_log_error "依赖项安装失败..."
 
-    tar -xzf "$DOWNLOAD_PATH/$ANSIBLE_TAR" -C $DOWNLOAD_PATH >/dev/null 2>&1
+    tar -xzf "$DOWN_DIR/$ANSIBLE_TAR" -C $DOWN_DIR >/dev/null 2>&1
     [ $? -eq 0 ] && echo_log_info "成功解压 Ansible 源码包……" || echo_log_error "解压 Ansible 源码包失败……"
     
-    mv "$DOWNLOAD_PATH/ansible-${ANSIBLE_VERSION}"  $INSTALL_PATH
+    mv "$DOWN_DIR/ansible-${ANSIBLE_VERSION}"  $INSTALL_DIR
 
-    cd $INSTALL_PATH
+    cd $INSTALL_DIR
     python3 -m venv venv && source venv/bin/activate
     [ $? -eq 0 ] && echo_log_info "成功创建Python虚拟环境" || echo_log_error "无法创建 Python 虚拟环境"
 
@@ -118,13 +118,13 @@ EOF
      &>/dev/null
     [ $? -eq 0 ] && echo_log_info "构建 ansible 成功" || echo_log_error "构建 ansible 失败"
 
-    echo_log_info "创建ansible配置文件目录 $WORK_PATH/bin" && mkdir -p "$WORK_PATH/bin"
-    echo_log_info "复制 bin 目录" && cp $INSTALL_PATH/venv/bin/ansible* $WORK_PATH/bin >/dev/null 2>&1
+    echo_log_info "创建ansible配置文件目录 $WORK_DIR/bin" && mkdir -p "$WORK_DIR/bin"
+    echo_log_info "复制 bin 目录" && cp $INSTALL_DIR/venv/bin/ansible* $WORK_DIR/bin >/dev/null 2>&1
 
-    cat > $WORK_PATH/ansible.cfg <<EOF
+    cat > $WORK_DIR/ansible.cfg <<EOF
 [defaults]
 interpreter_python = auto_legacy_silent
-inventory = $WORK_PATH/hosts
+inventory = $WORK_DIR/hosts
 remote_tmp = \$HOME/.ansible/tmp
 local_tmp = \$HOME/.ansible/tmp
 remote_user = root
@@ -147,7 +147,7 @@ EOF
         echo_log_info "配置ansible环境变量"
         cat >> /etc/profile <<EOF
 # ansible
-export ANSIBLE_HOME=${WORK_PATH}
+export ANSIBLE_HOME=${WORK_DIR}
 export PATH=\$PATH:\$ANSIBLE_HOME/bin
 export ANSIBLE_CONFIG=\$ANSIBLE_HOME/ansible.cfg
 EOF
@@ -156,13 +156,13 @@ EOF
 
     echo_log_info "显示 Ansible 版本 $(ansible --version 2>/dev/null | head -n1 | awk '{print $NF}' | awk -F] '{print $1}')"
 
-    rm -rf $DOWNLOAD_PATH/ansible*
+    rm -rf $DOWN_DIR/ansible*
 }
 
 uninstall_ansible() {
-    if [ -d "${INSTALL_PATH}" ]; then
+    if [ -d "${INSTALL_DIR}" ]; then
         echo_log_info "Ansible 安装完毕，开始卸载……"
-        rm -rf ${INSTALL_PATH} && rm -rf $WORK_PATH
+        rm -rf ${INSTALL_DIR} && rm -rf $WORK_DIR
         rm -f /root/.pip
         echo_log_info "成功卸载 Ansible"
         sed -i '/# ansible/,/ansible.cfg/d' /etc/profile
