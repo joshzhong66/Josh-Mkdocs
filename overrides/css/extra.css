@@ -126,8 +126,10 @@ a.md-nav__link{display:block; overflow:hidden; text-overflow:ellipsis; white-spa
 
 /* Grid background */
 .md-main {
-  background-image: none; /* 取消网格背景 */
-  background-size: initial; /* 恢复背景尺寸为默认 */
+  /* background-image: none; /* 取消网格背景 */
+  /* background-size: initial; /* 恢复背景尺寸为默认 */
+  background-image: linear-gradient(rgba(50,0,0,0.05) 1px,transparent 0),linear-gradient(90deg,rgba(50,0,0,0.05) 1px,transparent 0);
+  background-size: 15px 15px;
 }
 
 #rcorners {

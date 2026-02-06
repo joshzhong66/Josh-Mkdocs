@@ -1,11 +1,11 @@
 # 基本配置
 site_dir: "site"
-site_url: https://joshzhong.top/
 site_name: Josh's Blog   # 定义站点名称，会显示在网页的标题和导航栏中
-site_description: '记录相关知识，沉淀生活，记录点滴。'
 copyright: 'Copyright &copy; 2023 <a href="http://joshzhong.top">赣ICP备2023014948号</a> '     # 设置版权信息，通常显示在网站的页脚
-docs_dir: "docs"   # 指定存放文档内容的目录
 
+
+# Docs 
+docs_dir: "docs"
 # 主题配置
 theme:
   language: 'zh'   # 设置网站的语言为中文
@@ -100,61 +100,55 @@ markdown_extensions:
 
 
 
-plugins:   # 配置MkDocs的插件
-  - rss:   # 启用RSS插件
-      enabled: True   # 启用RSS订阅
-      image: https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Feed-icon.svg/128px-Feed-icon.svg.png   # RSS订阅图标的URL
-      pretty_print: True   # 格式化RSS输出
-      length: 1000   # 设置摘要的长度
-      date_from_meta:   # 从元数据中获取文章的日期
-        as_creation: "date"   # 将文章的创建日期视为发布日期
-        as_update: "date"   # 将文章的更新日期视为发布日期
-      abstract_chars_count: -1   # 设置摘要的字符数限制
-      match_path: "(blog|flinks|galaxy|message|note|readme|tech|yuque)/.*"   # RSS订阅包含的路径模式
-  - glightbox:   # 启用gLightbox插件
-      auto_caption: false   # 自动生成图片标题
-      caption_position: bottom   # 图片标题显示在底部
+plugins:  # 配置MkDocs的插件
+  - rss:  # 启用RSS插件
+      enabled: True  # 启用RSS订阅
+      image: https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Feed-icon.svg/128px-Feed-icon.svg.png  # RSS订阅图标的URL
+      pretty_print: True  # 格式化RSS输出
+      length: 1000  # 设置摘要的长度
+      date_from_meta:  # 从元数据中获取文章的日期
+          as_creation: "date"  # 将文章的创建日期视为发布日期
+          as_update: "date"  # 将文章的更新日期视为发布日期
+      abstract_chars_count: -1  # 设置摘要的字符数限制
+      match_path: "(blog/posts|flinks|galaxy|message|note|readme|tech|yuque)/.*"  # RSS订阅包含的路径模式
+  - glightbox:  # 启用gLightbox插件
+      auto_caption: false  # 自动生成图片标题
+      caption_position: bottom  # 图片标题显示在底部
   - search:  # 启用搜索插件
       lang:
-        - en   # 支持英文搜索
-        - zh   # 支持中文搜索
-  - git-revision-date-localized:   # 启用Git本地化修订日期插件
-      type: iso_date   # 显示ISO格式的日期
-      timezone: Asia/Shanghai   # 设置时区为上海时间
-      fallback_to_build_date: true   # 如果没有Git日期则使用构建日期
-      exclude:   # 排除某些路径不显示修订日期
-        - blog/archive/*   # 排除博客归档文件
-        - blog/category/*   # 排除博客分类文件
-  - awesome-pages:   # 启用Awesome Pages插件
-      order: asc   # 设置页面的默认排序方式为升序
-      sort_type: natural   # 使用自然排序
-      order_by: filename   # 按文件名排序
+          - en  # 支持英文搜索
+          - zh  # 支持中文搜索
+  - git-revision-date-localized:  # 启用Git本地化修订日期插件
+      type: iso_date  # 显示ISO格式的日期
+      timezone: Asia/Shanghai  # 设置时区为上海时间
+      fallback_to_build_date: true  # 如果没有Git日期则使用构建日期
+      exclude:  # 排除某些路径不显示修订日期
+          - blog/archive/*  # 排除博客归档文件
+          - blog/category/*  # 排除博客分类文件
+  - awesome-pages:  # 启用Awesome Pages插件
+      order: asc  # 设置页面的默认排序方式为升序
+      sort_type: natural  # 使用自然排序
+      order_by: filename  # 按文件名排序
 
-hooks:
-  - hooks.py   # 显示页脚的“版权所有....”
-  - meta_slugs.py   # 在生成文档时，将文件的目标 URL 替换为自定义的 slug（用于优化 URL 的简洁性和可读性）
 
-extra:
-  social:   # 定义社交媒体链接和相关图标，这些信息可以在网站的模板中显示，比如在导航栏或页脚处
-    - icon: fontawesome/brands/github
-      link: https://github.com
-      name: GitHub
-    - icon: fontawesome/brands/google
-      link: https://www.google.com/
-      name: Google
-    - icon: fontawesome/brands/linux
-      link: https://www.linux.org/
-      name: Linux
-  analytics:   # 配置网站分析工具，用于跟踪和分析网站的流量和用户行为
-    provider: custom   # 指定使用的分析工具或平台
-    property: foobar   # 指定分析工具的属性或标识符
-
-extra_css:
-  - css/extra.css   # 引用自定义的CSS文件
-  - https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css   # 字体
 
 extra_javascript:
-  - js/mathjax.js   # 引用自定义的JS文件，这里用于数学公式显示的 MathJax 配置
-  - https://polyfill.io/v3/polyfill.min.js?features=es6   # 加载 Polyfill.io 提供的 Polyfill 脚本，用于在不支持 ES6 特性的浏览器中实现这些功能
-  - https://cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js   # 加载 MathJax 库的一个特定版本的 JavaScript 文件，用于在网页上渲染数学公式
-  - https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js   # 访问量计数
+  # - javascripts/extra.js #自定义javascript
+  - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/javascripts/extra.js  # extra的cdn
+#  - javascripts/mathjax.js #Latex支持
+  - https://polyfill.io/v3/polyfill.min.js?features=es6 #Latex支持
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js #Latex支持
+  # - https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js  #gitalk支持
+  - https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js  #不蒜子统计更新
+  - https://cdn.jsdelivr.net/npm/mermaid@10.0.2/dist/add-html-label-6e56ed67.min.js #忘了
+
+extra_css:
+  - css/extra.css  # 引用自定义的CSS文件
+
+  - https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css # font-awesome表情支持
+  # - https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css  #分享支持
+  
+  - https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css #字体
+  # - https://cdn.jsdelivr.net/npm/lxgw-wenkai-lite-webfont@1.1.0/style.css #字体
+  # - https://cdn.jsdelivr.net/npm/lxgw-wenkai-tc-webfont@1.0.0/style.css  #字体
+  # - https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css  #字体
